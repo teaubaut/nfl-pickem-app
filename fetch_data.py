@@ -7,16 +7,17 @@ Pipeline
   2. The Odds API       -> moneyline, spread, and total from US sportsbooks
   3. Vig-free math      -> fair win probabilities from the moneylines
   4. Kalshi (KXNFLGAME) -> prediction-market win probabilities (bid/ask midpoints)
-  5. Blend              -> one probability per game, a pick, and upset flags
-  6. Monday Night       -> projected final score snapped to key numbers
-  7. Write data.json
+  5. Polymarket (Gamma) -> second prediction market (bid/ask midpoints, volume, liquidity)
+  6. Blend              -> weighted average of the three, a pick, and upset flags
+  7. Monday Night       -> projected final score snapped to key numbers
+  8. Write data.json
 
 Usage
   export ODDS_API_KEY=your_key_here
   python3 fetch_data.py                      # current week -> data.json
   python3 fetch_data.py --output picks.json
   python3 fetch_data.py --week 5 --season 2026 --season-type 2
-  python3 fetch_data.py --kalshi-weight 0.4  # 60% sportsbooks / 40% Kalshi
+  python3 fetch_data.py --book-weight 2      # sportsbooks count double
 
 Requires Python 3.9+. Standard library only (no pip installs).
 """
@@ -61,9 +62,13 @@ ODDS_URL = "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/"
 KALSHI_URL = "https://api.elections.kalshi.com/trade-api/v2/markets"
 KALSHI_SERIES = "KXNFLGAME"
 
-DEFAULT_KALSHI_WEIGHT = 0.5      # share of the blend given to Kalshi
+POLYMARKET_URL = "https://gamma-api.polymarket.com"
+
+# Relative blend weights (renormalized over whichever sources have a price).
+# Equal weights = (Vegas + Kalshi + Polymarket) / 3.
+DEFAULT_WEIGHTS = {"sportsbook": 1.0, "kalshi": 1.0, "polymarket": 1.0}
 UPSET_BAND = (0.42, 0.49)        # underdog win prob that flags a live upset
-MAX_KALSHI_SPREAD = 0.20         # ignore quotes with bid/ask wider than 20c
+MAX_MARKET_SPREAD = 0.20         # ignore quotes with bid/ask wider than 20c
 MATCH_WINDOW_HOURS = 36          # max kickoff mismatch when pairing sources
 KEY_SCORES = [3, 6, 7, 10, 13, 14, 16, 17, 20, 21, 23, 24,
               27, 28, 30, 31, 34, 35, 38, 41, 42, 45]
@@ -191,8 +196,11 @@ def http_get_json(url: str, params: Optional[dict] = None, *,
 def parse_iso(value: Optional[str]) -> Optional[datetime]:
     if not value:
         return None
+    text = str(value).strip().replace("Z", "+00:00").replace(" ", "T", 1)
+    if re.search(r"[+-]\d{2}$", text):
+        text += ":00"
     try:
-        dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(text)
     except ValueError:
         return None
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
@@ -461,7 +469,7 @@ def _kalshi_price(m: dict, field: str) -> Optional[float]:
 
 def _usable_quote(bid: Optional[float], ask: Optional[float]) -> bool:
     return (bid is not None and ask is not None and 0 < bid <= ask < 1
-            and ask - bid <= MAX_KALSHI_SPREAD)
+            and ask - bid <= MAX_MARKET_SPREAD)
 
 
 def kalshi_yes_prob(m: dict) -> tuple[Optional[float], Optional[str]]:
@@ -548,14 +556,163 @@ def kalshi_for_game(game: dict, events: list[dict]) -> Optional[dict]:
 
 
 # --------------------------------------------------------------------------- #
-# 5. Blend + pick
+# 5. Polymarket (Gamma API, no key needed)
 # --------------------------------------------------------------------------- #
-def blend(book: Optional[float], kalshi: Optional[float], kalshi_weight: float) -> Optional[float]:
-    if book is None:
-        return kalshi
-    if kalshi is None:
-        return book
-    return (1 - kalshi_weight) * book + kalshi_weight * kalshi
+# Game moneylines have two outcomes named after the teams; spread markets use
+# team names too, so anything that looks like a spread/total/prop is skipped.
+_PM_NOT_MONEYLINE = re.compile(
+    r"spread|o/u|\bover\b|\bunder\b|total|half|quarter|\b[12]h\b|\bq[1-4]\b|points|yards|touchdown|\(",
+    re.I,
+)
+
+
+def _json_list(value: Any) -> list:
+    """Gamma returns outcomes/outcomePrices as JSON-encoded strings."""
+    if isinstance(value, list):
+        return value
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except ValueError:
+            return []
+        return parsed if isinstance(parsed, list) else []
+    return []
+
+
+def _num(value: Any) -> Optional[float]:
+    try:
+        f = float(value)
+    except (TypeError, ValueError):
+        return None
+    return f if math.isfinite(f) else None
+
+
+def polymarket_filters() -> list[dict]:
+    """NFL series id from /sports if available, then a tag-slug fallback."""
+    filters: list[dict] = []
+    try:
+        sports, _ = http_get_json(f"{POLYMARKET_URL}/sports")
+        for s in sports if isinstance(sports, list) else []:
+            if str(s.get("sport", "")).lower() == "nfl" and s.get("series"):
+                filters.append({"series_id": s["series"]})
+                break
+    except Exception as exc:
+        log.warning("Polymarket /sports lookup failed: %s", exc)
+    filters.append({"tag_slug": "nfl"})
+    return filters
+
+
+def fetch_polymarket_events() -> tuple[list[dict], dict]:
+    last_filter: dict = {}
+    for flt in polymarket_filters():
+        last_filter = flt
+        events: list[dict] = []
+        for page in range(10):  # pagination safety cap
+            params = {**flt, "active": "true", "closed": "false",
+                      "limit": 100, "offset": page * 100}
+            data, _ = http_get_json(f"{POLYMARKET_URL}/events", params)
+            batch = data if isinstance(data, list) else (data or {}).get("data") or []
+            events.extend(batch)
+            if len(batch) < 100:
+                break
+        if events:
+            return events, flt
+    return [], last_filter
+
+
+def polymarket_candidates(events: list[dict]) -> list[dict]:
+    """One moneyline market per game event."""
+    out = []
+    for ev in events:
+        title = _norm(ev.get("title") or "")
+        best = None
+        for m in ev.get("markets") or []:
+            if m.get("closed"):
+                continue
+            outcomes = _json_list(m.get("outcomes"))
+            if len(outcomes) != 2:
+                continue
+            teams = [resolve_team(str(o)) for o in outcomes]
+            if None in teams or teams[0] == teams[1]:
+                continue
+            market_type = str(m.get("sportsMarketType") or "").lower()
+            question = str(m.get("question") or "")
+            if market_type:
+                if market_type != "moneyline":
+                    continue
+                rank = 0
+            elif _norm(question) == title:
+                rank = 1
+            elif not _PM_NOT_MONEYLINE.search(question):
+                rank = 2
+            else:
+                continue
+            if best is None or rank < best[0]:
+                best = (rank, m, teams)
+        if not best:
+            continue
+        _, market, teams = best
+        start = (parse_iso(market.get("gameStartTime")) or parse_iso(ev.get("startTime"))
+                 or parse_iso(ev.get("gameStartTime")))
+        out.append({"event": ev, "market": market, "teams": teams, "time": start})
+    return out
+
+
+def polymarket_first_outcome_prob(m: dict) -> tuple[Optional[float], Optional[str]]:
+    """bestBid/bestAsk and outcomePrices[0] all refer to the first outcome."""
+    bid, ask = _num(m.get("bestBid")), _num(m.get("bestAsk"))
+    if _usable_quote(bid, ask):
+        return (bid + ask) / 2, "bid_ask_midpoint"
+    prices = [_num(p) for p in _json_list(m.get("outcomePrices"))]
+    if len(prices) == 2 and None not in prices and 0 < prices[0] < 1 and sum(prices) > 0:
+        return prices[0] / sum(prices), "outcome_price"
+    last = _num(m.get("lastTradePrice"))
+    if last is not None and 0 < last < 1:
+        return last, "last_trade"
+    return None, None
+
+
+def polymarket_for_game(game: dict, candidates: list[dict]) -> Optional[dict]:
+    cand = find_matching(game, candidates, lambda c: set(c["teams"]), lambda c: c["time"])
+    if not cand:
+        return None
+    m, ev, teams = cand["market"], cand["event"], cand["teams"]
+    p0, method = polymarket_first_outcome_prob(m)
+    home_prob = None
+    if p0 is not None:
+        home_prob = p0 if teams[0] == game["home"] else 1 - p0
+    slug = ev.get("slug")
+    return {
+        "home_prob": home_prob,
+        "detail": {
+            "event_slug": slug,
+            "url": f"https://polymarket.com/event/{slug}" if slug else None,
+            "question": m.get("question"),
+            "quoted_team": teams[0],
+            "best_bid": _num(m.get("bestBid")),
+            "best_ask": _num(m.get("bestAsk")),
+            "last_trade": _num(m.get("lastTradePrice")),
+            "method": method,
+            "volume": _num(m.get("volumeNum") if m.get("volumeNum") is not None else m.get("volume")),
+            "volume_24h": _num(m.get("volume24hr")),
+            "liquidity": _num(m.get("liquidityNum") if m.get("liquidityNum") is not None else m.get("liquidity")),
+        },
+    }
+
+
+# --------------------------------------------------------------------------- #
+# 6. Blend + pick
+# --------------------------------------------------------------------------- #
+def blend(probs: dict[str, Optional[float]],
+          weights: dict[str, float]) -> tuple[Optional[float], dict[str, float]]:
+    """Weighted average over sources that have a price; returns effective weights."""
+    live = {k: weights.get(k, 0.0) for k, v in probs.items()
+            if v is not None and weights.get(k, 0.0) > 0}
+    total = sum(live.values())
+    effective = {k: round(live.get(k, 0.0) / total, 3) if total else 0.0 for k in probs}
+    if not total:
+        return None, effective
+    return sum(probs[k] * w for k, w in live.items()) / total, effective
 
 
 def confidence_tier(p: float) -> str:
@@ -591,7 +748,7 @@ def make_pick(game: dict, home_prob: Optional[float]) -> dict:
 
 
 # --------------------------------------------------------------------------- #
-# 6. Monday Night Football projection
+# 7. Monday Night Football projection
 # --------------------------------------------------------------------------- #
 def snap_to_key(raw: float) -> int:
     rounded = round_half_up(raw)
@@ -675,6 +832,20 @@ def build(args: argparse.Namespace) -> dict:
         log.error("Kalshi failed: %s", exc)
         sources["kalshi"] = {"ok": False, "error": str(exc)}
 
+    poly_candidates: list[dict] = []
+    try:
+        poly_events, poly_filter = fetch_polymarket_events()
+        poly_candidates = polymarket_candidates(poly_events)
+        sources["polymarket"] = {"ok": True, "events": len(poly_events),
+                                 "game_markets": len(poly_candidates), "filter": poly_filter}
+        log.info("Polymarket: %d events, %d game moneylines", len(poly_events), len(poly_candidates))
+    except Exception as exc:
+        log.error("Polymarket failed: %s", exc)
+        sources["polymarket"] = {"ok": False, "error": str(exc)}
+
+    weights = {"sportsbook": args.book_weight, "kalshi": args.kalshi_weight,
+               "polymarket": args.poly_weight}
+
     try:
         games, meta = fetch_espn_games(args.week, args.season, args.season_type)
         sources["espn"] = {"ok": True, "games": len(games)}
@@ -699,10 +870,13 @@ def build(args: argparse.Namespace) -> dict:
         )
         odds = summarize_odds(odds_ev, g["home"], g["away"]) if odds_ev else None
         kalshi = kalshi_for_game(g, kalshi_events)
+        poly = polymarket_for_game(g, poly_candidates)
 
         book_p = odds["vig_free_home_prob"] if odds else None
         kalshi_p = kalshi["home_prob"] if kalshi else None
-        combined = blend(book_p, kalshi_p, args.kalshi_weight)
+        poly_p = poly["home_prob"] if poly else None
+        combined, effective = blend(
+            {"sportsbook": book_p, "kalshi": kalshi_p, "polymarket": poly_p}, weights)
         pick = make_pick(g, combined)
 
         kickoff_et = g["kickoff"].astimezone(EASTERN)
@@ -727,14 +901,13 @@ def build(args: argparse.Namespace) -> dict:
             "odds": odds,
             "kalshi": None if not kalshi else {
                 "event_ticker": kalshi["event_ticker"], "markets": kalshi["markets"]},
+            "polymarket": poly["detail"] if poly else None,
             "probabilities": {
                 "sportsbook_vig_free": pair(book_p),
                 "kalshi": pair(kalshi_p),
+                "polymarket": pair(poly_p),
                 "combined": pair(combined),
-                "weights": {
-                    "sportsbook": 0 if book_p is None else (1 if kalshi_p is None else round(1 - args.kalshi_weight, 3)),
-                    "kalshi": 0 if kalshi_p is None else (1 if book_p is None else round(args.kalshi_weight, 3)),
-                },
+                "weights": effective,
             },
             "pick": pick,
         }
@@ -761,7 +934,7 @@ def build(args: argparse.Namespace) -> dict:
         "week": meta["week"],
         "schedule_source": meta.get("schedule_source"),
         "config": {
-            "kalshi_weight": args.kalshi_weight,
+            "weights": weights,
             "upset_band": list(UPSET_BAND),
             "key_scores": KEY_SCORES,
         },
@@ -790,12 +963,17 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     p.add_argument("--week", type=int, help="NFL week (default: ESPN's current week)")
     p.add_argument("--season", type=int, help="season year, used with --week")
     p.add_argument("--season-type", type=int, choices=[1, 2, 3], help="1=pre, 2=regular, 3=post")
-    p.add_argument("--kalshi-weight", type=float, default=DEFAULT_KALSHI_WEIGHT,
-                   help="Kalshi share of the blended probability, 0-1 (default: 0.5)")
+    p.add_argument("--book-weight", type=float, default=DEFAULT_WEIGHTS["sportsbook"],
+                   help="relative weight of vig-free sportsbook odds (default: 1)")
+    p.add_argument("--kalshi-weight", type=float, default=DEFAULT_WEIGHTS["kalshi"],
+                   help="relative weight of Kalshi (default: 1)")
+    p.add_argument("--poly-weight", type=float, default=DEFAULT_WEIGHTS["polymarket"],
+                   help="relative weight of Polymarket (default: 1; 0 turns it off)")
     p.add_argument("--verbose", "-v", action="store_true")
     args = p.parse_args(argv)
-    if not 0 <= args.kalshi_weight <= 1:
-        p.error("--kalshi-weight must be between 0 and 1")
+    ws = (args.book_weight, args.kalshi_weight, args.poly_weight)
+    if min(ws) < 0 or sum(ws) == 0:
+        p.error("weights must be >= 0 and at least one must be positive")
     return args
 
 

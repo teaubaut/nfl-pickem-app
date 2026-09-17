@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pool Picks</title>
+
+  <!-- iOS / PWA -->
+  <meta name="theme-color" content="#0F2A1F">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Picks">
+  <meta name="application-name" content="Picks">
+  <meta name="format-detection" content="telephone=no">
+  <link id="apple-icon" rel="apple-touch-icon" sizes="180x180">
+
+  <script>
+    // Single-file PWA: draw the icon on a canvas and inject the manifest as a data URL.
+    (function setupPwa() {
+      function makeIcon(size) {
+        var c = document.createElement('canvas');
+        c.width = c.height = size;
+        var x = c.getContext('2d');
+        if (!x) return '';
+        var s = size / 100;
+        x.fillStyle = '#0F2A1F';
+        x.fillRect(0, 0, size, size);
+        x.strokeStyle = 'rgba(238,240,232,0.16)';
+        x.lineWidth = 1.5 * s;
+        for (var i = 1; i < 5; i++) {
+          x.beginPath(); x.moveTo(0, i * 20 * s); x.lineTo(size, i * 20 * s); x.stroke();
+        }
+        x.save();
+        x.translate(50 * s, 50 * s);
+        x.rotate(-Math.PI / 6);
+        x.fillStyle = '#FFB938';
+        x.beginPath(); x.ellipse(0, 0, 31 * s, 18 * s, 0, 0, Math.PI * 2); x.fill();
+        x.strokeStyle = '#0F2A1F';
+        x.lineWidth = 2.6 * s;
+        x.lineCap = 'round';
+        x.beginPath(); x.moveTo(-12 * s, 0); x.lineTo(12 * s, 0); x.stroke();
+        for (var j = -8; j <= 8; j += 4) {
+          x.beginPath(); x.moveTo(j * s, -4.5 * s); x.lineTo(j * s, 4.5 * s); x.stroke();
+        }
+        x.restore();
+        return c.toDataURL('image/png');
+      }
+
+      var icon180 = makeIcon(180);
+      var icon512 = makeIcon(512);
+      document.getElementById('apple-icon').href = icon180;
+
+      var page = location.href.split('#')[0].split('?')[0];
+      var manifest = {
+        name: 'NFL Pool Picks',
+        short_name: 'Picks',
+        start_url: page,
+        scope: new URL('./', page).href,
+        display: 'standalone',
+        orientation: 'portrait',
+        background_color: '#0F2A1F',
+        theme_color: '#0F2A1F',
+        icons: [
+          { src: icon180, sizes: '180x180', type: 'image/png' },
+          { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+        ]
+      };
+      var link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = 'data:application/manifest+json,' + encodeURIComponent(JSON.stringify(manifest));
+      document.head.appendChild(link);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (window.tailwind) tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            turf: '#0F2A1F',
+            field: '#16382A',
+            line: '#2C5241',
+            chalk: '#EEF0E8',
+            bulb: '#FFB938',
+            flag: '#FF6B57',
+            sky: '#8EC5FF',
+            board: '#081A12'
+          },
+          fontFamily: {
+            display: ['"Barlow Condensed"', '"Arial Narrow"', 'system-ui', 'sans-serif'],
+            sans: ['Barlow', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root { color-scheme: dark; }
+    html, body { background: #0F2A1F; }
+    body {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-text-size-adjust: 100%;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    .safe-top { padding-top: calc(env(safe-area-inset-top) + 0.75rem); }
+    .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom) + 1.5rem); }
+    .toast-pos { bottom: calc(env(safe-area-inset-bottom) + 1.25rem); }
+    .num { font-variant-numeric: tabular-nums; }
+
+    /* Scoreboard: the one loud element on the page */
+    .scoreboard {
+      background-color: #081A12;
+      background-image: radial-gradient(rgba(255,185,56,0.07) 1px, transparent 1.2px);
+      background-size: 6px 6px;
+    }
+    .bulb-glow { text-shadow: 0 0 14px rgba(255,185,56,0.45), 0 0 2px rgba(255,185,56,0.9); }
+
+    .spin { animation: spin 0.9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #toast { transition: opacity 0.2s ease, transform 0.2s ease; }
+    #ptr { transition: opacity 0.15s ease; }
+    .ptr-snap { transition: transform 0.25s ease, opacity 0.25s ease !important; }
+
+    @media (display-mode: standalone) {
+      html, body { overscroll-behavior-y: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .spin { animation: none; }
+      #toast, #ptr, .ptr-snap { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body class="font-sans text-chalk antialiased min-h-screen">
+
+  <!-- Pull-to-refresh indicator (standalone mode) -->
+  <div id="ptr" class="fixed left-1/2 z-40 -translate-x-1/2 opacity-0 pointer-events-none"
+       style="top: calc(env(safe-area-inset-top) - 2.5rem);">
+    <div class="flex items-center gap-2 rounded-full bg-field border border-line px-3 py-1.5 text-sm text-chalk/80">
+      <svg id="ptr-icon" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      <span id="ptr-label">Pull to refresh</span>
+    </div>
+  </div>
+
+  <header class="sticky top-0 z-30 bg-turf/95 backdrop-blur border-b border-line safe-top">
+    <div class="mx-auto max-w-xl px-4 pb-3">
+      <div class="flex items-end justify-between gap-3">
+        <div class="min-w-0">
+          <h1 id="week" class="font-display text-4xl font-extrabold leading-none tracking-tight">Pool picks</h1>
+          <p class="mt-1 text-sm text-chalk/60">
+            <span id="updated">Loading picks</span>
+            <span id="stale-dot" class="hidden ml-1 inline-block h-2 w-2 rounded-full bg-flag align-middle" aria-hidden="true"></span>
+          </p>
+        </div>
+        <button id="reload" type="button" aria-label="Reload picks"
+                class="shrink-0 grid h-11 w-11 place-items-center rounded-full border border-line text-chalk/80 active:bg-field focus:outline-none focus-visible:ring-2 focus-visible:ring-bulb">
+          <svg id="reload-icon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>
+          </svg>
+        </button>
+      </div>
+      <button id="copy" type="button" disabled
+              class="mt-3 w-full rounded-lg bg-bulb py-3.5 font-display text-xl font-bold text-turf active:brightness-90 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-chalk focus-visible:ring-offset-2 focus-visible:ring-offset-turf">
+        Copy all picks
+      </button>
+    </div>
+  </header>
+
+  <main id="app" class="mx-auto max-w-xl px-4 pt-4 safe-bottom" aria-live="polite">
+    <div class="space-y-3" aria-hidden="true">
+      <div class="h-40 rounded-md bg-field/60 animate-pulse"></div>
+      <div class="h-44 rounded-xl bg-field/60 animate-pulse"></div>
+      <div class="h-44 rounded-xl bg-field/60 animate-pulse"></div>
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="assertive"
+       class="toast-pos fixed left-1/2 z-50 -translate-x-1/2 translate-y-3 opacity-0 pointer-events-none rounded-full bg-chalk px-5 py-2.5 font-semibold text-turf shadow-lg"></div>
+
+  <!-- Manual copy sheet (shown only if the clipboard is blocked) -->
+  <div id="sheet" class="fixed inset-0 z-50 hidden bg-black/60" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="absolute inset-x-0 bottom-0 rounded-t-2xl border-t border-line bg-field p-4 safe-bottom">
+      <div class="mx-auto max-w-xl">
+        <h2 id="sheet-title" class="font-display text-2xl font-bold">Copy your picks</h2>
+        <p class="mt-1 text-sm text-chalk/70">This browser blocked automatic copying. Tap the text, then Select All and Copy.</p>
+        <textarea id="sheet-text" readonly rows="7"
+                  class="mt-3 w-full rounded-md border border-line bg-turf p-3 text-base text-chalk"></textarea>
+        <button id="sheet-close" type="button"
+                class="mt-3 w-full rounded-lg border border-line py-3 font-semibold active:bg-turf focus:outline-none focus-visible:ring-2 focus-visible:ring-bulb">Done</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  'use strict';
+
+  var DATA_URL = 'data.json';
+  var CACHE_KEY = 'poolpicks:lastData';
+  var STALE_HOURS = 24;
+  var PTR_THRESHOLD = 64;
+
+  var state = { data: null, loading: false, offline: false, lastFetch: 0 };
+
+  // ---------- small helpers ----------
+  function $(sel) { return document.querySelector(sel); }
+
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function isNum(v) { return typeof v === 'number' && isFinite(v); }
+  function pct(p) { return isNum(p) ? Math.round(p * 100) + '%' : '—'; }
+
+  function nick(team) {
+    if (!team) return 'TBD';
+    var name = (team.name || '').trim();
+    return name ? name.split(/\s+/).pop() : (team.abbr || 'TBD');
+  }
+
+  function signed(n) {
+    if (!isNum(n)) return '';
+    if (n === 0) return 'PK';
+    return (n > 0 ? '+' : '\u2212') + Math.abs(n);
+  }
+
+  function kickoffLabel(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return '';
+    return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+  }
+
+  function dayLabel(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return 'Time to be announced';
+    return d.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' });
+  }
+
+  function ago(iso) {
+    var t = Date.parse(iso);
+    if (isNaN(t)) return 'Update time unknown';
+    var m = Math.round((Date.now() - t) / 60000);
+    if (m < 1) return 'Updated just now';
+    if (m < 60) return 'Updated ' + m + ' min ago';
+    var h = Math.round(m / 60);
+    if (h < 24) return 'Updated ' + h + ' hr ago';
+    var d = Math.round(h / 24);
+    return 'Updated ' + d + (d === 1 ? ' day' : ' days') + ' ago';
+  }
+
+  function weekTitle(d) {
+    if (!d || d.week == null) return 'Pool picks';
+    if (d.season_type === 1) return 'Preseason week ' + d.week;
+    if (d.season_type === 3) return 'Playoffs week ' + d.week;
+    return 'Week ' + d.week;
+  }
+
+  function sortedGames(d) {
+    return (d.games || []).slice().sort(function (a, b) {
+      return (Date.parse(a.kickoff_utc) || 0) - (Date.parse(b.kickoff_utc) || 0);
+    });
+  }
+
+  function teamMap(d) {
+    var map = {};
+    (d.games || []).forEach(function (g) {
+      if (g.home) map[g.home.abbr] = g.home;
+      if (g.away) map[g.away.abbr] = g.away;
+    });
+    return map;
+  }
+
+  function pickSides(g) {
+    var p = g.pick || {};
+    if (g.home && p.team === g.home.abbr) return { pick: 'home', dog: 'away' };
+    if (g.away && p.team === g.away.abbr) return { pick: 'away', dog: 'home' };
+    return null;
+  }
+
+  function mnfGames(d) {
+    return (d.monday_night_football || []).slice().sort(function (a, b) {
+      return (Date.parse(a.kickoff_et) || 0) - (Date.parse(b.kickoff_et) || 0);
+    });
+  }
+
+  function tiebreaker(d) {
+    var list = mnfGames(d);
+    var last = list[list.length - 1];
+    return last && last.projection_available ? last : null;
+  }
+
+  // ---------- rendering ----------
+  function bar(label, value, fillClass) {
+    var has = isNum(value);
+    var width = has ? Math.max(2, Math.min(100, value * 100)) : 0;
+    return '' +
+      '<div class="grid grid-cols-[3.75rem_1fr_2.75rem] items-center gap-2">' +
+        '<span class="text-sm text-chalk/70">' + label + '</span>' +
+        '<div class="relative h-2.5 rounded-full bg-turf" role="img" aria-label="' + label + ' ' + (has ? pct(value) : 'no data') + '">' +
+          (has ? '<div class="h-full rounded-full ' + fillClass + '" style="width:' + width.toFixed(1) + '%"></div>' : '') +
+          '<div class="absolute -top-1 -bottom-1 left-1/2 w-px bg-chalk/35"></div>' +
+        '</div>' +
+        '<span class="num text-right text-sm font-semibold ' + (has ? '' : 'text-chalk/40') + '">' + (has ? pct(value) : 'n/a') + '</span>' +
+      '</div>';
+  }
+
+  function lineText(g) {
+    var o = g.odds || {};
+    var parts = [];
+    if (o.spread && isNum(o.spread.home)) {
+      if (o.spread.home === 0) parts.push("Pick'em");
+      else if (o.spread.home < 0) parts.push(nick(g.home) + ' ' + signed(o.spread.home));
+      else parts.push(nick(g.away) + ' ' + signed(o.spread.away));
+    }
+    if (isNum(o.total)) parts.push('total ' + o.total);
+    if (!parts.length) return '';
+    var s = parts.join(', ');
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function statusChip(g) {
+    if (g.completed) return '<span class="rounded bg-chalk/10 px-1.5 py-0.5 text-xs font-semibold text-chalk/70">Final</span>';
+    var s = (g.status || '').toLowerCase();
+    if (s && s !== 'scheduled') {
+      return '<span class="rounded bg-flag/15 px-1.5 py-0.5 text-xs font-semibold text-flag">' + esc(g.status) + '</span>';
+    }
+    return '';
+  }
+
+  function gameCard(g) {
+    var sides = pickSides(g);
+    var pr = g.probabilities || {};
+    var awayIsPick = sides && sides.pick === 'away';
+    var homeIsPick = sides && sides.pick === 'home';
+
+    var teamClass = function (isPick) {
+      return isPick ? 'text-chalk' : (sides ? 'text-chalk/55' : 'text-chalk');
+    };
+
+    var head = '' +
+      '<div class="flex items-start justify-between gap-3">' +
+        '<h3 class="min-w-0 font-display text-2xl font-bold leading-tight">' +
+          '<span class="' + teamClass(awayIsPick) + '">' + esc(nick(g.away)) + '</span>' +
+          '<span class="px-1.5 text-lg font-medium text-chalk/40">at</span>' +
+          '<span class="' + teamClass(homeIsPick) + '">' + esc(nick(g.home)) + '</span>' +
+        '</h3>' +
+        '<div class="shrink-0 pt-1 text-right">' +
+          '<time class="num block text-sm text-chalk/70" datetime="' + esc(g.kickoff_utc) + '">' + esc(kickoffLabel(g.kickoff_utc)) + '</time>' +
+          '<div class="mt-1">' + statusChip(g) + '</div>' +
+        '</div>' +
+      '</div>';
+
+    var line = lineText(g);
+    var lineHtml = line ? '<p class="mt-0.5 text-sm text-chalk/50">' + esc(line) + '</p>' : '';
+
+    if (!sides) {
+      return '<article class="rounded-xl border border-line bg-field p-4">' + head + lineHtml +
+        '<p class="mt-3 text-sm text-chalk/60">No odds or market prices yet. Run the scraper again closer to kickoff.</p></article>';
+    }
+
+    var pickTeam = g[sides.pick];
+    var dogTeam = g[sides.dog];
+    var vegas = pr.sportsbook_vig_free ? pr.sportsbook_vig_free[sides.pick] : null;
+    var kalshi = pr.kalshi ? pr.kalshi[sides.pick] : null;
+    var combined = pr.combined ? pr.combined[sides.pick] : g.pick.win_probability;
+    var tier = g.pick.confidence ? g.pick.confidence.charAt(0).toUpperCase() + g.pick.confidence.slice(1) : '';
+
+    var gap = '';
+    if (isNum(vegas) && isNum(kalshi)) {
+      var diff = Math.round((kalshi - vegas) * 100);
+      if (Math.abs(diff) >= 3) {
+        gap = '<p class="mt-2 text-xs text-chalk/55">Kalshi is ' + Math.abs(diff) + ' pts ' + (diff > 0 ? 'higher' : 'lower') + ' on the ' + esc(nick(pickTeam)) + ' than Vegas.</p>';
+      }
+    }
+
+    var upset = '';
+    if (g.pick.live_upset_candidate) {
+      var dogP = isNum(g.pick.underdog_win_probability) ? g.pick.underdog_win_probability : (isNum(combined) ? 1 - combined : null);
+      upset = '' +
+        '<div class="mt-3 flex items-center gap-2.5 rounded-md border-l-4 border-flag bg-flag/10 px-3 py-2">' +
+          '<svg class="h-5 w-5 shrink-0 text-flag" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 21V4h1.5v1H19l-2.5 4.5L19 14H6.5v7z"/></svg>' +
+          '<p class="text-sm leading-snug"><span class="font-semibold text-flag">Upset value.</span> ' +
+            'The ' + esc(nick(dogTeam)) + ' win ' + pct(dogP) + ' of the time here, close to a coin flip.</p>' +
+        '</div>';
+    }
+
+    return '' +
+      '<article class="rounded-xl border border-line bg-field p-4">' +
+        head + lineHtml +
+        '<div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">' +
+          '<span class="inline-flex items-baseline gap-2 rounded-md bg-bulb px-3 py-1.5 text-turf">' +
+            '<span class="font-display text-xl font-extrabold leading-none">Pick ' + esc(nick(pickTeam)) + '</span>' +
+            '<span class="num text-sm font-bold">' + pct(combined) + '</span>' +
+          '</span>' +
+          (tier ? '<span class="text-sm text-chalk/60">' + esc(tier) + '</span>' : '') +
+        '</div>' +
+        '<div class="mt-4 space-y-2.5">' +
+          '<p class="text-xs text-chalk/55">' + esc(nick(pickTeam)) + ' win chance</p>' +
+          bar('Vegas', vegas, 'bg-chalk') +
+          bar('Kalshi', kalshi, 'bg-sky') +
+        '</div>' +
+        gap + upset +
+      '</article>';
+  }
+
+  function mnfCard(item, isTiebreaker, teams) {
+    var matchup = esc(item.matchup || 'Monday night game');
+    var time = kickoffLabel(item.kickoff_et);
+    var title = isTiebreaker ? 'Monday night tiebreaker' : 'Monday night, early game';
+
+    if (!item.projection_available) {
+      return '' +
+        '<section class="scoreboard rounded-md border-2 border-bulb/40 p-4">' +
+          '<h2 class="font-display text-lg font-semibold text-bulb">' + title + '</h2>' +
+          '<p class="mt-1 text-sm text-chalk/70">' + matchup + (time ? ', ' + esc(time) : '') + '</p>' +
+          '<p class="mt-3 text-sm text-chalk/60">No projected score yet. It needs both a spread and a total.</p>' +
+        '</section>';
+    }
+
+    var fav = teams[item.favorite] || { abbr: item.favorite, name: item.favorite };
+    var dog = teams[item.underdog] || { abbr: item.underdog, name: item.underdog };
+    var fs = item.projected.favorite, ds = item.projected.underdog;
+    var total = item.projected_total;
+    var caption = nick(fav) + ' ' + fs + ' - ' + nick(dog) + ' ' + ds + ' | Total: ' + total;
+
+    var row = function (team, score) {
+      return '' +
+        '<div class="flex items-center justify-between gap-3 py-1">' +
+          '<span class="font-display text-3xl font-bold uppercase tracking-wide text-chalk">' + esc(nick(team)) + '</span>' +
+          '<span class="num bulb-glow font-display text-6xl font-extrabold leading-none text-bulb">' + esc(score) + '</span>' +
+        '</div>';
+    };
+
+    return '' +
+      '<section class="scoreboard rounded-md border-2 border-bulb/50 p-4" aria-label="' + esc(title + ': ' + caption) + '">' +
+        '<div class="flex items-baseline justify-between gap-2">' +
+          '<h2 class="font-display text-lg font-semibold text-bulb">' + title + '</h2>' +
+          (time ? '<span class="num text-sm text-chalk/60">' + esc(time) + '</span>' : '') +
+        '</div>' +
+        '<div class="mt-2 divide-y divide-bulb/15 border-y border-bulb/15">' +
+          row(fav, fs) + row(dog, ds) +
+        '</div>' +
+        '<p class="num mt-3 font-display text-xl font-semibold text-chalk">' + esc(caption) + '</p>' +
+        '<p class="mt-1 text-xs text-chalk/50">From ' + esc(nick(fav)) + ' ' + signed(-item.spread) + ' and a ' + esc(item.total) + ' total, snapped to common NFL scores.</p>' +
+      '</section>';
+  }
+
+  function banners(d) {
+    var out = [];
+    if (state.offline) {
+      out.push('Couldn\u2019t reach data.json, so these are the last picks saved on this phone.');
+    }
+    var age = (Date.now() - Date.parse(d.generated_at)) / 36e5;
+    if (isNum(age) && age > STALE_HOURS) {
+      out.push('This data is over a day old. Run fetch_data.py, then refresh.');
+    }
+    var src = d.sources || {};
+    var names = { odds_api: 'Sportsbook odds', kalshi: 'Kalshi prices' };
+    Object.keys(names).forEach(function (k) {
+      if (src[k] && src[k].ok === false) {
+        out.push(names[k] + ' were unavailable on the last run' + (src[k].error ? ' (' + src[k].error + ')' : '') + '.');
+      }
+    });
+    if (!out.length) return '';
+    return '<div class="space-y-2">' + out.map(function (t) {
+      return '<p class="rounded-md border border-flag/40 bg-flag/10 px-3 py-2 text-sm text-chalk/90">' + esc(t) + '</p>';
+    }).join('') + '</div>';
+  }
+
+  function render() {
+    var d = state.data;
+    if (!d) return;
+    var teams = teamMap(d);
+    var games = sortedGames(d);
+
+    $('#week').textContent = weekTitle(d);
+    updateClock();
+    $('#copy').disabled = !games.some(function (g) { return pickSides(g); });
+
+    var html = [];
+    html.push(banners(d));
+
+    var mnf = mnfGames(d);
+    if (mnf.length) {
+      html.push('<div class="space-y-3">' + mnf.map(function (m, i) {
+        return mnfCard(m, i === mnf.length - 1, teams);
+      }).join('') + '</div>');
+    }
+
+    if (!games.length) {
+      html.push('<p class="rounded-xl border border-line bg-field p-4 text-chalk/70">No games in data.json yet. Run fetch_data.py once the week\u2019s schedule is posted.</p>');
+    } else {
+      var currentDay = null, group = [];
+      var flush = function () {
+        if (!group.length) return;
+        html.push('<section class="space-y-3"><h2 class="pt-2 font-display text-xl font-semibold text-chalk/70">' + esc(currentDay) + '</h2>' + group.join('') + '</section>');
+        group = [];
+      };
+      games.forEach(function (g) {
+        var day = dayLabel(g.kickoff_utc);
+        if (day !== currentDay) { flush(); currentDay = day; }
+        group.push(gameCard(g));
+      });
+      flush();
+    }
+
+    var upsets = games.filter(function (g) { return g.pick && g.pick.live_upset_candidate; }).length;
+    html.push('<p class="pt-4 text-center text-xs text-chalk/40">' + games.length + ' games, ' + upsets + ' flagged for upset value. ' +
+      (isStandalone() ? 'Pull down' : 'Tap the refresh button') + ' after running the scraper.</p>');
+
+    $('#app').innerHTML = '<div class="space-y-5">' + html.filter(Boolean).join('') + '</div>';
+  }
+
+  function renderError(err) {
+    $('#week').textContent = 'Pool picks';
+    $('#updated').textContent = 'No data loaded';
+    $('#copy').disabled = true;
+    var hint = location.protocol === 'file:'
+      ? 'Browsers won\u2019t load data.json from a file on disk. In the folder with index.html and data.json, run <code class="rounded bg-turf px-1">python3 -m http.server</code>, then open the address it prints.'
+      : 'Check that data.json sits in the same folder as index.html on your server, then tap refresh.';
+    $('#app').innerHTML = '' +
+      '<div class="rounded-xl border border-flag/40 bg-field p-4">' +
+        '<h2 class="font-display text-2xl font-bold">Couldn\u2019t load your picks</h2>' +
+        '<p class="mt-2 text-sm text-chalk/80">' + esc(err && err.message ? err.message : 'data.json didn\u2019t load.') + '</p>' +
+        '<p class="mt-2 text-sm text-chalk/70">' + hint + '</p>' +
+      '</div>';
+  }
+
+  function updateClock() {
+    if (!state.data) return;
+    var d = state.data;
+    var t = Date.parse(d.generated_at);
+    var el = $('#updated');
+    el.textContent = ago(d.generated_at);
+    if (!isNaN(t)) el.title = new Date(t).toLocaleString();
+    var stale = !isNaN(t) && (Date.now() - t) / 36e5 > STALE_HOURS;
+    $('#stale-dot').classList.toggle('hidden', !stale && !state.offline);
+  }
+
+  // ---------- data ----------
+  function saveCache(d) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(d)); } catch (e) { /* storage full or disabled */ }
+  }
+
+  function readCache() {
+    try {
+      var raw = localStorage.getItem(CACHE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+
+  function setLoading(on) {
+    state.loading = on;
+    $('#reload-icon').classList.toggle('spin', on);
+    $('#reload').setAttribute('aria-busy', on ? 'true' : 'false');
+  }
+
+  function loadData(userInitiated) {
+    if (state.loading) return Promise.resolve();
+    setLoading(true);
+    return fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('data.json returned HTTP ' + res.status + '.');
+        return res.json().catch(function () { throw new Error('data.json isn\u2019t valid JSON.'); });
+      })
+      .then(function (d) {
+        if (!d || !Array.isArray(d.games)) throw new Error('data.json is missing its games list.');
+        state.data = d;
+        state.offline = false;
+        state.lastFetch = Date.now();
+        saveCache(d);
+        render();
+        if (userInitiated) toast('Picks refreshed');
+      })
+      .catch(function (err) {
+        var fallback = state.data || readCache();
+        if (fallback) {
+          state.data = fallback;
+          state.offline = true;
+          render();
+          if (userInitiated) toast('Couldn\u2019t refresh. Showing saved picks.');
+        } else {
+          renderError(err);
+        }
+      })
+      .then(function () { setLoading(false); });
+  }
+
+  // ---------- copy ----------
+  function buildCopyText(d) {
+    var games = sortedGames(d);
+    var picks = [];
+    games.forEach(function (g) {
+      var s = pickSides(g);
+      if (s) picks.push(nick(g[s.pick]) + ' over ' + nick(g[s.dog]));
+    });
+    var text = picks.join(', ');
+    var tb = tiebreaker(d);
+    if (tb) {
+      text += '\nMNF Tiebreaker: ' + tb.favorite + ' ' + tb.projected.favorite + ' - ' +
+              tb.underdog + ' ' + tb.projected.underdog + ', Total ' + tb.projected_total;
+    }
+    return { text: text, count: picks.length, total: games.length };
+  }
+
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.contentEditable = 'true';
+    ta.readOnly = false;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
+    document.body.appendChild(ta);
+    var range = document.createRange();
+    range.selectNodeContents(ta);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    ta.setSelectionRange(0, text.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    sel.removeAllRanges();
+    ta.remove();
+    return ok;
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(
+        function () { return true; },
+        function () { return legacyCopy(text); }
+      );
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+
+  function onCopy() {
+    if (!state.data) return;
+    var built = buildCopyText(state.data);
+    copyText(built.text).then(function (ok) {
+      if (ok) {
+        if (navigator.vibrate) navigator.vibrate(15);
+        toast(built.count < built.total ? 'Copied! ' + built.count + ' of ' + built.total + ' games have picks.' : 'Copied!');
+      } else {
+        openSheet(built.text);
+      }
+    });
+  }
+
+  function openSheet(text) {
+    var sheet = $('#sheet');
+    var ta = $('#sheet-text');
+    ta.value = text;
+    sheet.classList.remove('hidden');
+    ta.focus();
+    ta.setSelectionRange(0, text.length);
+  }
+
+  function closeSheet() { $('#sheet').classList.add('hidden'); $('#copy').focus(); }
+
+  // ---------- toast ----------
+  var toastTimer = null;
+  function toast(msg) {
+    var el = $('#toast');
+    el.textContent = msg;
+    el.classList.remove('opacity-0', 'translate-y-3');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      el.classList.add('opacity-0', 'translate-y-3');
+    }, 1800);
+  }
+
+  // ---------- pull to refresh (Home Screen mode has no native one) ----------
+  function isStandalone() {
+    return window.navigator.standalone === true ||
+      (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+  }
+
+  function setupPullToRefresh() {
+    if (!isStandalone()) return;
+    var ptr = $('#ptr'), label = $('#ptr-label'), icon = $('#ptr-icon');
+    var startY = null, dist = 0;
+
+    function reset() {
+      ptr.classList.add('ptr-snap');
+      ptr.style.transform = 'translate(-50%, 0)';
+      ptr.style.opacity = '0';
+      setTimeout(function () { ptr.classList.remove('ptr-snap'); }, 260);
+      startY = null; dist = 0;
+    }
+
+    window.addEventListener('touchstart', function (e) {
+      startY = (window.scrollY <= 0 && !state.loading && e.touches.length === 1) ? e.touches[0].clientY : null;
+      dist = 0;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', function (e) {
+      if (startY === null) return;
+      var dy = e.touches[0].clientY - startY;
+      if (dy <= 0 || window.scrollY > 0) { dist = 0; ptr.style.opacity = '0'; return; }
+      dist = Math.min(dy * 0.5, 110);
+      ptr.style.transform = 'translate(-50%, ' + (dist + 8) + 'px)';
+      ptr.style.opacity = String(Math.min(dist / PTR_THRESHOLD, 1));
+      var ready = dist >= PTR_THRESHOLD;
+      label.textContent = ready ? 'Release to refresh' : 'Pull to refresh';
+      icon.style.transform = ready ? 'rotate(180deg)' : '';
+    }, { passive: true });
+
+    window.addEventListener('touchend', function () {
+      if (startY === null) return;
+      if (dist >= PTR_THRESHOLD) {
+        label.textContent = 'Refreshing';
+        loadData(true).then(reset);
+      } else {
+        reset();
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchcancel', reset, { passive: true });
+  }
+
+  // ---------- wire up ----------
+  $('#reload').addEventListener('click', function () { loadData(true); });
+  $('#copy').addEventListener('click', onCopy);
+  $('#sheet-close').addEventListener('click', closeSheet);
+  $('#sheet').addEventListener('click', function (e) { if (e.target === this) closeSheet(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !$('#sheet').classList.contains('hidden')) closeSheet();
+  });
+
+  // Refetch when reopening the app after a while.
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && Date.now() - state.lastFetch > 5 * 60 * 1000) {
+      loadData(false);
+    }
+  });
+
+  setInterval(updateClock, 60 * 1000);
+  setupPullToRefresh();
+
+  // Show saved picks instantly, then fetch fresh data.
+  var cached = readCache();
+  if (cached && Array.isArray(cached.games)) { state.data = cached; render(); }
+  loadData(false);
+})();
+</script>
+</body>
+</html>

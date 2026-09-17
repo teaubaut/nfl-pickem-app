@@ -64,8 +64,15 @@ KALSHI_URL = "https://api.elections.kalshi.com/trade-api/v2/markets"
 KALSHI_SERIES = "KXNFLGAME"
 
 POLYMARKET_URL = "https://gamma-api.polymarket.com"
-ACTION_NETWORK_URL = "https://api.actionnetwork.com/web/v1/scoreboard/nfl"
+# Action Network's scoreboard is date-based, so it is queried once per game date.
+# v2 nests splits under markets[book].event.moneyline[].bet_info; v1 uses flat fields.
+ACTION_ENDPOINTS = [
+    ("v2", "https://api.actionnetwork.com/web/v2/scoreboard/nfl"),
+    ("v1", "https://api.actionnetwork.com/web/v1/scoreboard/nfl"),
+]
+ACTION_BOOK_IDS = "15,30,68,69,71,75,79"
 ACTION_CONSENSUS_BOOK_ID = 15    # preferred odds row for public splits when present
+PUBLIC_DEBUG_FILE = "public_debug.json"
 LEVERAGE_FLAG = 0.15             # win prob minus public % that counts as "high leverage"
 LEVERAGE_MAX_WIN_PROB = 0.65     # skip flags on big favorites (see public_splits notes)
 
@@ -779,37 +786,118 @@ def _public_pair(odds_row: dict) -> Optional[tuple[float, float]]:
     return None
 
 
-def fetch_public_splits() -> list[dict]:
-    data, _ = http_get_json(ACTION_NETWORK_URL, extra_headers={
-        "Referer": "https://www.actionnetwork.com/", "Origin": "https://www.actionnetwork.com"})
-    games = data.get("games", []) if isinstance(data, dict) else []
-    out, seen_keys = [], set()
-    for game in games:
-        teams = {t.get("id"): t for t in game.get("teams") or []}
-        home_t = teams.get(game.get("home_team_id")) or {}
-        away_t = teams.get(game.get("away_team_id")) or {}
-        home = resolve_team(home_t.get("abbr")) or resolve_team(home_t.get("full_name"))
-        away = resolve_team(away_t.get("abbr")) or resolve_team(away_t.get("full_name"))
-        if not (home and away):
+def _pct(value: Any) -> Optional[float]:
+    v = _num(value)
+    if v is None or v < 0:
+        return None
+    return v / 100 if v > 1 else v
+
+
+def _v2_public_pair(game: dict) -> Optional[tuple[float, float]]:
+    """v2: markets[book_id].event.moneyline[] -> {side, bet_info: {tickets: {percent}}}."""
+    markets = game.get("markets")
+    if not isinstance(markets, dict):
+        return None
+    books = sorted(markets, key=lambda k: 0 if str(k) == str(ACTION_CONSENSUS_BOOK_ID) else 1)
+    for book in books:
+        node = markets.get(book)
+        if not isinstance(node, dict):
             continue
-        rows = sorted(game.get("odds") or [],
+        event = node.get("event") if isinstance(node.get("event"), dict) else node
+        lines = event.get("moneyline")
+        if not isinstance(lines, list):
+            continue
+        found = {}
+        for line in lines:
+            if not isinstance(line, dict):
+                continue
+            info = line.get("bet_info") or {}
+            tickets = info.get("tickets") if isinstance(info, dict) else None
+            value = _pct((tickets or {}).get("percent")) if isinstance(tickets, dict) else None
+            if line.get("side") in ("home", "away") and value is not None:
+                found[line["side"]] = value
+        if len(found) == 2 and sum(found.values()) > 0:
+            total = sum(found.values())
+            return found["home"] / total, found["away"] / total
+    return None
+
+
+def _split_paths(node: Any, prefix: str = "", out: Optional[list] = None, depth: int = 0) -> list:
+    """Debug helper: every field path that looks like a betting split."""
+    out = [] if out is None else out
+    if len(out) >= 40 or depth > 7:
+        return out
+    if isinstance(node, dict):
+        for k, v in node.items():
+            path = f"{prefix}.{k}" if prefix else str(k)
+            if re.search(r"public|ticket|bet_info|percent|money", str(k), re.I) and not isinstance(v, (dict, list)):
+                out.append(f"{path} = {v}")
+            _split_paths(v, path, out, depth + 1)
+    elif isinstance(node, list):
+        for i, v in enumerate(node[:3]):
+            _split_paths(v, f"{prefix}[{i}]", out, depth + 1)
+    return out
+
+
+def parse_action_game(game: dict) -> Optional[dict]:
+    teams = {t.get("id"): t for t in game.get("teams") or [] if isinstance(t, dict)}
+    home_t = teams.get(game.get("home_team_id")) or {}
+    away_t = teams.get(game.get("away_team_id")) or {}
+    home = resolve_team(home_t.get("abbr")) or resolve_team(home_t.get("full_name"))
+    away = resolve_team(away_t.get("abbr")) or resolve_team(away_t.get("full_name"))
+    if not (home and away):
+        return None
+    split = _v2_public_pair(game)
+    if not split:
+        rows = sorted((r for r in game.get("odds") or [] if isinstance(r, dict)),
                       key=lambda r: 0 if r.get("book_id") == ACTION_CONSENSUS_BOOK_ID else 1)
-        split = None
         for row in rows:
-            seen_keys.update(row.keys())
             split = _public_pair(row)
             if split:
                 break
-        if not split:
-            continue
-        out.append({"home": home, "away": away, "home_pct": split[0], "away_pct": split[1],
-                    "time": parse_iso(game.get("start_time"))})
-    if games and not out:
-        public_like = sorted(k for k in seen_keys if "public" in k or "ticket" in k or "money" in k)
-        log.warning("Action Network returned %d games but no moneyline splits. "
-                    "Split-like fields seen: %s", len(games), public_like or "none")
-    log.info("Action Network: %d games, %d with public splits", len(games), len(out))
-    return out
+    return {"home": home, "away": away, "time": parse_iso(game.get("start_time")),
+            "home_pct": split[0] if split else None, "away_pct": split[1] if split else None}
+
+
+def fetch_public_splits(game_dates: list[str], debug: Optional[list] = None) -> list[dict]:
+    """Try each endpoint across this week's game dates; first one with splits wins."""
+    headers = {"Referer": "https://www.actionnetwork.com/", "Origin": "https://www.actionnetwork.com"}
+    for name, url in ACTION_ENDPOINTS:
+        found: dict[tuple, dict] = {}
+        for day in game_dates or [None]:
+            params = {"bookIds": ACTION_BOOK_IDS}
+            if day:
+                params["date"] = day
+            entry: dict[str, Any] = {"endpoint": name, "date": day}
+            try:
+                data, _ = http_get_json(url, params, extra_headers=headers)
+            except Exception as exc:
+                entry["error"] = str(exc)
+                log.warning("Action Network %s %s failed: %s", name, day, exc)
+                if debug is not None:
+                    debug.append(entry)
+                continue
+            games = data.get("games", []) if isinstance(data, dict) else []
+            parsed = [p for p in (parse_action_game(g) for g in games if isinstance(g, dict)) if p]
+            with_split = [p for p in parsed if p["home_pct"] is not None]
+            for p in with_split:
+                found[(frozenset((p["home"], p["away"])), p["time"])] = p
+            entry.update({
+                "games": len(games),
+                "matchups": [f"{p['away']}@{p['home']}" for p in parsed],
+                "with_splits": len(with_split),
+            })
+            if debug is not None:
+                entry["top_level_keys"] = sorted(data.keys()) if isinstance(data, dict) else type(data).__name__
+                if games:
+                    entry["game_keys"] = sorted(games[0].keys())
+                    entry["split_like_fields"] = _split_paths(games[0])
+                debug.append(entry)
+            log.info("Action Network %s %s: %d games, %d with public splits",
+                     name, day or "(no date)", len(games), len(with_split))
+        if found:
+            return list(found.values())
+    return []
 
 
 def add_public_leverage(game: dict, pick: dict, home_prob: Optional[float],
@@ -935,16 +1023,6 @@ def build(args: argparse.Namespace) -> dict:
         log.error("Polymarket failed: %s", exc)
         sources["polymarket"] = {"ok": False, "error": str(exc)}
 
-    public_splits: list[dict] = []
-    try:
-        public_splits = fetch_public_splits()
-        sources["action_network"] = {"ok": bool(public_splits), "games_with_splits": len(public_splits)}
-        if not public_splits:
-            sources["action_network"]["error"] = "No public moneyline splits returned"
-    except Exception as exc:
-        log.error("Action Network failed: %s", exc)
-        sources["action_network"] = {"ok": False, "error": str(exc)}
-
     weights = {"sportsbook": args.book_weight, "kalshi": args.kalshi_weight,
                "polymarket": args.poly_weight}
 
@@ -962,6 +1040,22 @@ def build(args: argparse.Namespace) -> dict:
                            "fallback": f"{len(games)} games built from The Odds API; week number estimated"}
         log.warning("ESPN failed (%s); using %d games from The Odds API, estimated week %s",
                     exc, len(games), meta["week"])
+
+    game_dates = sorted({g["kickoff"].astimezone(EASTERN).strftime("%Y%m%d") for g in games})
+    public_debug: Optional[list] = [] if args.debug_public else None
+    public_splits: list[dict] = []
+    try:
+        public_splits = fetch_public_splits(game_dates, public_debug)
+        sources["action_network"] = {"ok": bool(public_splits), "games_with_splits": len(public_splits)}
+        if not public_splits:
+            sources["action_network"]["error"] = "No public moneyline splits returned"
+    except Exception as exc:
+        log.error("Action Network failed: %s", exc)
+        sources["action_network"] = {"ok": False, "error": str(exc)}
+    if public_debug is not None:
+        write_json({"generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                    "game_dates": game_dates, "requests": public_debug}, PUBLIC_DEBUG_FILE)
+        log.info("Wrote Action Network diagnostics to %s", PUBLIC_DEBUG_FILE)
 
     out_games, mnf = [], []
     for g in sorted(games, key=lambda x: x["kickoff"]):
@@ -1078,6 +1172,8 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
                    help="relative weight of Kalshi (default: 1)")
     p.add_argument("--poly-weight", type=float, default=DEFAULT_WEIGHTS["polymarket"],
                    help="relative weight of Polymarket (default: 1; 0 turns it off)")
+    p.add_argument("--debug-public", action="store_true",
+                   help=f"write raw Action Network diagnostics to {PUBLIC_DEBUG_FILE}")
     p.add_argument("--verbose", "-v", action="store_true")
     args = p.parse_args(argv)
     ws = (args.book_weight, args.kalshi_weight, args.poly_weight)

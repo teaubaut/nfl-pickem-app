@@ -407,6 +407,28 @@
         '</div>';
     }
 
+    // Public betting splits (proxy for what the rest of the pool is picking)
+    var pub = g.public_pct ? g.public_pct[sides.pick] : null;
+    var publicHtml = isNum(pub)
+      ? '<p class="mt-3 text-sm text-chalk/70"><span class="num font-semibold text-chalk">' + pct(pub) + '</span> of public bets are on the ' + esc(nick(pickTeam)) + '.</p>'
+      : '';
+
+    var leverage = '';
+    var levBox = function (text) {
+      return '<div class="mt-3 flex items-center gap-2.5 rounded-md border-l-4 border-bulb bg-bulb/10 px-3 py-2">' +
+        '<span class="num shrink-0 rounded border border-bulb/60 px-1.5 py-0.5 font-display text-base font-bold text-bulb">' + text[0] + '</span>' +
+        '<p class="text-sm leading-snug">' + text[1] + '</p></div>';
+    };
+    if (g.pick.high_leverage_play && isNum(g.pick.leverage)) {
+      leverage = levBox(['+' + Math.round(g.pick.leverage * 100),
+        '<span class="font-semibold text-bulb">Leverage pick.</span> The ' + esc(nick(pickTeam)) +
+        ' win ' + pct(g.pick.win_probability) + ' of the time but get only ' + pct(g.pick.public_pick_pct) + ' of public bets.']);
+    } else if (g.pick.high_leverage_underdog && isNum(g.pick.underdog_leverage)) {
+      leverage = levBox(['+' + Math.round(g.pick.underdog_leverage * 100),
+        '<span class="font-semibold text-bulb">Contrarian option.</span> The ' + esc(nick(dogTeam)) +
+        ' win ' + pct(g.pick.underdog_win_probability) + ' of the time but get only ' + pct(g.pick.underdog_public_pct) + ' of public bets.']);
+    }
+
     return '' +
       '<article class="rounded-xl border border-line bg-field p-4">' +
         head + lineHtml +
@@ -423,7 +445,7 @@
           bar('Kalshi', kalshi, 'bg-sky') +
           bar('Polymarket', poly, 'bg-poly') +
         '</div>' +
-        gap + upset +
+        publicHtml + gap + upset + leverage +
       '</article>';
   }
 
@@ -482,7 +504,7 @@
       out.push('ESPN was unavailable, so games came from the sportsbook feed and the week number is an estimate. Games already played this week may be missing.');
     }
     var src = d.sources || {};
-    var names = { odds_api: 'Sportsbook odds', kalshi: 'Kalshi prices', polymarket: 'Polymarket prices' };
+    var names = { odds_api: 'Sportsbook odds', kalshi: 'Kalshi prices', polymarket: 'Polymarket prices', action_network: 'Public betting splits' };
     Object.keys(names).forEach(function (k) {
       if (src[k] && src[k].ok === false) {
         out.push(names[k] + ' were unavailable on the last run' + (src[k].error ? ' (' + src[k].error + ')' : '') + '.');

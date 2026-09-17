@@ -1,11 +1,15 @@
 {
-  "generated_at": "2026-09-17T00:58:18+00:00",
+  "generated_at": "2026-09-17T01:54:48+00:00",
   "season": 2026,
   "season_type": 2,
   "week": 2,
   "schedule_source": "espn",
   "config": {
-    "kalshi_weight": 0.5,
+    "weights": {
+      "sportsbook": 1.0,
+      "kalshi": 1.0,
+      "polymarket": 1.0
+    },
     "upset_band": [
       0.42,
       0.49
@@ -39,13 +43,21 @@
     "odds_api": {
       "ok": true,
       "events": 32,
-      "requests_remaining": "494",
-      "requests_used": "6"
+      "requests_remaining": "491",
+      "requests_used": "9"
     },
     "kalshi": {
       "ok": true,
       "markets": 64,
       "events": 32
+    },
+    "polymarket": {
+      "ok": true,
+      "events": 95,
+      "game_markets": 91,
+      "filter": {
+        "series_id": "12185"
+      }
     },
     "espn": {
       "ok": true,
@@ -59,7 +71,7 @@
         "game_id": "401872932",
         "matchup": "DET @ BUF",
         "pick": "BUF",
-        "win_probability": 0.678,
+        "win_probability": 0.6772,
         "confidence": "solid",
         "live_upset_candidate": false
       },
@@ -67,7 +79,7 @@
         "game_id": "401872933",
         "matchup": "CAR @ ATL",
         "pick": "CAR",
-        "win_probability": 0.5652,
+        "win_probability": 0.5681,
         "confidence": "lean",
         "live_upset_candidate": true
       },
@@ -75,7 +87,7 @@
         "game_id": "401872937",
         "matchup": "MIN @ CHI",
         "pick": "CHI",
-        "win_probability": 0.6566,
+        "win_probability": 0.656,
         "confidence": "solid",
         "live_upset_candidate": false
       },
@@ -83,15 +95,15 @@
         "game_id": "401872939",
         "matchup": "PHI @ TEN",
         "pick": "PHI",
-        "win_probability": 0.7482,
-        "confidence": "solid",
+        "win_probability": 0.7505,
+        "confidence": "strong",
         "live_upset_candidate": false
       },
       {
         "game_id": "401872946",
         "matchup": "PIT @ NE",
         "pick": "NE",
-        "win_probability": 0.6767,
+        "win_probability": 0.6793,
         "confidence": "solid",
         "live_upset_candidate": false
       },
@@ -99,7 +111,7 @@
         "game_id": "401872936",
         "matchup": "GB @ NYJ",
         "pick": "GB",
-        "win_probability": 0.6241,
+        "win_probability": 0.6244,
         "confidence": "solid",
         "live_upset_candidate": false
       },
@@ -107,7 +119,7 @@
         "game_id": "401872935",
         "matchup": "CLE @ TB",
         "pick": "TB",
-        "win_probability": 0.7848,
+        "win_probability": 0.7882,
         "confidence": "strong",
         "live_upset_candidate": false
       },
@@ -115,7 +127,7 @@
         "game_id": "401872938",
         "matchup": "NO @ BAL",
         "pick": "BAL",
-        "win_probability": 0.7775,
+        "win_probability": 0.7834,
         "confidence": "strong",
         "live_upset_candidate": false
       },
@@ -123,7 +135,7 @@
         "game_id": "401872934",
         "matchup": "CIN @ HOU",
         "pick": "HOU",
-        "win_probability": 0.5811,
+        "win_probability": 0.582,
         "confidence": "lean",
         "live_upset_candidate": false
       },
@@ -131,7 +143,7 @@
         "game_id": "401872940",
         "matchup": "JAX @ DEN",
         "pick": "DEN",
-        "win_probability": 0.581,
+        "win_probability": 0.5831,
         "confidence": "lean",
         "live_upset_candidate": false
       },
@@ -139,7 +151,7 @@
         "game_id": "401872941",
         "matchup": "LV @ LAC",
         "pick": "LAC",
-        "win_probability": 0.7222,
+        "win_probability": 0.7231,
         "confidence": "solid",
         "live_upset_candidate": false
       },
@@ -147,7 +159,7 @@
         "game_id": "401872944",
         "matchup": "WSH @ DAL",
         "pick": "DAL",
-        "win_probability": 0.6517,
+        "win_probability": 0.6528,
         "confidence": "solid",
         "live_upset_candidate": false
       },
@@ -155,7 +167,7 @@
         "game_id": "401872943",
         "matchup": "SEA @ ARI",
         "pick": "SEA",
-        "win_probability": 0.6502,
+        "win_probability": 0.6518,
         "confidence": "solid",
         "live_upset_candidate": false
       },
@@ -163,7 +175,7 @@
         "game_id": "401872942",
         "matchup": "MIA @ SF",
         "pick": "SF",
-        "win_probability": 0.8795,
+        "win_probability": 0.8847,
         "confidence": "strong",
         "live_upset_candidate": false
       },
@@ -171,7 +183,7 @@
         "game_id": "401872945",
         "matchup": "IND @ KC",
         "pick": "KC",
-        "win_probability": 0.723,
+        "win_probability": 0.7267,
         "confidence": "solid",
         "live_upset_candidate": false
       },
@@ -179,7 +191,7 @@
         "game_id": "401872947",
         "matchup": "NYG @ LAR",
         "pick": "LAR",
-        "win_probability": 0.7427,
+        "win_probability": 0.7435,
         "confidence": "solid",
         "live_upset_candidate": false
       }
@@ -189,7 +201,7 @@
         "game_id": "401872933",
         "matchup": "CAR @ ATL",
         "pick": "CAR",
-        "win_probability": 0.5652,
+        "win_probability": 0.5681,
         "confidence": "lean",
         "live_upset_candidate": true
       }
@@ -263,15 +275,15 @@
         "moneyline": {
           "home": -238,
           "away": 195,
-          "avg_hold_pct": 4.3
+          "avg_hold_pct": 4.29
         },
         "fair_moneyline": {
           "home": -207,
           "away": 207
         },
         "spread": {
-          "home": -5.0,
-          "away": 5.0
+          "home": -5.5,
+          "away": 5.5
         },
         "total": 54.5
       },
@@ -302,32 +314,50 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-det-buf-2026-09-18",
+        "url": "https://polymarket.com/event/nfl-det-buf-2026-09-18",
+        "question": "Lions vs. Bills",
+        "quoted_team": "DET",
+        "best_bid": 0.32,
+        "best_ask": 0.33,
+        "last_trade": 0.33,
+        "method": "bid_ask_midpoint",
+        "volume": 45081.036592000004,
+        "volume_24h": 26916.932694,
+        "liquidity": 2156155.9426
+      },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.6742,
-          "away": 0.3258
+          "home": 0.6747,
+          "away": 0.3253
         },
         "kalshi": {
           "home": 0.6818,
           "away": 0.3182
         },
+        "polymarket": {
+          "home": 0.675,
+          "away": 0.325
+        },
         "combined": {
-          "home": 0.678,
-          "away": 0.322
+          "home": 0.6772,
+          "away": 0.3228
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "BUF",
         "name": "Buffalo Bills",
-        "win_probability": 0.678,
+        "win_probability": 0.6772,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "DET",
-        "underdog_win_probability": 0.322,
+        "underdog_win_probability": 0.3228,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -367,11 +397,11 @@
         "moneyline": {
           "home": 120,
           "away": -143,
-          "avg_hold_pct": 4.23
+          "avg_hold_pct": 4.24
         },
         "fair_moneyline": {
-          "home": 130,
-          "away": -130
+          "home": 129,
+          "away": -129
         },
         "spread": {
           "home": 2.5,
@@ -406,34 +436,52 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-car-atl-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-car-atl-2026-09-20",
+        "question": "Panthers vs. Falcons",
+        "quoted_team": "CAR",
+        "best_bid": 0.57,
+        "best_ask": 0.58,
+        "last_trade": 0.57,
+        "method": "bid_ask_midpoint",
+        "volume": 34673.20968099999,
+        "volume_24h": 3336.371941,
+        "liquidity": 109646.1481
+      },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.4345,
-          "away": 0.5655
+          "home": 0.4358,
+          "away": 0.5642
         },
         "kalshi": {
           "home": 0.435,
           "away": 0.565
         },
+        "polymarket": {
+          "home": 0.425,
+          "away": 0.575
+        },
         "combined": {
-          "home": 0.4348,
-          "away": 0.5652
+          "home": 0.4319,
+          "away": 0.5681
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "CAR",
         "name": "Carolina Panthers",
-        "win_probability": 0.5652,
+        "win_probability": 0.5681,
         "confidence": "lean",
         "coin_flip": false,
         "underdog": "ATL",
-        "underdog_win_probability": 0.4348,
+        "underdog_win_probability": 0.4319,
         "live_upset_candidate": true,
-        "upset_note": "Atlanta Falcons at 43.5% is inside the 42%-49% upset band"
+        "upset_note": "Atlanta Falcons at 43.2% is inside the 42%-49% upset band"
       }
     },
     {
@@ -510,6 +558,19 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-min-chi-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-min-chi-2026-09-20",
+        "question": "Vikings vs. Bears",
+        "quoted_team": "MIN",
+        "best_bid": 0.34,
+        "best_ask": 0.35,
+        "last_trade": 0.35,
+        "method": "bid_ask_midpoint",
+        "volume": 34145.708654,
+        "volume_24h": 15003.597121999997,
+        "liquidity": 360218.0466
+      },
       "probabilities": {
         "sportsbook_vig_free": {
           "home": 0.6581,
@@ -519,23 +580,28 @@
           "home": 0.655,
           "away": 0.345
         },
+        "polymarket": {
+          "home": 0.655,
+          "away": 0.345
+        },
         "combined": {
-          "home": 0.6566,
-          "away": 0.3434
+          "home": 0.656,
+          "away": 0.344
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "CHI",
         "name": "Chicago Bears",
-        "win_probability": 0.6566,
+        "win_probability": 0.656,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "MIN",
-        "underdog_win_probability": 0.3434,
+        "underdog_win_probability": 0.344,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -614,6 +680,19 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-phi-ten-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-phi-ten-2026-09-20",
+        "question": "Eagles vs. Titans",
+        "quoted_team": "PHI",
+        "best_bid": 0.75,
+        "best_ask": 0.76,
+        "last_trade": 0.76,
+        "method": "bid_ask_midpoint",
+        "volume": 8879.251676,
+        "volume_24h": 1321.589993,
+        "liquidity": 147746.2771
+      },
       "probabilities": {
         "sportsbook_vig_free": {
           "home": 0.2585,
@@ -623,23 +702,28 @@
           "home": 0.245,
           "away": 0.755
         },
+        "polymarket": {
+          "home": 0.245,
+          "away": 0.755
+        },
         "combined": {
-          "home": 0.2518,
-          "away": 0.7482
+          "home": 0.2495,
+          "away": 0.7505
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "PHI",
         "name": "Philadelphia Eagles",
-        "win_probability": 0.7482,
-        "confidence": "solid",
+        "win_probability": 0.7505,
+        "confidence": "strong",
         "coin_flip": false,
         "underdog": "TEN",
-        "underdog_win_probability": 0.2518,
+        "underdog_win_probability": 0.2495,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -679,11 +763,11 @@
         "moneyline": {
           "home": -240,
           "away": 200,
-          "avg_hold_pct": 4.26
+          "avg_hold_pct": 4.25
         },
         "fair_moneyline": {
-          "home": -208,
-          "away": 208
+          "home": -207,
+          "away": 207
         },
         "spread": {
           "home": -5.0,
@@ -718,32 +802,50 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-pit-ne-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-pit-ne-2026-09-20",
+        "question": "Steelers vs. Patriots",
+        "quoted_team": "PIT",
+        "best_bid": 0.31,
+        "best_ask": 0.32,
+        "last_trade": 0.32,
+        "method": "bid_ask_midpoint",
+        "volume": 13397.566622999999,
+        "volume_24h": 1150.244584,
+        "liquidity": 260502.7771
+      },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.6751,
-          "away": 0.3249
+          "home": 0.6747,
+          "away": 0.3253
         },
         "kalshi": {
           "home": 0.6782,
           "away": 0.3218
         },
+        "polymarket": {
+          "home": 0.685,
+          "away": 0.315
+        },
         "combined": {
-          "home": 0.6767,
-          "away": 0.3233
+          "home": 0.6793,
+          "away": 0.3207
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "NE",
         "name": "New England Patriots",
-        "win_probability": 0.6767,
+        "win_probability": 0.6793,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "PIT",
-        "underdog_win_probability": 0.3233,
+        "underdog_win_probability": 0.3207,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -822,6 +924,19 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-gb-nyj-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-gb-nyj-2026-09-20",
+        "question": "Packers vs. Jets",
+        "quoted_team": "GB",
+        "best_bid": 0.62,
+        "best_ask": 0.63,
+        "last_trade": 0.63,
+        "method": "bid_ask_midpoint",
+        "volume": 6476.364134,
+        "volume_24h": 4608.020436,
+        "liquidity": 178341.4946
+      },
       "probabilities": {
         "sportsbook_vig_free": {
           "home": 0.3768,
@@ -831,23 +946,28 @@
           "home": 0.375,
           "away": 0.625
         },
+        "polymarket": {
+          "home": 0.375,
+          "away": 0.625
+        },
         "combined": {
-          "home": 0.3759,
-          "away": 0.6241
+          "home": 0.3756,
+          "away": 0.6244
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "GB",
         "name": "Green Bay Packers",
-        "win_probability": 0.6241,
+        "win_probability": 0.6244,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "NYJ",
-        "underdog_win_probability": 0.3759,
+        "underdog_win_probability": 0.3756,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -926,6 +1046,19 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-cle-tb-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-cle-tb-2026-09-20",
+        "question": "Browns vs. Buccaneers",
+        "quoted_team": "CLE",
+        "best_bid": 0.2,
+        "best_ask": 0.21,
+        "last_trade": 0.21,
+        "method": "bid_ask_midpoint",
+        "volume": 3400.4492059999993,
+        "volume_24h": 2628.8147629999994,
+        "liquidity": 117297.0336
+      },
       "probabilities": {
         "sportsbook_vig_free": {
           "home": 0.7767,
@@ -935,23 +1068,28 @@
           "home": 0.7929,
           "away": 0.2071
         },
+        "polymarket": {
+          "home": 0.795,
+          "away": 0.205
+        },
         "combined": {
-          "home": 0.7848,
-          "away": 0.2152
+          "home": 0.7882,
+          "away": 0.2118
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "TB",
         "name": "Tampa Bay Buccaneers",
-        "win_probability": 0.7848,
+        "win_probability": 0.7882,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "CLE",
-        "underdog_win_probability": 0.2152,
+        "underdog_win_probability": 0.2118,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -991,7 +1129,7 @@
         "moneyline": {
           "home": -415,
           "away": 320,
-          "avg_hold_pct": 4.42
+          "avg_hold_pct": 4.39
         },
         "fair_moneyline": {
           "home": -335,
@@ -1030,32 +1168,50 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-no-bal-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-no-bal-2026-09-20",
+        "question": "Saints vs. Ravens",
+        "quoted_team": "NO",
+        "best_bid": 0.2,
+        "best_ask": 0.21,
+        "last_trade": 0.21,
+        "method": "bid_ask_midpoint",
+        "volume": 3734.9072439999995,
+        "volume_24h": 1844.17,
+        "liquidity": 122621.1124
+      },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.7699,
-          "away": 0.2301
+          "home": 0.7702,
+          "away": 0.2298
         },
         "kalshi": {
           "home": 0.785,
           "away": 0.215
         },
+        "polymarket": {
+          "home": 0.795,
+          "away": 0.205
+        },
         "combined": {
-          "home": 0.7775,
-          "away": 0.2225
+          "home": 0.7834,
+          "away": 0.2166
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "BAL",
         "name": "Baltimore Ravens",
-        "win_probability": 0.7775,
+        "win_probability": 0.7834,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "NO",
-        "underdog_win_probability": 0.2225,
+        "underdog_win_probability": 0.2166,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1095,11 +1251,11 @@
         "moneyline": {
           "home": -150,
           "away": 129,
-          "avg_hold_pct": 4.06
+          "avg_hold_pct": 4.05
         },
         "fair_moneyline": {
-          "home": -137,
-          "away": 137
+          "home": -136,
+          "away": 136
         },
         "spread": {
           "home": -2.5,
@@ -1134,32 +1290,50 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-cin-hou-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-cin-hou-2026-09-20",
+        "question": "Bengals vs. Texans",
+        "quoted_team": "CIN",
+        "best_bid": 0.41,
+        "best_ask": 0.42,
+        "last_trade": 0.42,
+        "method": "bid_ask_midpoint",
+        "volume": 25757.084079,
+        "volume_24h": 5266.476203,
+        "liquidity": 494509.8541
+      },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.5772,
-          "away": 0.4228
+          "home": 0.5759,
+          "away": 0.4241
         },
         "kalshi": {
           "home": 0.585,
           "away": 0.415
         },
+        "polymarket": {
+          "home": 0.585,
+          "away": 0.415
+        },
         "combined": {
-          "home": 0.5811,
-          "away": 0.4189
+          "home": 0.582,
+          "away": 0.418
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "HOU",
         "name": "Houston Texans",
-        "win_probability": 0.5811,
+        "win_probability": 0.582,
         "confidence": "lean",
         "coin_flip": false,
         "underdog": "CIN",
-        "underdog_win_probability": 0.4189,
+        "underdog_win_probability": 0.418,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1197,13 +1371,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": -150,
-          "away": 126,
-          "avg_hold_pct": 4.08
+          "home": -153,
+          "away": 130,
+          "avg_hold_pct": 4.13
         },
         "fair_moneyline": {
-          "home": -136,
-          "away": 136
+          "home": -138,
+          "away": 138
         },
         "spread": {
           "home": -2.5,
@@ -1238,32 +1412,50 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-jax-den-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-jax-den-2026-09-20",
+        "question": "Jaguars vs. Broncos",
+        "quoted_team": "JAX",
+        "best_bid": 0.41,
+        "best_ask": 0.42,
+        "last_trade": 0.42,
+        "method": "bid_ask_midpoint",
+        "volume": 9145.578809,
+        "volume_24h": 2119.9426869999998,
+        "liquidity": 138544.3158
+      },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.5769,
-          "away": 0.4231
+          "home": 0.5792,
+          "away": 0.4208
         },
         "kalshi": {
           "home": 0.585,
           "away": 0.415
         },
+        "polymarket": {
+          "home": 0.585,
+          "away": 0.415
+        },
         "combined": {
-          "home": 0.581,
-          "away": 0.419
+          "home": 0.5831,
+          "away": 0.4169
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "DEN",
         "name": "Denver Broncos",
-        "win_probability": 0.581,
+        "win_probability": 0.5831,
         "confidence": "lean",
         "coin_flip": false,
         "underdog": "JAX",
-        "underdog_win_probability": 0.419,
+        "underdog_win_probability": 0.4169,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1342,6 +1534,19 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-lv-lac-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-lv-lac-2026-09-20",
+        "question": "Raiders vs. Chargers",
+        "quoted_team": "LV",
+        "best_bid": 0.27,
+        "best_ask": 0.28,
+        "last_trade": 0.28,
+        "method": "bid_ask_midpoint",
+        "volume": 22221.219621,
+        "volume_24h": 1870.139636,
+        "liquidity": 189645.8699
+      },
       "probabilities": {
         "sportsbook_vig_free": {
           "home": 0.7193,
@@ -1351,23 +1556,28 @@
           "home": 0.725,
           "away": 0.275
         },
+        "polymarket": {
+          "home": 0.725,
+          "away": 0.275
+        },
         "combined": {
-          "home": 0.7222,
-          "away": 0.2778
+          "home": 0.7231,
+          "away": 0.2769
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "LAC",
         "name": "Los Angeles Chargers",
-        "win_probability": 0.7222,
+        "win_probability": 0.7231,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "LV",
-        "underdog_win_probability": 0.2778,
+        "underdog_win_probability": 0.2769,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1446,6 +1656,19 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-was-dal-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-was-dal-2026-09-20",
+        "question": "Commanders vs. Cowboys",
+        "quoted_team": "WSH",
+        "best_bid": 0.34,
+        "best_ask": 0.35,
+        "last_trade": 0.35,
+        "method": "bid_ask_midpoint",
+        "volume": 8044.284086999999,
+        "volume_24h": 1184.6218169999997,
+        "liquidity": 132602.6744
+      },
       "probabilities": {
         "sportsbook_vig_free": {
           "home": 0.6484,
@@ -1455,23 +1678,28 @@
           "home": 0.655,
           "away": 0.345
         },
+        "polymarket": {
+          "home": 0.655,
+          "away": 0.345
+        },
         "combined": {
-          "home": 0.6517,
-          "away": 0.3483
+          "home": 0.6528,
+          "away": 0.3472
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "DAL",
         "name": "Dallas Cowboys",
-        "win_probability": 0.6517,
+        "win_probability": 0.6528,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "WSH",
-        "underdog_win_probability": 0.3483,
+        "underdog_win_probability": 0.3472,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1550,6 +1778,19 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-sea-ari-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-sea-ari-2026-09-20",
+        "question": "Seahawks vs. Cardinals",
+        "quoted_team": "SEA",
+        "best_bid": 0.65,
+        "best_ask": 0.66,
+        "last_trade": 0.66,
+        "method": "bid_ask_midpoint",
+        "volume": 6398.647358000001,
+        "volume_24h": 3125.157791,
+        "liquidity": 119979.9684
+      },
       "probabilities": {
         "sportsbook_vig_free": {
           "home": 0.3547,
@@ -1559,23 +1800,28 @@
           "home": 0.345,
           "away": 0.655
         },
+        "polymarket": {
+          "home": 0.345,
+          "away": 0.655
+        },
         "combined": {
-          "home": 0.3498,
-          "away": 0.6502
+          "home": 0.3482,
+          "away": 0.6518
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "SEA",
         "name": "Seattle Seahawks",
-        "win_probability": 0.6502,
+        "win_probability": 0.6518,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "ARI",
-        "underdog_win_probability": 0.3498,
+        "underdog_win_probability": 0.3482,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1615,11 +1861,11 @@
         "moneyline": {
           "home": -1000,
           "away": 660,
-          "avg_hold_pct": 4.49
+          "avg_hold_pct": 4.46
         },
         "fair_moneyline": {
-          "home": -686,
-          "away": 686
+          "home": -688,
+          "away": 688
         },
         "spread": {
           "home": -13.0,
@@ -1654,32 +1900,50 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-mia-sf-2026-09-20",
+        "url": "https://polymarket.com/event/nfl-mia-sf-2026-09-20",
+        "question": "Dolphins vs. 49ers",
+        "quoted_team": "MIA",
+        "best_bid": 0.1,
+        "best_ask": 0.11,
+        "last_trade": 0.11,
+        "method": "bid_ask_midpoint",
+        "volume": 6854.087845,
+        "volume_24h": 806.8911,
+        "liquidity": 116778.1904
+      },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.8728,
-          "away": 0.1272
+          "home": 0.873,
+          "away": 0.127
         },
         "kalshi": {
           "home": 0.8861,
           "away": 0.1139
         },
+        "polymarket": {
+          "home": 0.895,
+          "away": 0.105
+        },
         "combined": {
-          "home": 0.8795,
-          "away": 0.1205
+          "home": 0.8847,
+          "away": 0.1153
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "SF",
         "name": "San Francisco 49ers",
-        "win_probability": 0.8795,
+        "win_probability": 0.8847,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "MIA",
-        "underdog_win_probability": 0.1205,
+        "underdog_win_probability": 0.1153,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1719,11 +1983,11 @@
         "moneyline": {
           "home": -295,
           "away": 241,
-          "avg_hold_pct": 4.32
+          "avg_hold_pct": 4.35
         },
         "fair_moneyline": {
-          "home": -258,
-          "away": 258
+          "home": -257,
+          "away": 257
         },
         "spread": {
           "home": -6.5,
@@ -1758,32 +2022,50 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-ind-kc-2026-09-21",
+        "url": "https://polymarket.com/event/nfl-ind-kc-2026-09-21",
+        "question": "Colts vs. Chiefs",
+        "quoted_team": "IND",
+        "best_bid": 0.26,
+        "best_ask": 0.27,
+        "last_trade": 0.27,
+        "method": "bid_ask_midpoint",
+        "volume": 3169.1414110000005,
+        "volume_24h": 1967.7632309999997,
+        "liquidity": 64133.3618
+      },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.721,
-          "away": 0.279
+          "home": 0.7201,
+          "away": 0.2799
         },
         "kalshi": {
           "home": 0.725,
           "away": 0.275
         },
+        "polymarket": {
+          "home": 0.735,
+          "away": 0.265
+        },
         "combined": {
-          "home": 0.723,
-          "away": 0.277
+          "home": 0.7267,
+          "away": 0.2733
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "KC",
         "name": "Kansas City Chiefs",
-        "win_probability": 0.723,
+        "win_probability": 0.7267,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "IND",
-        "underdog_win_probability": 0.277,
+        "underdog_win_probability": 0.2733,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1862,6 +2144,19 @@
           }
         ]
       },
+      "polymarket": {
+        "event_slug": "nfl-nyg-la-2026-09-22",
+        "url": "https://polymarket.com/event/nfl-nyg-la-2026-09-22",
+        "question": "Giants vs. Rams",
+        "quoted_team": "NYG",
+        "best_bid": 0.25,
+        "best_ask": 0.26,
+        "last_trade": 0.26,
+        "method": "bid_ask_midpoint",
+        "volume": 32442.093653000004,
+        "volume_24h": 10440.1559,
+        "liquidity": 46045.4487
+      },
       "probabilities": {
         "sportsbook_vig_free": {
           "home": 0.7441,
@@ -1871,23 +2166,28 @@
           "home": 0.7413,
           "away": 0.2587
         },
+        "polymarket": {
+          "home": 0.745,
+          "away": 0.255
+        },
         "combined": {
-          "home": 0.7427,
-          "away": 0.2573
+          "home": 0.7435,
+          "away": 0.2565
         },
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5
+          "sportsbook": 0.333,
+          "kalshi": 0.333,
+          "polymarket": 0.333
         }
       },
       "pick": {
         "team": "LAR",
         "name": "Los Angeles Rams",
-        "win_probability": 0.7427,
+        "win_probability": 0.7435,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "NYG",
-        "underdog_win_probability": 0.2573,
+        "underdog_win_probability": 0.2565,
         "live_upset_candidate": false,
         "upset_note": null
       }

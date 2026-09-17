@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-17T01:57:54+00:00",
+  "generated_at": "2026-09-17T02:08:25+00:00",
   "season": 2026,
   "season_type": 2,
   "week": 2,
@@ -14,6 +14,8 @@
       0.42,
       0.49
     ],
+    "leverage_flag": 0.15,
+    "leverage_max_win_prob": 0.65,
     "key_scores": [
       3,
       6,
@@ -43,8 +45,8 @@
     "odds_api": {
       "ok": true,
       "events": 32,
-      "requests_remaining": "488",
-      "requests_used": "12"
+      "requests_remaining": "485",
+      "requests_used": "15"
     },
     "kalshi": {
       "ok": true,
@@ -58,6 +60,11 @@
       "filter": {
         "series_id": "12185"
       }
+    },
+    "action_network": {
+      "ok": false,
+      "games_with_splits": 0,
+      "error": "No public moneyline splits returned"
     },
     "espn": {
       "ok": true,
@@ -73,7 +80,10 @@
         "pick": "BUF",
         "win_probability": 0.6772,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872933",
@@ -81,7 +91,10 @@
         "pick": "CAR",
         "win_probability": 0.569,
         "confidence": "lean",
-        "live_upset_candidate": true
+        "live_upset_candidate": true,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872937",
@@ -89,7 +102,10 @@
         "pick": "CHI",
         "win_probability": 0.656,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872939",
@@ -97,23 +113,32 @@
         "pick": "PHI",
         "win_probability": 0.7505,
         "confidence": "strong",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872946",
         "matchup": "PIT @ NE",
         "pick": "NE",
-        "win_probability": 0.6789,
+        "win_probability": 0.6787,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872936",
         "matchup": "GB @ NYJ",
         "pick": "GB",
-        "win_probability": 0.6244,
+        "win_probability": 0.6245,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872935",
@@ -121,7 +146,10 @@
         "pick": "TB",
         "win_probability": 0.7882,
         "confidence": "strong",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872938",
@@ -129,7 +157,10 @@
         "pick": "BAL",
         "win_probability": 0.7834,
         "confidence": "strong",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872934",
@@ -137,7 +168,10 @@
         "pick": "HOU",
         "win_probability": 0.582,
         "confidence": "lean",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872940",
@@ -145,7 +179,10 @@
         "pick": "DEN",
         "win_probability": 0.5831,
         "confidence": "lean",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872941",
@@ -153,7 +190,10 @@
         "pick": "LAC",
         "win_probability": 0.7231,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872944",
@@ -161,7 +201,10 @@
         "pick": "DAL",
         "win_probability": 0.652,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872943",
@@ -169,7 +212,10 @@
         "pick": "SEA",
         "win_probability": 0.6518,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872942",
@@ -177,7 +223,10 @@
         "pick": "SF",
         "win_probability": 0.8847,
         "confidence": "strong",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872945",
@@ -185,15 +234,21 @@
         "pick": "KC",
         "win_probability": 0.7267,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401872947",
         "matchup": "NYG @ LAR",
         "pick": "LAR",
-        "win_probability": 0.7435,
+        "win_probability": 0.7447,
         "confidence": "solid",
-        "live_upset_candidate": false
+        "live_upset_candidate": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       }
     ],
     "live_upset_candidates": [
@@ -203,7 +258,10 @@
         "pick": "CAR",
         "win_probability": 0.569,
         "confidence": "lean",
-        "live_upset_candidate": true
+        "live_upset_candidate": true,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
+        "high_leverage_underdog": false
       }
     ]
   },
@@ -325,7 +383,7 @@
         "method": "bid_ask_midpoint",
         "volume": 45081.036592,
         "volume_24h": 26885.246128,
-        "liquidity": 2758517.0938
+        "liquidity": 2775608.3557
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -350,6 +408,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "BUF",
         "name": "Buffalo Bills",
@@ -447,7 +506,7 @@
         "method": "bid_ask_midpoint",
         "volume": 34684.289681,
         "volume_24h": 3347.451941,
-        "liquidity": 108863.3981
+        "liquidity": 108853.9691
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -472,6 +531,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "CAR",
         "name": "Carolina Panthers",
@@ -569,7 +629,7 @@
         "method": "bid_ask_midpoint",
         "volume": 34145.708654,
         "volume_24h": 15003.597122000001,
-        "liquidity": 359610.0016
+        "liquidity": 359629.2015
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -594,6 +654,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "CHI",
         "name": "Chicago Bears",
@@ -691,7 +752,7 @@
         "method": "bid_ask_midpoint",
         "volume": 8879.251676,
         "volume_24h": 1321.589993,
-        "liquidity": 145882.839
+        "liquidity": 146093.7184
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -716,6 +777,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "PHI",
         "name": "Philadelphia Eagles",
@@ -757,13 +819,12 @@
           "betonlineag",
           "fanduel",
           "betrivers",
-          "betmgm",
-          "bovada"
+          "betmgm"
         ],
         "moneyline": {
           "home": -235,
           "away": 195,
-          "avg_hold_pct": 4.28
+          "avg_hold_pct": 4.32
         },
         "fair_moneyline": {
           "home": -206,
@@ -813,12 +874,12 @@
         "method": "bid_ask_midpoint",
         "volume": 13397.566623,
         "volume_24h": 1150.244584,
-        "liquidity": 259372.7782
+        "liquidity": 258333.3115
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.6736,
-          "away": 0.3264
+          "home": 0.6729,
+          "away": 0.3271
         },
         "kalshi": {
           "home": 0.6782,
@@ -829,8 +890,8 @@
           "away": 0.315
         },
         "combined": {
-          "home": 0.6789,
-          "away": 0.3211
+          "home": 0.6787,
+          "away": 0.3213
         },
         "weights": {
           "sportsbook": 0.333,
@@ -838,14 +899,15 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "NE",
         "name": "New England Patriots",
-        "win_probability": 0.6789,
+        "win_probability": 0.6787,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "PIT",
-        "underdog_win_probability": 0.3211,
+        "underdog_win_probability": 0.3213,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -888,8 +950,8 @@
           "avg_hold_pct": 4.12
         },
         "fair_moneyline": {
-          "home": 165,
-          "away": -165
+          "home": 166,
+          "away": -166
         },
         "spread": {
           "home": 3.5,
@@ -935,12 +997,12 @@
         "method": "bid_ask_midpoint",
         "volume": 6476.364134000001,
         "volume_24h": 3478.937102,
-        "liquidity": 178318.9988
+        "liquidity": 177293.4991
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.3768,
-          "away": 0.6232
+          "home": 0.3765,
+          "away": 0.6235
         },
         "kalshi": {
           "home": 0.375,
@@ -951,8 +1013,8 @@
           "away": 0.625
         },
         "combined": {
-          "home": 0.3756,
-          "away": 0.6244
+          "home": 0.3755,
+          "away": 0.6245
         },
         "weights": {
           "sportsbook": 0.333,
@@ -960,14 +1022,15 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "GB",
         "name": "Green Bay Packers",
-        "win_probability": 0.6244,
+        "win_probability": 0.6245,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "NYJ",
-        "underdog_win_probability": 0.3756,
+        "underdog_win_probability": 0.3755,
         "live_upset_candidate": false,
         "upset_note": null
       }
@@ -1057,7 +1120,7 @@
         "method": "bid_ask_midpoint",
         "volume": 3400.449206,
         "volume_24h": 2628.8147629999994,
-        "liquidity": 115442.2836
+        "liquidity": 115255.0135
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1082,6 +1145,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "TB",
         "name": "Tampa Bay Buccaneers",
@@ -1179,7 +1243,7 @@
         "method": "bid_ask_midpoint",
         "volume": 3753.9972439999997,
         "volume_24h": 1863.26,
-        "liquidity": 118891.6886
+        "liquidity": 121076.3386
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1204,6 +1268,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "BAL",
         "name": "Baltimore Ravens",
@@ -1301,7 +1366,7 @@
         "method": "bid_ask_midpoint",
         "volume": 25757.084079000004,
         "volume_24h": 5135.986033,
-        "liquidity": 493949.8141
+        "liquidity": 493456.9724
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1326,6 +1391,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "HOU",
         "name": "Houston Texans",
@@ -1423,7 +1489,7 @@
         "method": "bid_ask_midpoint",
         "volume": 9196.938809,
         "volume_24h": 2170.5731519999995,
-        "liquidity": 142723.5485
+        "liquidity": 144115.3385
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1448,6 +1514,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "DEN",
         "name": "Denver Broncos",
@@ -1545,7 +1612,7 @@
         "method": "bid_ask_midpoint",
         "volume": 22221.219621,
         "volume_24h": 1870.139636,
-        "liquidity": 187025.8699
+        "liquidity": 187785.8699
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1570,6 +1637,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "LAC",
         "name": "Los Angeles Chargers",
@@ -1667,7 +1735,7 @@
         "method": "bid_ask_midpoint",
         "volume": 8044.284087000001,
         "volume_24h": 1070.3418169999998,
-        "liquidity": 131427.9639
+        "liquidity": 131486.3144
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1692,6 +1760,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "DAL",
         "name": "Dallas Cowboys",
@@ -1789,7 +1858,7 @@
         "method": "bid_ask_midpoint",
         "volume": 6398.647358,
         "volume_24h": 3125.157791,
-        "liquidity": 118117.7498
+        "liquidity": 119317.5684
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1814,6 +1883,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "SEA",
         "name": "Seattle Seahawks",
@@ -1860,8 +1930,8 @@
         ],
         "moneyline": {
           "home": -1000,
-          "away": 660,
-          "avg_hold_pct": 4.49
+          "away": 650,
+          "avg_hold_pct": 4.44
         },
         "fair_moneyline": {
           "home": -686,
@@ -1911,7 +1981,7 @@
         "method": "bid_ask_midpoint",
         "volume": 6854.087845,
         "volume_24h": 806.8911,
-        "liquidity": 116298.1904
+        "liquidity": 116264.2122
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1936,6 +2006,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "SF",
         "name": "San Francisco 49ers",
@@ -2033,7 +2104,7 @@
         "method": "bid_ask_midpoint",
         "volume": 3169.1414110000005,
         "volume_24h": 1967.7632309999997,
-        "liquidity": 63163.8798
+        "liquidity": 63630.3818
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2058,6 +2129,7 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "KC",
         "name": "Kansas City Chiefs",
@@ -2135,10 +2207,10 @@
             "ticker": "KXNFLGAME-26SEP21NYGLAR-NYG",
             "team": "NYG",
             "yes_bid": 0.25,
-            "yes_ask": 0.27,
-            "no_bid": 0.73,
+            "yes_ask": 0.26,
+            "no_bid": 0.74,
             "no_ask": 0.75,
-            "yes_prob": 0.26,
+            "yes_prob": 0.255,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -2155,7 +2227,7 @@
         "method": "bid_ask_midpoint",
         "volume": 32807.97365300001,
         "volume_24h": 10800.402053,
-        "liquidity": 45047.7948
+        "liquidity": 44774.3535
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2163,16 +2235,16 @@
           "away": 0.2559
         },
         "kalshi": {
-          "home": 0.7413,
-          "away": 0.2587
+          "home": 0.745,
+          "away": 0.255
         },
         "polymarket": {
           "home": 0.745,
           "away": 0.255
         },
         "combined": {
-          "home": 0.7435,
-          "away": 0.2565
+          "home": 0.7447,
+          "away": 0.2553
         },
         "weights": {
           "sportsbook": 0.333,
@@ -2180,14 +2252,15 @@
           "polymarket": 0.333
         }
       },
+      "public_pct": null,
       "pick": {
         "team": "LAR",
         "name": "Los Angeles Rams",
-        "win_probability": 0.7435,
+        "win_probability": 0.7447,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "NYG",
-        "underdog_win_probability": 0.2565,
+        "underdog_win_probability": 0.2553,
         "live_upset_candidate": false,
         "upset_note": null
       }

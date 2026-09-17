@@ -9,6 +9,7 @@ Pipeline
   4. Kalshi (KXNFLGAME) -> prediction-market win probabilities (bid/ask midpoints)
   5. Polymarket (Gamma) -> second prediction market (bid/ask midpoints, volume, liquidity)
   6. Blend              -> weighted average of the three, a pick, and upset flags
+     Public splits      -> Action Network moneyline ticket % as a proxy for pool picks
   7. Monday Night       -> projected final score snapped to key numbers
   8. Write data.json
 
@@ -63,6 +64,10 @@ KALSHI_URL = "https://api.elections.kalshi.com/trade-api/v2/markets"
 KALSHI_SERIES = "KXNFLGAME"
 
 POLYMARKET_URL = "https://gamma-api.polymarket.com"
+ACTION_NETWORK_URL = "https://api.actionnetwork.com/web/v1/scoreboard/nfl"
+ACTION_CONSENSUS_BOOK_ID = 15    # preferred odds row for public splits when present
+LEVERAGE_FLAG = 0.15             # win prob minus public % that counts as "high leverage"
+LEVERAGE_MAX_WIN_PROB = 0.65     # skip flags on big favorites (see public_splits notes)
 
 # Relative blend weights (renormalized over whichever sources have a price).
 # Equal weights = (Vegas + Kalshi + Polymarket) / 3.
@@ -727,7 +732,7 @@ def confidence_tier(p: float) -> str:
 
 def make_pick(game: dict, home_prob: Optional[float]) -> dict:
     if home_prob is None:
-        return {"team": None, "note": "No sportsbook or Kalshi data available"}
+        return {"team": None, "note": "No sportsbook or prediction-market data available"}
     pick = game["home"] if home_prob >= 0.5 else game["away"]
     dog = game["away"] if pick == game["home"] else game["home"]
     p_pick = max(home_prob, 1 - home_prob)
@@ -745,6 +750,93 @@ def make_pick(game: dict, home_prob: Optional[float]) -> dict:
         "upset_note": (f"{TEAMS[dog]['name']} at {p_dog:.1%} is inside the "
                        f"{UPSET_BAND[0]:.0%}-{UPSET_BAND[1]:.0%} upset band") if live_upset else None,
     }
+
+
+# --------------------------------------------------------------------------- #
+# 6b. Public betting splits (Action Network, unofficial, no key)
+# --------------------------------------------------------------------------- #
+# Moneyline *ticket* % is a proxy for what casual pool players pick. It is
+# weakest on big favorites: bettors dodge -400 moneylines and bet the spread
+# instead, so ticket % understates how many pool players take the favorite.
+# That is why leverage flags are limited to games at or under
+# LEVERAGE_MAX_WIN_PROB.
+_PUBLIC_KEYS = [
+    ("ml_home_public", "ml_away_public"),
+    ("moneyline_home_public", "moneyline_away_public"),
+    ("ml_home_tickets", "ml_away_tickets"),
+]
+
+
+def _public_pair(odds_row: dict) -> Optional[tuple[float, float]]:
+    for home_key, away_key in _PUBLIC_KEYS:
+        home, away = _num(odds_row.get(home_key)), _num(odds_row.get(away_key))
+        if home is None or away is None or home + away <= 0:
+            continue
+        if home > 1 or away > 1:  # whole-number percentages (65 = 65%)
+            home, away = home / 100, away / 100
+        total = home + away
+        return home / total, away / total  # normalize to sum to 1
+    return None
+
+
+def fetch_public_splits() -> list[dict]:
+    data, _ = http_get_json(ACTION_NETWORK_URL, extra_headers={
+        "Referer": "https://www.actionnetwork.com/", "Origin": "https://www.actionnetwork.com"})
+    games = data.get("games", []) if isinstance(data, dict) else []
+    out, seen_keys = [], set()
+    for game in games:
+        teams = {t.get("id"): t for t in game.get("teams") or []}
+        home_t = teams.get(game.get("home_team_id")) or {}
+        away_t = teams.get(game.get("away_team_id")) or {}
+        home = resolve_team(home_t.get("abbr")) or resolve_team(home_t.get("full_name"))
+        away = resolve_team(away_t.get("abbr")) or resolve_team(away_t.get("full_name"))
+        if not (home and away):
+            continue
+        rows = sorted(game.get("odds") or [],
+                      key=lambda r: 0 if r.get("book_id") == ACTION_CONSENSUS_BOOK_ID else 1)
+        split = None
+        for row in rows:
+            seen_keys.update(row.keys())
+            split = _public_pair(row)
+            if split:
+                break
+        if not split:
+            continue
+        out.append({"home": home, "away": away, "home_pct": split[0], "away_pct": split[1],
+                    "time": parse_iso(game.get("start_time"))})
+    if games and not out:
+        public_like = sorted(k for k in seen_keys if "public" in k or "ticket" in k or "money" in k)
+        log.warning("Action Network returned %d games but no moneyline splits. "
+                    "Split-like fields seen: %s", len(games), public_like or "none")
+    log.info("Action Network: %d games, %d with public splits", len(games), len(out))
+    return out
+
+
+def add_public_leverage(game: dict, pick: dict, home_prob: Optional[float],
+                        splits: list[dict]) -> Optional[dict]:
+    """Adds public % and leverage (our win prob minus public %) to the pick."""
+    match = find_matching(game, splits, lambda s: {s["home"], s["away"]}, lambda s: s["time"])
+    if not match:
+        return None
+    pct = {match["home"]: match["home_pct"], match["away"]: match["away_pct"]}
+    public = {"home": r4(pct.get(game["home"])), "away": r4(pct.get(game["away"]))}
+    if not pick.get("team") or home_prob is None:
+        return public
+
+    p_pick = pick["win_probability"]
+    p_dog = pick["underdog_win_probability"]
+    lev_pick = p_pick - pct[pick["team"]]
+    lev_dog = p_dog - pct[pick["underdog"]]
+    eligible = p_pick <= LEVERAGE_MAX_WIN_PROB
+    pick.update({
+        "public_pick_pct": r4(pct[pick["team"]]),
+        "leverage": r4(lev_pick),
+        "high_leverage_play": eligible and lev_pick > LEVERAGE_FLAG,
+        "underdog_public_pct": r4(pct[pick["underdog"]]),
+        "underdog_leverage": r4(lev_dog),
+        "high_leverage_underdog": eligible and lev_dog > LEVERAGE_FLAG,
+    })
+    return public
 
 
 # --------------------------------------------------------------------------- #
@@ -843,6 +935,16 @@ def build(args: argparse.Namespace) -> dict:
         log.error("Polymarket failed: %s", exc)
         sources["polymarket"] = {"ok": False, "error": str(exc)}
 
+    public_splits: list[dict] = []
+    try:
+        public_splits = fetch_public_splits()
+        sources["action_network"] = {"ok": bool(public_splits), "games_with_splits": len(public_splits)}
+        if not public_splits:
+            sources["action_network"]["error"] = "No public moneyline splits returned"
+    except Exception as exc:
+        log.error("Action Network failed: %s", exc)
+        sources["action_network"] = {"ok": False, "error": str(exc)}
+
     weights = {"sportsbook": args.book_weight, "kalshi": args.kalshi_weight,
                "polymarket": args.poly_weight}
 
@@ -878,6 +980,7 @@ def build(args: argparse.Namespace) -> dict:
         combined, effective = blend(
             {"sportsbook": book_p, "kalshi": kalshi_p, "polymarket": poly_p}, weights)
         pick = make_pick(g, combined)
+        public = add_public_leverage(g, pick, combined, public_splits)
 
         kickoff_et = g["kickoff"].astimezone(EASTERN)
         is_mnf = kickoff_et.weekday() == 0
@@ -909,6 +1012,7 @@ def build(args: argparse.Namespace) -> dict:
                 "combined": pair(combined),
                 "weights": effective,
             },
+            "public_pct": public,
             "pick": pick,
         }
         out_games.append(record)
@@ -923,6 +1027,9 @@ def build(args: argparse.Namespace) -> dict:
             "win_probability": r["pick"].get("win_probability"),
             "confidence": r["pick"].get("confidence"),
             "live_upset_candidate": r["pick"].get("live_upset_candidate", False),
+            "public_pick_pct": r["pick"].get("public_pick_pct"),
+            "high_leverage_play": r["pick"].get("high_leverage_play", False),
+            "high_leverage_underdog": r["pick"].get("high_leverage_underdog", False),
         }
         for r in out_games
     ]
@@ -936,6 +1043,8 @@ def build(args: argparse.Namespace) -> dict:
         "config": {
             "weights": weights,
             "upset_band": list(UPSET_BAND),
+            "leverage_flag": LEVERAGE_FLAG,
+            "leverage_max_win_prob": LEVERAGE_MAX_WIN_PROB,
             "key_scores": KEY_SCORES,
         },
         "sources": sources,

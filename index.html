@@ -90,6 +90,7 @@
             bulb: '#FFB938',
             flag: '#FF6B57',
             sky: '#8EC5FF',
+            poly: '#C3A6FF',
             board: '#081A12'
           },
           fontFamily: {
@@ -306,7 +307,7 @@
     var has = isNum(value);
     var width = has ? Math.max(2, Math.min(100, value * 100)) : 0;
     return '' +
-      '<div class="grid grid-cols-[3.75rem_1fr_2.75rem] items-center gap-2">' +
+      '<div class="grid grid-cols-[5rem_1fr_2.75rem] items-center gap-2">' +
         '<span class="text-sm text-chalk/70">' + label + '</span>' +
         '<div class="relative h-2.5 rounded-full bg-turf" role="img" aria-label="' + label + ' ' + (has ? pct(value) : 'no data') + '">' +
           (has ? '<div class="h-full rounded-full ' + fillClass + '" style="width:' + width.toFixed(1) + '%"></div>' : '') +
@@ -374,14 +375,24 @@
     var dogTeam = g[sides.dog];
     var vegas = pr.sportsbook_vig_free ? pr.sportsbook_vig_free[sides.pick] : null;
     var kalshi = pr.kalshi ? pr.kalshi[sides.pick] : null;
+    var poly = pr.polymarket ? pr.polymarket[sides.pick] : null;
     var combined = pr.combined ? pr.combined[sides.pick] : g.pick.win_probability;
     var tier = g.pick.confidence ? g.pick.confidence.charAt(0).toUpperCase() + g.pick.confidence.slice(1) : '';
 
+    // Call out the prediction market that disagrees most with Vegas.
     var gap = '';
-    if (isNum(vegas) && isNum(kalshi)) {
-      var diff = Math.round((kalshi - vegas) * 100);
-      if (Math.abs(diff) >= 3) {
-        gap = '<p class="mt-2 text-xs text-chalk/55">Kalshi is ' + Math.abs(diff) + ' pts ' + (diff > 0 ? 'higher' : 'lower') + ' on the ' + esc(nick(pickTeam)) + ' than Vegas.</p>';
+    if (isNum(vegas)) {
+      var widest = null;
+      [['Kalshi', kalshi], ['Polymarket', poly]].forEach(function (m) {
+        if (!isNum(m[1])) return;
+        var diff = Math.round((m[1] - vegas) * 100);
+        if (Math.abs(diff) >= 3 && (!widest || Math.abs(diff) > Math.abs(widest.diff))) {
+          widest = { name: m[0], diff: diff };
+        }
+      });
+      if (widest) {
+        gap = '<p class="mt-2 text-xs text-chalk/55">' + widest.name + ' is ' + Math.abs(widest.diff) + ' pts ' +
+          (widest.diff > 0 ? 'higher' : 'lower') + ' on the ' + esc(nick(pickTeam)) + ' than Vegas.</p>';
       }
     }
 
@@ -410,6 +421,7 @@
           '<p class="text-xs text-chalk/55">' + esc(nick(pickTeam)) + ' win chance</p>' +
           bar('Vegas', vegas, 'bg-chalk') +
           bar('Kalshi', kalshi, 'bg-sky') +
+          bar('Polymarket', poly, 'bg-poly') +
         '</div>' +
         gap + upset +
       '</article>';
@@ -470,7 +482,7 @@
       out.push('ESPN was unavailable, so games came from the sportsbook feed and the week number is an estimate. Games already played this week may be missing.');
     }
     var src = d.sources || {};
-    var names = { odds_api: 'Sportsbook odds', kalshi: 'Kalshi prices' };
+    var names = { odds_api: 'Sportsbook odds', kalshi: 'Kalshi prices', polymarket: 'Polymarket prices' };
     Object.keys(names).forEach(function (k) {
       if (src[k] && src[k].ok === false) {
         out.push(names[k] + ' were unavailable on the last run' + (src[k].error ? ' (' + src[k].error + ')' : '') + '.');

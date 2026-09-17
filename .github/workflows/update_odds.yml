@@ -26,10 +26,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -98,12 +98,16 @@ jobs:
           import json
           d = json.load(open("data.json"))
           print(f"### Week {d.get('week')} picks\n")
-          print("| Game | Pick | Win % | Upset watch |")
-          print("|---|---|---|---|")
+          def fmt(x):
+              return f"{x:.0%}" if isinstance(x, (int, float)) else "n/a"
+          print("| Game | Pick | Win % | Public | Flags |")
+          print("|---|---|---|---|---|")
           for p in d.get("summary", {}).get("picks", []):
-              prob = p.get("win_probability")
-              pct = f"{prob:.0%}" if isinstance(prob, (int, float)) else "n/a"
-              print(f"| {p.get('matchup')} | {p.get('pick') or '-'} | {pct} | {'Yes' if p.get('live_upset_candidate') else ''} |")
+              flags = [name for key, name in (("live_upset_candidate", "Upset"),
+                                               ("high_leverage_play", "Leverage"),
+                                               ("high_leverage_underdog", "Contrarian dog")) if p.get(key)]
+              print(f"| {p.get('matchup')} | {p.get('pick') or '-'} | {fmt(p.get('win_probability'))} "
+                    f"| {fmt(p.get('public_pick_pct'))} | {', '.join(flags)} |")
           for m in d.get("monday_night_football", []):
               if m.get("projection_available"):
                   pr = m["projected"]

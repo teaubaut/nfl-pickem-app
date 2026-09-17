@@ -466,6 +466,9 @@
     if (isNum(age) && age > STALE_HOURS) {
       out.push('This data is over a day old. Run fetch_data.py, then refresh.');
     }
+    if (d.schedule_source === 'odds_api_fallback') {
+      out.push('ESPN was unavailable, so games came from the sportsbook feed and the week number is an estimate. Games already played this week may be missing.');
+    }
     var src = d.sources || {};
     var names = { odds_api: 'Sportsbook odds', kalshi: 'Kalshi prices' };
     Object.keys(names).forEach(function (k) {

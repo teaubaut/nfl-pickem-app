@@ -63,7 +63,7 @@ KEY_SCORES = [3, 6, 7, 10, 13, 14, 16, 17, 20, 21, 23, 24,
 
 HTTP_TIMEOUT = 20
 HTTP_RETRIES = 3
-USER_AGENT = "nfl-pool-fetcher/1.0"
+USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
 
 log = logging.getLogger("fetch_data")
 

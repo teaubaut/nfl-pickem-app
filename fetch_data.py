@@ -49,7 +49,14 @@ except Exception:  # zoneinfo/tzdata unavailable (e.g. bare Windows install)
 # --------------------------------------------------------------------------- #
 # Configuration
 # --------------------------------------------------------------------------- #
-ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
+# ESPN has been returning 403s to scripts on site.api.espn.com; the
+# site.web.api.espn.com host serves the same JSON and is tried first.
+ESPN_URLS = [
+    "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+    "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+]
+ESPN_HEADERS = {"Referer": "https://www.espn.com/", "Origin": "https://www.espn.com"}
+ESPN_RETRY_CODES = (403, 429, 500, 502, 503, 504)
 ODDS_URL = "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/"
 KALSHI_URL = "https://api.elections.kalshi.com/trade-api/v2/markets"
 KALSHI_SERIES = "KXNFLGAME"
@@ -63,7 +70,9 @@ KEY_SCORES = [3, 6, 7, 10, 13, 14, 16, 17, 20, 21, 23, 24,
 
 HTTP_TIMEOUT = 20
 HTTP_RETRIES = 3
-USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+USER_AGENT = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 "
+              "(KHTML, like Gecko) Version/17.5 Safari/605.1.15")
+DEFAULT_RETRY_CODES = (429, 500, 502, 503, 504)
 
 log = logging.getLogger("fetch_data")
 
@@ -149,11 +158,20 @@ def _redact(url: str) -> str:
     return re.sub(r"(apiKey=)[^&]+", r"\1***", url)
 
 
-def http_get_json(url: str, params: Optional[dict] = None) -> tuple[Any, Any]:
+def http_get_json(url: str, params: Optional[dict] = None, *,
+                  retry_codes: tuple = DEFAULT_RETRY_CODES,
+                  extra_headers: Optional[dict] = None,
+                  backoff: float = 2.0) -> tuple[Any, Any]:
     """GET a JSON endpoint with retries on rate limits / server errors."""
     if params:
         url = f"{url}?{urllib.parse.urlencode(params)}"
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        **(extra_headers or {}),
+    }
+    req = urllib.request.Request(url, headers=headers)
     last_err: Optional[Exception] = None
     for attempt in range(1, HTTP_RETRIES + 1):
         try:
@@ -161,12 +179,12 @@ def http_get_json(url: str, params: Optional[dict] = None) -> tuple[Any, Any]:
                 return json.loads(resp.read().decode("utf-8")), resp.headers
         except urllib.error.HTTPError as exc:
             last_err = exc
-            if exc.code not in (429, 500, 502, 503, 504):
+            if exc.code not in retry_codes:
                 raise RuntimeError(f"GET {_redact(url)} -> HTTP {exc.code} {exc.reason}") from None
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             last_err = exc
         if attempt < HTTP_RETRIES:
-            time.sleep(2 ** attempt)
+            time.sleep(backoff * 2 ** (attempt - 1))
     raise RuntimeError(f"GET {_redact(url)} failed after {HTTP_RETRIES} attempts: {last_err}")
 
 
@@ -219,7 +237,17 @@ def fetch_espn_games(week: Optional[int], season: Optional[int],
         params["dates"] = season
     if season_type:
         params["seasontype"] = season_type
-    data, _ = http_get_json(ESPN_URL, params or None)
+    data, errors = None, []
+    for url in ESPN_URLS:
+        try:
+            data, _ = http_get_json(url, params or None, retry_codes=ESPN_RETRY_CODES,
+                                    extra_headers=ESPN_HEADERS, backoff=10)
+            break
+        except Exception as exc:
+            log.warning("ESPN host failed: %s", exc)
+            errors.append(str(exc))
+    if data is None:
+        raise RuntimeError("; ".join(errors))
 
     games = []
     for ev in data.get("events", []):
@@ -252,8 +280,60 @@ def fetch_espn_games(week: Optional[int], season: Optional[int],
         "season": (data.get("season") or {}).get("year"),
         "season_type": (data.get("season") or {}).get("type"),
         "week": (data.get("week") or {}).get("number"),
+        "schedule_source": "espn",
     }
     return games, meta
+
+
+# --------------------------------------------------------------------------- #
+# 1b. Fallback schedule from The Odds API (used only if ESPN is unreachable)
+# --------------------------------------------------------------------------- #
+def estimate_week(now: datetime) -> dict:
+    """Estimate season/week from the calendar (weeks start the Tuesday after Labor Day)."""
+    today = now.astimezone(EASTERN).date()
+
+    def week1_start(year: int) -> date:
+        sept1 = date(year, 9, 1)
+        labor_day = sept1 + timedelta(days=(0 - sept1.weekday()) % 7)
+        return labor_day + timedelta(days=1)
+
+    season = today.year if today >= week1_start(today.year) else today.year - 1
+    week = (today - week1_start(season)).days // 7 + 1
+    if week <= 18:
+        return {"season": season, "season_type": 2, "week": week}
+    if week <= 23:
+        return {"season": season, "season_type": 3, "week": week - 18}
+    return {"season": season, "season_type": None, "week": None}
+
+
+def games_from_odds(events: list[dict], now: datetime) -> list[dict]:
+    """Build this week's games (through Monday night) from Odds API events."""
+    days_to_tuesday = (1 - now.weekday()) % 7
+    window_end = datetime.combine(now.date() + timedelta(days=days_to_tuesday),
+                                  datetime.min.time(), timezone.utc) + timedelta(hours=12)
+    if window_end <= now:
+        window_end += timedelta(days=7)
+    window_start = now - timedelta(hours=6)
+
+    games = []
+    for ev in events:
+        kickoff = parse_iso(ev.get("commence_time"))
+        home = resolve_team(ev.get("home_team"))
+        away = resolve_team(ev.get("away_team"))
+        if not (kickoff and home and away) or not window_start <= kickoff < window_end:
+            continue
+        games.append({
+            "game_id": f"odds-{ev.get('id')}",
+            "name": f"{TEAMS[away]['name']} at {TEAMS[home]['name']}",
+            "short_name": f"{away} @ {home}",
+            "kickoff": kickoff,
+            "status": "Scheduled",
+            "completed": False,
+            "neutral_site": False,
+            "home": home, "away": away,
+            "home_espn_abbr": home, "away_espn_abbr": away,
+        })
+    return games
 
 
 # --------------------------------------------------------------------------- #
@@ -569,9 +649,7 @@ def project_mnf(game: dict, odds: Optional[dict], pick: dict) -> dict:
 # Orchestration
 # --------------------------------------------------------------------------- #
 def build(args: argparse.Namespace) -> dict:
-    games, meta = fetch_espn_games(args.week, args.season, args.season_type)
-    log.info("ESPN: %d games (season %s, week %s)", len(games), meta["season"], meta["week"])
-    sources: dict[str, Any] = {"espn": {"ok": True, "games": len(games)}}
+    sources: dict[str, Any] = {}
 
     odds_events: list[dict] = []
     api_key = os.environ.get("ODDS_API_KEY", "").strip()
@@ -596,6 +674,21 @@ def build(args: argparse.Namespace) -> dict:
     except Exception as exc:
         log.error("Kalshi failed: %s", exc)
         sources["kalshi"] = {"ok": False, "error": str(exc)}
+
+    try:
+        games, meta = fetch_espn_games(args.week, args.season, args.season_type)
+        sources["espn"] = {"ok": True, "games": len(games)}
+        log.info("ESPN: %d games (season %s, week %s)", len(games), meta["season"], meta["week"])
+    except Exception as exc:
+        now = datetime.now(timezone.utc)
+        games = games_from_odds(odds_events, now) if not args.week else []
+        if not games:
+            raise RuntimeError(f"ESPN unavailable and no fallback schedule: {exc}") from exc
+        meta = {**estimate_week(now), "schedule_source": "odds_api_fallback"}
+        sources["espn"] = {"ok": False, "error": str(exc),
+                           "fallback": f"{len(games)} games built from The Odds API; week number estimated"}
+        log.warning("ESPN failed (%s); using %d games from The Odds API, estimated week %s",
+                    exc, len(games), meta["week"])
 
     out_games, mnf = [], []
     for g in sorted(games, key=lambda x: x["kickoff"]):
@@ -666,6 +759,7 @@ def build(args: argparse.Namespace) -> dict:
         "season": meta["season"],
         "season_type": meta["season_type"],
         "week": meta["week"],
+        "schedule_source": meta.get("schedule_source"),
         "config": {
             "kalshi_weight": args.kalshi_weight,
             "upset_band": list(UPSET_BAND),
@@ -712,7 +806,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     try:
         payload = build(args)
     except Exception as exc:
-        log.error("Could not load the ESPN schedule: %s", exc)
+        log.error("Could not build picks: %s", exc)
         return 1
 
     write_json(payload, args.output)

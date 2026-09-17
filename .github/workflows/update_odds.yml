@@ -10,6 +10,11 @@ on:
         description: "NFL week to fetch (leave blank for the current week)"
         required: false
         default: ""
+      debug_public:
+        description: "Show Action Network diagnostics in the run summary"
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write   # commit data.json back to the repo
@@ -50,10 +55,14 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           WEEK: ${{ github.event.inputs.week }}
+          DEBUG_PUBLIC: ${{ github.event.inputs.debug_public }}
         run: |
           ARGS=(--output data.json)
           if [ -n "$WEEK" ]; then
             ARGS+=(--week "$WEEK")
+          fi
+          if [ "$DEBUG_PUBLIC" = "true" ]; then
+            ARGS+=(--debug-public)
           fi
           python fetch_data.py "${ARGS[@]}"
 
@@ -112,5 +121,27 @@ jobs:
               if m.get("projection_available"):
                   pr = m["projected"]
                   print(f"\n**MNF tiebreaker:** {m['favorite']} {pr['favorite']} - {m['underdog']} {pr['underdog']}, total {m['projected_total']}")
+          PY
+          fi
+          if [ -f public_debug.json ]; then
+            python - >> "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          d = json.load(open("public_debug.json"))
+          print("\n### Action Network diagnostics\n")
+          print(f"Game dates queried: {', '.join(d.get('game_dates') or []) or 'none'}\n")
+          print("| Endpoint | Date | Games | With splits | Result |")
+          print("|---|---|---|---|---|")
+          for r in d.get("requests", []):
+              result = r.get("error") or ", ".join(r.get("matchups") or []) or "no games"
+              print(f"| {r.get('endpoint')} | {r.get('date')} | {r.get('games', '-')} | {r.get('with_splits', '-')} | {result} |")
+          for r in d.get("requests", []):
+              if r.get("games"):
+                  print(f"\n**Sample game fields ({r['endpoint']}, {r['date']}):**\n")
+                  print("```")
+                  print("game keys: " + ", ".join(r.get("game_keys") or []))
+                  for line in r.get("split_like_fields") or ["(no split-like fields found)"]:
+                      print(line)
+                  print("```")
+                  break
           PY
           fi

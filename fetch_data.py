@@ -283,6 +283,7 @@ def fetch_espn_games(week: Optional[int], season: Optional[int],
             log.warning("Skipping ESPN event %s (unrecognized teams or date)", ev.get("id"))
             continue
         status = (comp.get("status") or ev.get("status") or {}).get("type", {})
+        winner = next((side for side in ("home", "away") if sides[side].get("winner")), None)
         games.append({
             "game_id": str(ev.get("id")),
             "name": ev.get("name"),
@@ -292,6 +293,9 @@ def fetch_espn_games(week: Optional[int], season: Optional[int],
             "completed": bool(status.get("completed")),
             "neutral_site": bool(comp.get("neutralSite")),
             "home": home, "away": away,
+            "home_score": _num(sides["home"].get("score")),
+            "away_score": _num(sides["away"].get("score")),
+            "winner": {"home": home, "away": away}.get(winner),
             "home_espn_abbr": home_t.get("abbreviation"),
             "away_espn_abbr": away_t.get("abbreviation"),
         })
@@ -859,8 +863,13 @@ def parse_action_game(game: dict) -> Optional[dict]:
             "home_pct": split[0] if split else None, "away_pct": split[1] if split else None}
 
 
-def fetch_public_splits(game_dates: list[str], debug: Optional[list] = None) -> list[dict]:
-    """Try each endpoint across this week's game dates; first one with splits wins."""
+def fetch_public_splits(game_dates: list[str], debug: Optional[list] = None,
+                        needed: Optional[set] = None) -> list[dict]:
+    """Try each endpoint across this week's game dates; first one with splits wins.
+
+    The v2 response usually covers the whole week, so requests stop as soon as
+    every matchup in `needed` (a set of frozenset team pairs) has splits.
+    """
     headers = {"Referer": "https://www.actionnetwork.com/", "Origin": "https://www.actionnetwork.com"}
     for name, url in ACTION_ENDPOINTS:
         found: dict[tuple, dict] = {}
@@ -895,6 +904,8 @@ def fetch_public_splits(game_dates: list[str], debug: Optional[list] = None) -> 
                 debug.append(entry)
             log.info("Action Network %s %s: %d games, %d with public splits",
                      name, day or "(no date)", len(games), len(with_split))
+            if needed and needed <= {pair for pair, _ in found}:
+                break
         if found:
             return list(found.values())
     return []
@@ -1045,7 +1056,8 @@ def build(args: argparse.Namespace) -> dict:
     public_debug: Optional[list] = [] if args.debug_public else None
     public_splits: list[dict] = []
     try:
-        public_splits = fetch_public_splits(game_dates, public_debug)
+        public_splits = fetch_public_splits(
+            game_dates, public_debug, needed={frozenset((g["home"], g["away"])) for g in games})
         sources["action_network"] = {"ok": bool(public_splits), "games_with_splits": len(public_splits)}
         if not public_splits:
             sources["action_network"]["error"] = "No public moneyline splits returned"
@@ -1093,6 +1105,10 @@ def build(args: argparse.Namespace) -> dict:
             "kickoff_et": kickoff_et.isoformat(),
             "weekday_et": kickoff_et.strftime("%A"),
             "is_monday_night": is_mnf,
+            "result": None if g.get("home_score") is None and g.get("away_score") is None else {
+                "home_score": g.get("home_score"), "away_score": g.get("away_score"),
+                "winner": g.get("winner"), "final": g["completed"],
+            },
             "home": team_block(g["home"], g["home_espn_abbr"]),
             "away": team_block(g["away"], g["away_espn_abbr"]),
             "odds": odds,

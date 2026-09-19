@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T13:23:32+00:00",
+  "generated_at": "2026-09-19T13:49:56+00:00",
   "season": 2026,
   "season_type": 2,
   "week": 2,
@@ -15,6 +15,7 @@
       0.49
     ],
     "leverage_flag": 0.15,
+    "movement_flag": 0.03,
     "leverage_max_win_prob": 0.65,
     "key_scores": [
       3,
@@ -41,12 +42,13 @@
       45
     ]
   },
+  "previous_run": "2026-09-19T13:23:32+00:00",
   "sources": {
     "odds_api": {
       "ok": true,
       "events": 29,
-      "requests_remaining": "464",
-      "requests_used": "36"
+      "requests_remaining": "461",
+      "requests_used": "39"
     },
     "kalshi": {
       "ok": true,
@@ -65,6 +67,10 @@
       "ok": true,
       "games": 16
     },
+    "espn_injuries": {
+      "ok": true,
+      "teams": 32
+    },
     "action_network": {
       "ok": true,
       "games_with_splits": 16
@@ -80,6 +86,8 @@
         "win_probability": null,
         "confidence": null,
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": null,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -91,6 +99,8 @@
         "win_probability": 0.5753,
         "confidence": "lean",
         "live_upset_candidate": true,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.78,
         "high_leverage_play": false,
         "high_leverage_underdog": true
@@ -99,9 +109,11 @@
         "game_id": "401872937",
         "matchup": "MIN @ CHI",
         "pick": "CHI",
-        "win_probability": 0.6636,
+        "win_probability": 0.6634,
         "confidence": "solid",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.9,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -110,9 +122,11 @@
         "game_id": "401872939",
         "matchup": "PHI @ TEN",
         "pick": "PHI",
-        "win_probability": 0.7508,
+        "win_probability": 0.7504,
         "confidence": "strong",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.98,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -124,6 +138,8 @@
         "win_probability": 0.6828,
         "confidence": "solid",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.83,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -132,9 +148,11 @@
         "game_id": "401872936",
         "matchup": "GB @ NYJ",
         "pick": "GB",
-        "win_probability": 0.6177,
+        "win_probability": 0.6169,
         "confidence": "solid",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.91,
         "high_leverage_play": false,
         "high_leverage_underdog": true
@@ -146,6 +164,8 @@
         "win_probability": 0.7835,
         "confidence": "strong",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.97,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -157,6 +177,8 @@
         "win_probability": 0.7813,
         "confidence": "strong",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.97,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -168,6 +190,8 @@
         "win_probability": 0.5767,
         "confidence": "lean",
         "live_upset_candidate": true,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.7,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -179,6 +203,8 @@
         "win_probability": 0.5838,
         "confidence": "lean",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.61,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -190,6 +216,8 @@
         "win_probability": 0.724,
         "confidence": "solid",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.86,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -201,6 +229,8 @@
         "win_probability": 0.6537,
         "confidence": "solid",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.85,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -212,6 +242,8 @@
         "win_probability": 0.6524,
         "confidence": "solid",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.93,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -223,6 +255,8 @@
         "win_probability": 0.8872,
         "confidence": "strong",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.4975,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -231,9 +265,11 @@
         "game_id": "401872945",
         "matchup": "IND @ KC",
         "pick": "KC",
-        "win_probability": 0.7238,
+        "win_probability": 0.7233,
         "confidence": "solid",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.98,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -242,9 +278,11 @@
         "game_id": "401872947",
         "matchup": "NYG @ LAR",
         "pick": "LAR",
-        "win_probability": 0.7441,
+        "win_probability": 0.7438,
         "confidence": "solid",
         "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.89,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -258,6 +296,8 @@
         "win_probability": 0.5753,
         "confidence": "lean",
         "live_upset_candidate": true,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.78,
         "high_leverage_play": false,
         "high_leverage_underdog": true
@@ -269,6 +309,8 @@
         "win_probability": 0.5767,
         "confidence": "lean",
         "live_upset_candidate": true,
+        "qb_watch": true,
+        "moved": false,
         "public_pick_pct": 0.7,
         "high_leverage_play": false,
         "high_leverage_underdog": false
@@ -351,6 +393,97 @@
         "home": 0.91,
         "away": 0.09
       },
+      "injuries": {
+        "home": [
+          {
+            "name": "Josh Allen",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Allen completed 20 of 31 passes for 248 yards with three touchdowns and no interceptions while rushing 14 times for 69 yards and another pai"
+          },
+          {
+            "name": "Ar'maj Reed-Adams",
+            "position": "G",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Ed Oliver",
+            "position": "DT",
+            "status": "Out",
+            "detail": "Oliver (hip) is inactive for Thursday's game versus the Lions."
+          },
+          {
+            "name": "Jalon Kilgore",
+            "position": "S",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Jude Bowry",
+            "position": "OT",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Skyler Bell",
+            "position": "WR",
+            "status": "Out",
+            "detail": "Bell (coach's decision) is inactive for Thursday's game versus Detroit."
+          }
+        ],
+        "away": [
+          {
+            "name": "Jared Goff",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Goff completed 26 of 38 passes for 327 yards with four touchdowns and no interceptions while adding three rushes for seven yards in the Lion"
+          },
+          {
+            "name": "Ahmed Hassanein",
+            "position": "DE",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Blake Miller",
+            "position": "OT",
+            "status": "Out",
+            "detail": "Miller (knee) has been ruled out for Thursday night's contest in Buffalo."
+          },
+          {
+            "name": "Christian Mahogany",
+            "position": "G",
+            "status": "Out",
+            "detail": "Mahogany (hip) has been ruled out for Thursday night's contest against the Bills."
+          },
+          {
+            "name": "Ennis Rakestraw Jr.",
+            "position": "CB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Jimmy Rolder",
+            "position": "LB",
+            "status": "Out",
+            "detail": "inactive"
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "BUF",
+            "name": "Josh Allen",
+            "status": "Active"
+          },
+          {
+            "team": "DET",
+            "name": "Jared Goff",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": null,
       "pick": {
         "team": null,
         "note": "No sportsbook or prediction-market data available"
@@ -444,9 +577,9 @@
         "best_ask": 0.58,
         "last_trade": 0.57,
         "method": "bid_ask_midpoint",
-        "volume": 57158.690703,
-        "volume_24h": 9287.893713,
-        "liquidity": 250718.5818
+        "volume": 57158.690702999986,
+        "volume_24h": 9014.910456999998,
+        "liquidity": 278019.4197
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -474,6 +607,105 @@
       "public_pct": {
         "home": 0.22,
         "away": 0.78
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Michael Penix Jr.",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Penix (knee) won't play in Sunday's game against the Panthers, Will McFadden of the Falcons' official site reports."
+          },
+          {
+            "name": "Tua Tagovailoa",
+            "position": "QB",
+            "status": "Doubtful",
+            "detail": "Tagovailoa (oblique) is doubtful for Sunday's game versus the Panthers, Will McFadden of the Falcons' official site reports."
+          },
+          {
+            "name": "Cooper Rush",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Coach Kevin Stefanski said Friday that Rush will start Sunday's contest against the Panthers, Daniel Flick of The Atlanta Journal-Constituti"
+          },
+          {
+            "name": "Jack Strand",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Strand is listed as the No. 2 quarterback for Sunday's game versus the Panthers, Marc Raimondi of ESPN.com reports."
+          },
+          {
+            "name": "Billy Bowman Jr.",
+            "position": "CB",
+            "status": "Out",
+            "detail": "Bowman (Achilles) is listed as out for Sunday's game against the Panthers."
+          },
+          {
+            "name": "Cameron Williams",
+            "position": "OL",
+            "status": "Injured Reserve",
+            "detail": "The Falcons placed Williams (ankle) on injured reserve Saturday, Will McFadden of the team's official site reports."
+          }
+        ],
+        "away": [
+          {
+            "name": "Bryce Young",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Young completed 23 of 37 passes for 361 yards and three touchdowns with one interception in Sunday's 59-37 loss to the Bears. He added 10 ya"
+          },
+          {
+            "name": "Haynes King",
+            "position": "QB",
+            "status": "Active",
+            "detail": "active"
+          },
+          {
+            "name": "Bobby Brown III",
+            "position": "DT",
+            "status": "Out",
+            "detail": "Brown (back) won't play in Sunday's game against Atlanta."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "ATL",
+            "name": "Michael Penix Jr.",
+            "status": "Out"
+          },
+          {
+            "team": "ATL",
+            "name": "Tua Tagovailoa",
+            "status": "Doubtful"
+          },
+          {
+            "team": "ATL",
+            "name": "Cooper Rush",
+            "status": "Active"
+          },
+          {
+            "team": "ATL",
+            "name": "Jack Strand",
+            "status": "Active"
+          },
+          {
+            "team": "CAR",
+            "name": "Bryce Young",
+            "status": "Active"
+          },
+          {
+            "team": "CAR",
+            "name": "Haynes King",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": -0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "CAR",
@@ -536,8 +768,8 @@
           "avg_hold_pct": 4.07
         },
         "fair_moneyline": {
-          "home": -195,
-          "away": 195
+          "home": -194,
+          "away": 194
         },
         "spread": {
           "home": -4.5,
@@ -581,14 +813,14 @@
         "best_ask": 0.34,
         "last_trade": 0.34,
         "method": "bid_ask_midpoint",
-        "volume": 53338.703224000004,
+        "volume": 53338.70322400001,
         "volume_24h": 18189.852794,
-        "liquidity": 257135.9198
+        "liquidity": 300804.9595
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.6609,
-          "away": 0.3391
+          "home": 0.6603,
+          "away": 0.3397
         },
         "kalshi": {
           "home": 0.665,
@@ -599,8 +831,8 @@
           "away": 0.335
         },
         "combined": {
-          "home": 0.6636,
-          "away": 0.3364
+          "home": 0.6634,
+          "away": 0.3366
         },
         "weights": {
           "sportsbook": 0.333,
@@ -612,21 +844,103 @@
         "home": 0.9,
         "away": 0.1
       },
+      "injuries": {
+        "home": [
+          {
+            "name": "Caleb Williams",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Williams completed 21 of 29 passes for 269 yards and two touchdowns while carrying the ball 10 times for 65 yards and two more TDs in Sunday"
+          },
+          {
+            "name": "Tyson Bagent",
+            "position": "QB",
+            "status": "Active",
+            "detail": "active"
+          }
+        ],
+        "away": [
+          {
+            "name": "Kyler Murray",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Murray (concussion) won't play in Sunday's contest at Chicago."
+          },
+          {
+            "name": "Carson Wentz",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Coach Kevin O'Connell said Friday that Wentz will be the Vikings' starting quarterback Sunday at Chicago with Kyler Murray (concussion) rule"
+          },
+          {
+            "name": "J.J. McCarthy",
+            "position": "QB",
+            "status": "Active",
+            "detail": "McCarthy (coach's decision) is inactive but will serve as the Vikings' emergency third quarterback against the Packers on Sunday, Craig Pete"
+          },
+          {
+            "name": "Jauan Jennings",
+            "position": "WR",
+            "status": "Out",
+            "detail": "Jennings (not injury related - personal) won't play Sunday in Chicago."
+          },
+          {
+            "name": "Jordan Mason",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "CHI",
+            "name": "Caleb Williams",
+            "status": "Active"
+          },
+          {
+            "team": "CHI",
+            "name": "Tyson Bagent",
+            "status": "Active"
+          },
+          {
+            "team": "MIN",
+            "name": "Kyler Murray",
+            "status": "Out"
+          },
+          {
+            "team": "MIN",
+            "name": "Carson Wentz",
+            "status": "Active"
+          },
+          {
+            "team": "MIN",
+            "name": "J.J. McCarthy",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": -0.0002,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
+      },
       "pick": {
         "team": "CHI",
         "name": "Chicago Bears",
-        "win_probability": 0.6636,
+        "win_probability": 0.6634,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "MIN",
-        "underdog_win_probability": 0.3364,
+        "underdog_win_probability": 0.3366,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.9,
-        "leverage": -0.2364,
+        "leverage": -0.2366,
         "high_leverage_play": false,
         "underdog_public_pct": 0.1,
-        "underdog_leverage": 0.2364,
+        "underdog_leverage": 0.2366,
         "high_leverage_underdog": false
       }
     },
@@ -669,12 +983,12 @@
         ],
         "moneyline": {
           "home": 274,
-          "away": -342,
-          "avg_hold_pct": 4.26
+          "away": -340,
+          "avg_hold_pct": 4.23
         },
         "fair_moneyline": {
-          "home": 288,
-          "away": -288
+          "home": 287,
+          "away": -287
         },
         "spread": {
           "home": 7.0,
@@ -719,13 +1033,13 @@
         "last_trade": 0.76,
         "method": "bid_ask_midpoint",
         "volume": 58885.984228,
-        "volume_24h": 27254.76100799998,
-        "liquidity": 348771.5378
+        "volume_24h": 25886.139958,
+        "liquidity": 298835.0923
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.2577,
-          "away": 0.7423
+          "home": 0.2587,
+          "away": 0.7413
         },
         "kalshi": {
           "home": 0.245,
@@ -736,8 +1050,8 @@
           "away": 0.755
         },
         "combined": {
-          "home": 0.2492,
-          "away": 0.7508
+          "home": 0.2496,
+          "away": 0.7504
         },
         "weights": {
           "sportsbook": 0.333,
@@ -749,21 +1063,115 @@
         "home": 0.02,
         "away": 0.98
       },
+      "injuries": {
+        "home": [
+          {
+            "name": "Cam Ward",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Ward completed 19 of 32 passes for 140 yards and a touchdown while rushing four times for 21 yards in Sunday's 23-10 loss to the Jets."
+          },
+          {
+            "name": "Mitchell Trubisky",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Trubisky (biceps) was not listed on the Titans' injury report Wednesday."
+          },
+          {
+            "name": "Milo Eifler",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          }
+        ],
+        "away": [
+          {
+            "name": "Cole Payton",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Payton (coach's decision) is inactive for Sunday's game against the Commanders."
+          },
+          {
+            "name": "Jalen Hurts",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Hurts completed 14 of 25 pass attempts for 203 yards with three touchdowns and no interceptions in Sunday's 24-22 win against the Commanders"
+          },
+          {
+            "name": "Tanner McKee",
+            "position": "QB",
+            "status": "Active",
+            "detail": "McKee (coach's decision) is inactive as the emergency third quarterback for Sunday's game against the Commanders."
+          },
+          {
+            "name": "Eli Stowers",
+            "position": "TE",
+            "status": "Injured Reserve",
+            "detail": "The Eagles placed Stowers (quadriceps/hamstring) on injured reserve Saturday."
+          },
+          {
+            "name": "Jonathan Greenard",
+            "position": "LB",
+            "status": "Out",
+            "detail": "Greenard (pectoral) has been ruled out for Sunday's game against the Titans."
+          },
+          {
+            "name": "Landon Dickerson",
+            "position": "G",
+            "status": "Injured Reserve",
+            "detail": "The Eagles placed Dickerson (knee) on injured reserve Tuesday, Chris McPherson of the team's official site reports."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "TEN",
+            "name": "Cam Ward",
+            "status": "Active"
+          },
+          {
+            "team": "TEN",
+            "name": "Mitchell Trubisky",
+            "status": "Active"
+          },
+          {
+            "team": "PHI",
+            "name": "Cole Payton",
+            "status": "Active"
+          },
+          {
+            "team": "PHI",
+            "name": "Jalen Hurts",
+            "status": "Active"
+          },
+          {
+            "team": "PHI",
+            "name": "Tanner McKee",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": 0.0004,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
+      },
       "pick": {
         "team": "PHI",
         "name": "Philadelphia Eagles",
-        "win_probability": 0.7508,
+        "win_probability": 0.7504,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "TEN",
-        "underdog_win_probability": 0.2492,
+        "underdog_win_probability": 0.2496,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.98,
-        "leverage": -0.2292,
+        "leverage": -0.2296,
         "high_leverage_play": false,
         "underdog_public_pct": 0.02,
-        "underdog_leverage": 0.2292,
+        "underdog_leverage": 0.2296,
         "high_leverage_underdog": false
       }
     },
@@ -855,9 +1263,9 @@
         "best_ask": 0.32,
         "last_trade": 0.32,
         "method": "bid_ask_midpoint",
-        "volume": 30756.837197,
-        "volume_24h": 14767.592180000001,
-        "liquidity": 459220.112
+        "volume": 30756.83719700001,
+        "volume_24h": 14271.218267999991,
+        "liquidity": 417146.8385
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -885,6 +1293,89 @@
       "public_pct": {
         "home": 0.83,
         "away": 0.17
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Behren Morton",
+            "position": "QB",
+            "status": "Active",
+            "detail": "active"
+          },
+          {
+            "name": "A.J. Brown",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "detail": "Brown, who was officially placed on injured reserve Saturday, is expected to miss about six weeks due to a right high-ankle sprain, Ian Rapo"
+          },
+          {
+            "name": "Dametrious Crownover",
+            "position": "OT",
+            "status": "Out",
+            "detail": "Crownover (knee) has been ruled out ahead of Sunday's game against the Steelers."
+          }
+        ],
+        "away": [
+          {
+            "name": "Aaron Rodgers",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Rodgers completed 24 of 40 passes for 221 yards with one touchdown and no interceptions and added three carries for minus-3 yards in the Ste"
+          },
+          {
+            "name": "Drew Allar",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Allar (coach's decision) is inactive for Sunday's game against the Falcons."
+          },
+          {
+            "name": "Will Howard",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Howard (coach's decision) is inactive but will serve as the Steelers' emergency third quarterback against the Falcons on Sunday."
+          },
+          {
+            "name": "DeShon Elliott",
+            "position": "S",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          },
+          {
+            "name": "Joey Porter Jr.",
+            "position": "CB",
+            "status": "Out",
+            "detail": "Porter (back) is officially listed as out for Sunday's game against the Patriots, Brooke Pryor of ESPN.com reports."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "NE",
+            "name": "Behren Morton",
+            "status": "Active"
+          },
+          {
+            "team": "PIT",
+            "name": "Aaron Rodgers",
+            "status": "Active"
+          },
+          {
+            "team": "PIT",
+            "name": "Drew Allar",
+            "status": "Active"
+          },
+          {
+            "team": "PIT",
+            "name": "Will Howard",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": -0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "NE",
@@ -943,12 +1434,12 @@
         ],
         "moneyline": {
           "home": 153,
-          "away": -182,
-          "avg_hold_pct": 3.88
+          "away": -181,
+          "avg_hold_pct": 3.9
         },
         "fair_moneyline": {
-          "home": 165,
-          "away": -165
+          "home": 164,
+          "away": -164
         },
         "spread": {
           "home": 3.0,
@@ -992,14 +1483,14 @@
         "best_ask": 0.62,
         "last_trade": 0.62,
         "method": "bid_ask_midpoint",
-        "volume": 15896.928050999999,
-        "volume_24h": 7030.759340000007,
-        "liquidity": 490736.1314
+        "volume": 15896.928051000003,
+        "volume_24h": 7022.904501000006,
+        "liquidity": 472586.7741
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.3768,
-          "away": 0.6232
+          "home": 0.3792,
+          "away": 0.6208
         },
         "kalshi": {
           "home": 0.385,
@@ -1010,8 +1501,8 @@
           "away": 0.615
         },
         "combined": {
-          "home": 0.3823,
-          "away": 0.6177
+          "home": 0.3831,
+          "away": 0.6169
         },
         "weights": {
           "sportsbook": 0.333,
@@ -1023,21 +1514,100 @@
         "home": 0.09,
         "away": 0.91
       },
+      "injuries": {
+        "home": [
+          {
+            "name": "Geno Smith",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Smith completed 19 of 24 passes for 215 yards while rushing six times for seven yards in Sunday's 23-10 win over the Titans."
+          },
+          {
+            "name": "Joseph Ossai",
+            "position": "DE",
+            "status": "Out",
+            "detail": "Ossai (foot) has been ruled out ahead of Sunday's game against the Packers, Zack Rosenblatt of The Athletic reports."
+          },
+          {
+            "name": "Kene Nwangwu",
+            "position": "RB",
+            "status": "Out",
+            "detail": "Nwangwu (back) won't play in Sunday's game against the Packers, Zack Rosenblatt of The Athletic reports."
+          },
+          {
+            "name": "Minkah Fitzpatrick",
+            "position": "S",
+            "status": "Out",
+            "detail": "Fitzpatrick (groin) will not play in Sunday's game versus Green Bay, Zack Rosenblatt of The Athletic reports."
+          },
+          {
+            "name": "Omar Cooper Jr.",
+            "position": "WR",
+            "status": "Out",
+            "detail": "Cooper (ankle) will not play Sunday against the Packers, Zack Rosenblatt of The Athletic reports."
+          },
+          {
+            "name": "Tim Patrick",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "detail": "The Jets placed Patrick (groin) on injured reserve Saturday, Zack Rosenblatt of The Athletic reports."
+          }
+        ],
+        "away": [
+          {
+            "name": "Jordan Love",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Love completed 21 of 42 passes for 387 yards, two touchdowns and one interception in Sunday's 39-22 loss to the Vikings. He also rushed once"
+          },
+          {
+            "name": "Javon Hargrave",
+            "position": "DT",
+            "status": "Doubtful",
+            "detail": "Hargrave (concussion/knee) is listed as doubtful ahead of Sunday's game against the Jets, Wes Hodkiewicz reports."
+          },
+          {
+            "name": "Warren Brinson",
+            "position": "DT",
+            "status": "Out",
+            "detail": "Brinson (calf) has been ruled out ahead of Sunday's game against the Jets, Wes Hodkiewicz of the Packers' official site reports."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "NYJ",
+            "name": "Geno Smith",
+            "status": "Active"
+          },
+          {
+            "team": "GB",
+            "name": "Jordan Love",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": 0.0008,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
+      },
       "pick": {
         "team": "GB",
         "name": "Green Bay Packers",
-        "win_probability": 0.6177,
+        "win_probability": 0.6169,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "NYJ",
-        "underdog_win_probability": 0.3823,
+        "underdog_win_probability": 0.3831,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.91,
-        "leverage": -0.2923,
+        "leverage": -0.2931,
         "high_leverage_play": false,
         "underdog_public_pct": 0.09,
-        "underdog_leverage": 0.2923,
+        "underdog_leverage": 0.2931,
         "high_leverage_underdog": true
       }
     },
@@ -1129,9 +1699,9 @@
         "best_ask": 0.22,
         "last_trade": 0.22,
         "method": "bid_ask_midpoint",
-        "volume": 60231.71292600003,
-        "volume_24h": 54846.844817,
-        "liquidity": 828832.2347
+        "volume": 60238.042040000015,
+        "volume_24h": 53484.239374,
+        "liquidity": 782103.7868
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1159,6 +1729,112 @@
       "public_pct": {
         "home": 0.97,
         "away": 0.03
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Baker Mayfield",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Mayfield completed 23 of 28 passes for 216 yards with no touchdowns or interceptions while adding five rushes for 30 yards and a touchdown i"
+          },
+          {
+            "name": "Jalon Daniels",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Daniels is moving forward as Tampa Bay's backup quarterback behind Baker Mayfield after impressing throughout training camp, Ian Rapoport of"
+          },
+          {
+            "name": "David Sills V",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "detail": "Sills (undisclosed) was placed on injured reserve by the Buccaneers on Sunday with a designation to return, Scott Smith of the team's offici"
+          },
+          {
+            "name": "Josh Hayes",
+            "position": "CB",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          },
+          {
+            "name": "Mohamed Kamara",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "detail": "Kamara (knee) reverted to the Buccaneers' injured reserve list Monday, per the NFL's transaction log."
+          }
+        ],
+        "away": [
+          {
+            "name": "Dillon Gabriel",
+            "position": "QB",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          },
+          {
+            "name": "Deshaun Watson",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Head coach Todd Monken said Monday that he anticipates sticking with Watson as the Browns' starting quarterback for Week 2 against the Bucca"
+          },
+          {
+            "name": "Taylen Green",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Green (coach's decision) is inactive for Sunday's matchup with the Jaguars."
+          },
+          {
+            "name": "Dylan Sampson",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "detail": "Sampson (knee) was placed on injured reserve Tuesday."
+          },
+          {
+            "name": "Jeremiah Owusu-Koramoah",
+            "position": "LB",
+            "status": "Out",
+            "detail": "out"
+          },
+          {
+            "name": "Kendrick Green",
+            "position": "G",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "TB",
+            "name": "Baker Mayfield",
+            "status": "Active"
+          },
+          {
+            "team": "TB",
+            "name": "Jalon Daniels",
+            "status": "Active"
+          },
+          {
+            "team": "CLE",
+            "name": "Dillon Gabriel",
+            "status": "Injured Reserve"
+          },
+          {
+            "team": "CLE",
+            "name": "Deshaun Watson",
+            "status": "Active"
+          },
+          {
+            "team": "CLE",
+            "name": "Taylen Green",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": -0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "TB",
@@ -1266,9 +1942,9 @@
         "best_ask": 0.22,
         "last_trade": 0.22,
         "method": "bid_ask_midpoint",
-        "volume": 10874.81946,
-        "volume_24h": 4434.326824,
-        "liquidity": 358522.7699
+        "volume": 10886.176039999998,
+        "volume_24h": 4100.098846999998,
+        "liquidity": 362702.2179
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1296,6 +1972,107 @@
       "public_pct": {
         "home": 0.97,
         "away": 0.03
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Joe Fagnano",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Fagnano (coach's decision) is inactive for Sunday's matchup with the Colts."
+          },
+          {
+            "name": "Lamar Jackson",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Jackson completed 17 of 25 passes for 324 yards with one touchdown and no interceptions while adding seven rushes for 40 yards and another s"
+          },
+          {
+            "name": "Ja'Kobi Lane",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "detail": "Coach Jesse Minter said Lane underwent wrist surgery Wednesday, and the Ravens placed the rookie wide receiver on injured reserve, Brian Wac"
+          },
+          {
+            "name": "Nnamdi Madubuike",
+            "position": "DT",
+            "status": "Out",
+            "detail": "Madubuike (neck) has been ruled out ahead of Sunday's game against the Saints."
+          },
+          {
+            "name": "T.J. Tampa",
+            "position": "CB",
+            "status": "Out",
+            "detail": "Tampa (knee) is out for Sunday's game versus New Orleans, Cordell Woodland of 105.7 The Fan Baltimore reports."
+          },
+          {
+            "name": "Teddye Buchanan",
+            "position": "LB",
+            "status": "Out",
+            "detail": "Buchanan (knee) has been ruled out ahead of Sunday's game against the Saints."
+          }
+        ],
+        "away": [
+          {
+            "name": "Tyler Shough",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Shough completed 35 of 56 passes for 410 yards and three touchdowns with two interceptions in Sunday's 31-30 overtime loss to the Lions. He "
+          },
+          {
+            "name": "Zach Wilson",
+            "position": "QB",
+            "status": "Active",
+            "detail": "active"
+          },
+          {
+            "name": "Audric Estime",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "detail": "The Saints placed Estime (thigh) on injured reserve Saturday, Ross Jackson of WWL Louisiana reports."
+          },
+          {
+            "name": "Isaiah Stalbird",
+            "position": "LB",
+            "status": "Doubtful",
+            "detail": "doubtful"
+          },
+          {
+            "name": "Zach Wood",
+            "position": "LS",
+            "status": "Injured Reserve",
+            "detail": "The Saints placed Wood (calf) on injured reserve Friday."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "BAL",
+            "name": "Joe Fagnano",
+            "status": "Active"
+          },
+          {
+            "team": "BAL",
+            "name": "Lamar Jackson",
+            "status": "Active"
+          },
+          {
+            "team": "NO",
+            "name": "Tyler Shough",
+            "status": "Active"
+          },
+          {
+            "team": "NO",
+            "name": "Zach Wilson",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": -0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "BAL",
@@ -1403,9 +2180,9 @@
         "best_ask": 0.43,
         "last_trade": 0.43,
         "method": "bid_ask_midpoint",
-        "volume": 254918.385978,
-        "volume_24h": 10684.062438999996,
-        "liquidity": 825315.8009
+        "volume": 255185.627358,
+        "volume_24h": 10843.161957999999,
+        "liquidity": 785763.1533
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1433,6 +2210,85 @@
       "public_pct": {
         "home": 0.7,
         "away": 0.3
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "C.J. Stroud",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Stroud completed 26 of 38 passes for 274 yards and two touchdowns in Sunday's 36-31 loss to the Bills. He also rushed twice for 15 yards and"
+          },
+          {
+            "name": "Ed Ingram",
+            "position": "G",
+            "status": "Out",
+            "detail": "Ingram (groin) has been ruled out ahead of Sunday's game against the Bengals."
+          },
+          {
+            "name": "Henry To'oTo'o",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "detail": "To'oTo'o (shoulder) is expected to miss more than four games, Mike Garafolo of NFL Network reports."
+          },
+          {
+            "name": "Jadeveon Clowney",
+            "position": "DE",
+            "status": "Out",
+            "detail": "Clowney (knee) has been ruled out ahead of Sunday's game against the Bengals."
+          },
+          {
+            "name": "Jake Hummel",
+            "position": "LB",
+            "status": "Out",
+            "detail": "Hummel (groin) has been ruled out ahead of Sunday's game against the Bengals."
+          },
+          {
+            "name": "Kayden McDonald",
+            "position": "DT",
+            "status": "Injured Reserve",
+            "detail": "The Texans placed McDonald (ankle) on injured reserve Friday."
+          }
+        ],
+        "away": [
+          {
+            "name": "Joe Burrow",
+            "position": "QB",
+            "status": "Questionable",
+            "detail": "Burrow (back) is listed as questionable for Sunday's game at Houston, but Bengals coach Zac Taylor said Friday that the quarterback is good "
+          },
+          {
+            "name": "Brian Parker II",
+            "position": "OT",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          },
+          {
+            "name": "Ja'Sir Taylor",
+            "position": "CB",
+            "status": "Injured Reserve",
+            "detail": "The Bengals placed Taylor (undisclosed) on injured reserve Sunday with a designation to return, Geoff Hobson of the team's official site rep"
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "HOU",
+            "name": "C.J. Stroud",
+            "status": "Active"
+          },
+          {
+            "team": "CIN",
+            "name": "Joe Burrow",
+            "status": "Questionable"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": -0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "HOU",
@@ -1541,8 +2397,8 @@
         "last_trade": 0.42,
         "method": "bid_ask_midpoint",
         "volume": 28537.557157999996,
-        "volume_24h": 5906.813314999997,
-        "liquidity": 575871.4744
+        "volume_24h": 5473.673314999997,
+        "liquidity": 519839.2529
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1570,6 +2426,95 @@
       "public_pct": {
         "home": 0.61,
         "away": 0.39
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Bo Nix",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Nix completed 17 of 28 passes for 131 yards with one touchdown and one interception while adding three carries for two yards in the Broncos'"
+          },
+          {
+            "name": "Jarrett Stidham",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Coach Sean Payton said Wednesday that Stidham will be the Broncos' backup quarterback to begin the 2026 season, Zac Stevens of TheDNVR.com r"
+          },
+          {
+            "name": "Caleb Lohner",
+            "position": "TE",
+            "status": "Injured Reserve",
+            "detail": "Lohner (lower body) was placed on injured reserve by the Broncos on Sunday with a designation to return, Aric DiLalla of the team's official"
+          },
+          {
+            "name": "Frank Crum",
+            "position": "OT",
+            "status": "Injured Reserve",
+            "detail": "Crum (undisclosed) was placed on injured reserve with a designation to return by the Broncos on Sunday, Aric DiLalla of the team's official "
+          },
+          {
+            "name": "Jonathon Cooper",
+            "position": "LB",
+            "status": "Out",
+            "detail": "Cooper pleaded not guilty to five charges of domestic violence in a Douglas County (Colo.) courtroom Monday, Jeff Legwold of ESPN.com report"
+          },
+          {
+            "name": "Levelle Bailey",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "detail": "Bailey (leg) reverted to the Broncos' injured-reserve list Friday, Parker Gabriel of The Denver Post reports."
+          }
+        ],
+        "away": [
+          {
+            "name": "Quinn Ewers",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Ewers (coach's decision) is inactive for Sunday's game against the Browns."
+          },
+          {
+            "name": "Trevor Lawrence",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Lawrence completed 18 of 23 passes for 245 yards with four touchdowns and no interceptions while rushing twice for two yards in the Jaguars'"
+          },
+          {
+            "name": "B.J. Green II",
+            "position": "DE",
+            "status": "Injured Reserve",
+            "detail": "The Jaguars placed Green (elbow) on injured reserve Wednesday."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "DEN",
+            "name": "Bo Nix",
+            "status": "Active"
+          },
+          {
+            "team": "DEN",
+            "name": "Jarrett Stidham",
+            "status": "Active"
+          },
+          {
+            "team": "JAX",
+            "name": "Quinn Ewers",
+            "status": "Active"
+          },
+          {
+            "team": "JAX",
+            "name": "Trevor Lawrence",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": 0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "DEN",
@@ -1678,8 +2623,8 @@
         "last_trade": 0.28,
         "method": "bid_ask_midpoint",
         "volume": 28684.207533,
-        "volume_24h": 1773.7789620000003,
-        "liquidity": 244426.877
+        "volume_24h": 1762.9792350000002,
+        "liquidity": 251188.7848
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1707,6 +2652,95 @@
       "public_pct": {
         "home": 0.86,
         "away": 0.14
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Justin Herbert",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Herbert completed 17 of 27 passes for 209 yards with one touchdown and one interception while adding five rushes for 29 yards in the Charger"
+          },
+          {
+            "name": "Elijah Molden",
+            "position": "CB",
+            "status": "Out",
+            "detail": "Molden (hamstring) is officially listed as out for Sunday's game versus Las Vegas."
+          },
+          {
+            "name": "KeAndre Lambert-Smith",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "detail": "The Chargers placed Lambert-Smith (hamstring) on injured reserve Tuesday."
+          },
+          {
+            "name": "Trey Pipkins III",
+            "position": "OT",
+            "status": "Out",
+            "detail": "Pipkins (knee) has been ruled out ahead of Sunday's game against the Raiders."
+          }
+        ],
+        "away": [
+          {
+            "name": "Aidan O'Connell",
+            "position": "QB",
+            "status": "Questionable",
+            "detail": "O'Connell is listed as questionable for Sunday's game against the Chargers due to personal reasons."
+          },
+          {
+            "name": "Fernando Mendoza",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Mendoza did not see the field during the Raiders' 27-13 win over the Dolphins on Sunday."
+          },
+          {
+            "name": "Kirk Cousins",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Cousins completed 21 of 30 passes for 160 yards with three touchdowns and two interceptions and rushed five times for minus-6 yards in the R"
+          },
+          {
+            "name": "Brock Bowers",
+            "position": "TE",
+            "status": "Doubtful",
+            "detail": "Bowers (knee) will be listed as doubtful for Sunday's game at the Chargers, and Raiders coach Klint Kubiak said Friday that the tight end wi"
+          },
+          {
+            "name": "Darien Porter",
+            "position": "CB",
+            "status": "Out",
+            "detail": "out"
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "LAC",
+            "name": "Justin Herbert",
+            "status": "Active"
+          },
+          {
+            "team": "LV",
+            "name": "Aidan O'Connell",
+            "status": "Questionable"
+          },
+          {
+            "team": "LV",
+            "name": "Fernando Mendoza",
+            "status": "Active"
+          },
+          {
+            "team": "LV",
+            "name": "Kirk Cousins",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": 0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "LAC",
@@ -1814,9 +2848,9 @@
         "best_ask": 0.35,
         "last_trade": 0.35,
         "method": "bid_ask_midpoint",
-        "volume": 10456.90556,
-        "volume_24h": 885.9,
-        "liquidity": 250718.1389
+        "volume": 10456.905560000001,
+        "volume_24h": 878.475759,
+        "liquidity": 220619.4861
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1844,6 +2878,68 @@
       "public_pct": {
         "home": 0.85,
         "away": 0.15
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Dak Prescott",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Prescott completed 22 of 34 passes for 175 yards, two touchdowns and one interception in Sunday's 28-20 loss to the Giants. He also rushed t"
+          },
+          {
+            "name": "DeMarvion Overshown",
+            "position": "LB",
+            "status": "Out",
+            "detail": "Overshown (hamstring) has been ruled out ahead of Sunday's game against the Commanders, Tommy Yarrish of the Cowboys' official site reports."
+          },
+          {
+            "name": "Malik Davis",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "detail": "The Cowboys placed Davis (hip) on injured reserve Saturday, Adam Schefter of ESPN reports."
+          },
+          {
+            "name": "Malik Hooker",
+            "position": "S",
+            "status": "Out",
+            "detail": "Hooker (forearm) has been ruled out ahead of Sunday's game against the Commanders, Tommy Yarrish of the Cowboys' official site reports."
+          }
+        ],
+        "away": [
+          {
+            "name": "Chig Okonkwo",
+            "position": "TE",
+            "status": "Out",
+            "detail": "Okonkwo (hamstring) won't play Sunday at Dallas, Tashan Reed of The Athletic reports."
+          },
+          {
+            "name": "Frankie Luvu",
+            "position": "LB",
+            "status": "Out",
+            "detail": "Luvu (groin) won't play in Sunday's game against the Cowboys, Tashan Reed of The Washington Post reports."
+          },
+          {
+            "name": "Jordan Magee",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "detail": "The Commanders placed Magee (hamstring) on injured reserve Wednesday, Zach Selby of the team's official site reports."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "DAL",
+            "name": "Dak Prescott",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": 0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "DAL",
@@ -1952,8 +3048,8 @@
         "last_trade": 0.66,
         "method": "bid_ask_midpoint",
         "volume": 9304.607882,
-        "volume_24h": 1596.4282680000001,
-        "liquidity": 309852.6629
+        "volume_24h": 1589.0040270000002,
+        "liquidity": 292174.5963
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1981,6 +3077,106 @@
       "public_pct": {
         "home": 0.07,
         "away": 0.93
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Carson Beck",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Beck (coach's decision) is inactive as the emergency third quarterback for Sunday's game against the Chargers."
+          },
+          {
+            "name": "Jacoby Brissett",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Brissett completed 27 of 37 passes for 277 yards with a touchdown and no interceptions while rushing six times for 14 yards in the Cardinals"
+          },
+          {
+            "name": "Garrett Williams",
+            "position": "CB",
+            "status": "Out",
+            "detail": "Williams (Achilles) has been ruled out for Sunday's game against the Seahawks, Tyler Drake of ArizonaSports.com reports."
+          },
+          {
+            "name": "Kaleb Proctor",
+            "position": "DT",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          },
+          {
+            "name": "Kitan Crawford",
+            "position": "S",
+            "status": "Injured Reserve",
+            "detail": "The Cardinals placed Crawford (ankle) on their injured reserve list Wednesday, Ian Rapoport of NFL Network reports."
+          }
+        ],
+        "away": [
+          {
+            "name": "Sam Darnold",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Coach Mike Macdonald said Darnold (glute) won't play in Sunday's game at Arizona, Curtis Crabtree of Fox 13 Seattle reports."
+          },
+          {
+            "name": "Drew Lock",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Lock will start Week 2 against the Cardinals with Sam Darnold (glute) unavailable, Curtis Crabtree of Fox 13 in Seattle reports."
+          },
+          {
+            "name": "Jalen Milroe",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Milroe will be more involved in practice ahead of Sunday's game versus Arizona, Curtis Crabtree of Fox 13 Seattle reports."
+          },
+          {
+            "name": "Ty Okada",
+            "position": "S",
+            "status": "Out",
+            "detail": "Okada (hamstring) has been ruled out ahead of Sunday's game against the Cardinals, John Boyle of the Seahawks' official site reports."
+          },
+          {
+            "name": "Zach Charbonnet",
+            "position": "RB",
+            "status": "Out",
+            "detail": "Coach Mike Macdonald said Friday that the Seahawks are drawing closer to setting a date for Charbonnet (knee) to resume practicing, Gregg Be"
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "ARI",
+            "name": "Carson Beck",
+            "status": "Active"
+          },
+          {
+            "team": "ARI",
+            "name": "Jacoby Brissett",
+            "status": "Active"
+          },
+          {
+            "team": "SEA",
+            "name": "Sam Darnold",
+            "status": "Out"
+          },
+          {
+            "team": "SEA",
+            "name": "Drew Lock",
+            "status": "Active"
+          },
+          {
+            "team": "SEA",
+            "name": "Jalen Milroe",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": 0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "SEA",
@@ -2089,8 +3285,8 @@
         "last_trade": 0.11,
         "method": "bid_ask_midpoint",
         "volume": 17558.487430999998,
-        "volume_24h": 3984.959611000001,
-        "liquidity": 328485.7377
+        "volume_24h": 3911.1896110000007,
+        "liquidity": 308291.1075
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2118,6 +3314,84 @@
       "public_pct": {
         "home": 0.4975,
         "away": 0.5025
+      },
+      "injuries": {
+        "home": [
+          {
+            "name": "Kurtis Rourke",
+            "position": "QB",
+            "status": "Active",
+            "detail": "active"
+          },
+          {
+            "name": "De'Zhaun Stribling",
+            "position": "WR",
+            "status": "Out",
+            "detail": "The 49ers are expected to place Stribling (ankle) on injured reserve, Adam Schefter of ESPN.com reports."
+          },
+          {
+            "name": "Jake Tonges",
+            "position": "TE",
+            "status": "Injured Reserve",
+            "detail": "Tonges (knee) requires surgery for an MCL tear and is done for the season, Cam Inman reports."
+          }
+        ],
+        "away": [
+          {
+            "name": "Brady Cook",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Cook (coach's decision) will be the emergency quarterback for Sunday's game against the Raiders."
+          },
+          {
+            "name": "Malik Willis",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Willis completed 15 of 27 passes for 200 yards with no touchdowns and one interception while adding six carries for 39 yards and a touchdown"
+          },
+          {
+            "name": "Chop Robinson",
+            "position": "LB",
+            "status": "Out",
+            "detail": "Robinson (concussion) has been ruled out ahead of Sunday's game against the 49ers, Travis Wingfield of the Dolphins' official site reports."
+          },
+          {
+            "name": "Kyle Louis",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "detail": "The Dolphins placed Louis (knee) on injured reserve Wednesday."
+          },
+          {
+            "name": "Ronnie Harrison Jr.",
+            "position": "LB",
+            "status": "Out",
+            "detail": "Harrison (hamstring) has been ruled out ahead of Sunday's game against the 49ers, Travis Wingfield of the Dolphins' official site reports."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "SF",
+            "name": "Kurtis Rourke",
+            "status": "Active"
+          },
+          {
+            "team": "MIA",
+            "name": "Brady Cook",
+            "status": "Active"
+          },
+          {
+            "team": "MIA",
+            "name": "Malik Willis",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": 0.0,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
       },
       "pick": {
         "team": "SF",
@@ -2175,13 +3449,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": -300,
-          "away": 245,
+          "home": -297,
+          "away": 242,
           "avg_hold_pct": 4.13
         },
         "fair_moneyline": {
-          "home": -259,
-          "away": 259
+          "home": -257,
+          "away": 257
         },
         "spread": {
           "home": -6.5,
@@ -2225,14 +3499,14 @@
         "best_ask": 0.28,
         "last_trade": 0.28,
         "method": "bid_ask_midpoint",
-        "volume": 6307.1645770000005,
-        "volume_24h": 1801.173038,
-        "liquidity": 311575.7135
+        "volume": 6357.1645770000005,
+        "volume_24h": 1844.578446,
+        "liquidity": 276505.4801
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.7214,
-          "away": 0.2786
+          "home": 0.7198,
+          "away": 0.2802
         },
         "kalshi": {
           "home": 0.725,
@@ -2243,8 +3517,8 @@
           "away": 0.275
         },
         "combined": {
-          "home": 0.7238,
-          "away": 0.2762
+          "home": 0.7233,
+          "away": 0.2767
         },
         "weights": {
           "sportsbook": 0.333,
@@ -2256,21 +3530,116 @@
         "home": 0.98,
         "away": 0.02
       },
+      "injuries": {
+        "home": [
+          {
+            "name": "Patrick Mahomes",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Mahomes completed 15 of 27 passes for 184 yards with two touchdowns and one interception while adding seven rushes for 23 yards and another "
+          },
+          {
+            "name": "Cooper McDonald",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "detail": "The Chiefs placed McDonald (knee) on injured reserve Wednesday."
+          },
+          {
+            "name": "Jimmy Holiday",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "detail": "Holiday (undisclosed) was placed on injured reserve by the Chiefs on Sunday."
+          },
+          {
+            "name": "Omarr Norman-Lott",
+            "position": "DT",
+            "status": "Out",
+            "detail": "Norman-Lott (knee) was moved to the reserve/PUP list by the Chiefs on Sunday."
+          }
+        ],
+        "away": [
+          {
+            "name": "Anthony Richardson Sr.",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Richardson (groin) was a full participant at practice Thursday."
+          },
+          {
+            "name": "Daniel Jones",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Jones completed 19 of 31 passes for 166 yards with one touchdown and one interception while adding one rush for four yards in the Colts' 41-"
+          },
+          {
+            "name": "Riley Leonard",
+            "position": "QB",
+            "status": "Active",
+            "detail": "active"
+          },
+          {
+            "name": "Ashton Dulin",
+            "position": "WR",
+            "status": "Out",
+            "detail": "Dulin (ankle) is listed as out for Sunday's game against the Chiefs, Kevin Bowen of 107.5 The Fan Indianapolis reports."
+          },
+          {
+            "name": "Carson Towt",
+            "position": "TE",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          },
+          {
+            "name": "D.J. Montgomery",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "detail": "Montgomery (abdomen) was placed on injured reserve by the Colts on Sunday, JJ Stankevitz of the team's official website reports."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "KC",
+            "name": "Patrick Mahomes",
+            "status": "Active"
+          },
+          {
+            "team": "IND",
+            "name": "Anthony Richardson Sr.",
+            "status": "Active"
+          },
+          {
+            "team": "IND",
+            "name": "Daniel Jones",
+            "status": "Active"
+          },
+          {
+            "team": "IND",
+            "name": "Riley Leonard",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": -0.0005,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
+      },
       "pick": {
         "team": "KC",
         "name": "Kansas City Chiefs",
-        "win_probability": 0.7238,
+        "win_probability": 0.7233,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "IND",
-        "underdog_win_probability": 0.2762,
+        "underdog_win_probability": 0.2767,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.98,
-        "leverage": -0.2562,
+        "leverage": -0.2567,
         "high_leverage_play": false,
         "underdog_public_pct": 0.02,
-        "underdog_leverage": 0.2562,
+        "underdog_leverage": 0.2567,
         "high_leverage_underdog": false
       }
     },
@@ -2313,12 +3682,12 @@
         ],
         "moneyline": {
           "home": -337,
-          "away": 271,
-          "avg_hold_pct": 4.27
+          "away": 270,
+          "avg_hold_pct": 4.26
         },
         "fair_moneyline": {
-          "home": -288,
-          "away": 288
+          "home": -287,
+          "away": 287
         },
         "spread": {
           "home": -7.0,
@@ -2362,14 +3731,14 @@
         "best_ask": 0.26,
         "last_trade": 0.26,
         "method": "bid_ask_midpoint",
-        "volume": 49472.78491,
+        "volume": 49472.784909999995,
         "volume_24h": 1352.613587,
-        "liquidity": 234360.9271
+        "liquidity": 205262.7803
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.7422,
-          "away": 0.2578
+          "home": 0.7413,
+          "away": 0.2587
         },
         "kalshi": {
           "home": 0.745,
@@ -2380,8 +3749,8 @@
           "away": 0.255
         },
         "combined": {
-          "home": 0.7441,
-          "away": 0.2559
+          "home": 0.7438,
+          "away": 0.2562
         },
         "weights": {
           "sportsbook": 0.333,
@@ -2393,21 +3762,81 @@
         "home": 0.89,
         "away": 0.11
       },
+      "injuries": {
+        "home": [
+          {
+            "name": "Stetson Bennett IV",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Bennett completed two of three passes for 13 yards and rushed once for nine yards in the Rams' 27-7 Week 1 loss to the 49ers."
+          },
+          {
+            "name": "Ty Simpson",
+            "position": "QB",
+            "status": "Active",
+            "detail": "active"
+          },
+          {
+            "name": "Myles Garrett",
+            "position": "DE",
+            "status": "Injured Reserve",
+            "detail": "Garrett (knee) was placed on injured reserve Thursday and will miss at least four games, Adam Schefter of ESPN reports."
+          }
+        ],
+        "away": [
+          {
+            "name": "Jaxson Dart",
+            "position": "QB",
+            "status": "Active",
+            "detail": "Dart completed 23 of 29 passes for 230 yards and three touchdowns in Sunday's 28-20 win over the Cowboys. He also rushed 11 times for 54 yar"
+          },
+          {
+            "name": "Paulson Adebo",
+            "position": "CB",
+            "status": "Injured Reserve",
+            "detail": "The Giants placed Adebo (knee) on injured reserve Friday, Dan Salomone of the team's official site reports."
+          }
+        ],
+        "qb_watch": [
+          {
+            "team": "LAR",
+            "name": "Stetson Bennett IV",
+            "status": "Active"
+          },
+          {
+            "team": "LAR",
+            "name": "Ty Simpson",
+            "status": "Active"
+          },
+          {
+            "team": "NYG",
+            "name": "Jaxson Dart",
+            "status": "Active"
+          }
+        ]
+      },
+      "movement": {
+        "since": "2026-09-19T13:23:32+00:00",
+        "home_prob_change": -0.0003,
+        "notable": false,
+        "spread_change": 0.0,
+        "total_change": 0.0
+      },
       "pick": {
         "team": "LAR",
         "name": "Los Angeles Rams",
-        "win_probability": 0.7441,
+        "win_probability": 0.7438,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "NYG",
-        "underdog_win_probability": 0.2559,
+        "underdog_win_probability": 0.2562,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.89,
-        "leverage": -0.1459,
+        "leverage": -0.1462,
         "high_leverage_play": false,
         "underdog_public_pct": 0.11,
-        "underdog_leverage": 0.1459,
+        "underdog_leverage": 0.1462,
         "high_leverage_underdog": false
       }
     }

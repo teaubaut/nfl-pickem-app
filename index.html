@@ -586,6 +586,42 @@
         ' win ' + pct(g.pick.underdog_win_probability) + ' of the time but get only ' + pct(g.pick.underdog_public_pct) + ' of public bets.']);
     }
 
+    // Line movement since the previous scraper run, from the picked team's side.
+    var moveHtml = '';
+    if (g.movement && g.movement.notable && isNum(g.movement.home_prob_change)) {
+      var delta = Math.round(g.movement.home_prob_change * 100) * (side === 'home' ? 1 : -1);
+      var since = g.movement.since ? new Date(g.movement.since) : null;
+      var when = since && !isNaN(since) ? since.toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' }) : 'the last run';
+      moveHtml = '<p class="mt-2 text-xs ' + (delta >= 0 ? 'text-chalk/70' : 'text-flag') + '">' +
+        esc(nick(pickTeam)) + ' ' + (delta >= 0 ? 'up' : 'down') + ' ' + Math.abs(delta) + ' pts since ' + esc(when) +
+        (isNum(g.movement.spread_change) && g.movement.spread_change !== 0
+          ? ', spread moved ' + Math.abs(g.movement.spread_change) : '') + '.</p>';
+    }
+
+    // QBs and ruled-out players. The markets already price these; this is for news checks.
+    var injuryHtml = '';
+    if (g.injuries) {
+      var lines = [];
+      [['away', g.away], ['home', g.home]].forEach(function (pairSide) {
+        (g.injuries[pairSide[0]] || []).forEach(function (item) {
+          lines.push({ team: pairSide[1], item: item });
+        });
+      });
+      lines.sort(function (a, b) { return (a.item.position !== 'QB') - (b.item.position !== 'QB'); });
+      if (lines.length) {
+        injuryHtml = '<div class="mt-3 border-t border-line pt-2.5">' +
+          '<p class="text-xs text-chalk/50">Injury report</p>' +
+          lines.slice(0, 4).map(function (row) {
+            var qb = row.item.position === 'QB';
+            return '<p class="mt-1 text-sm ' + (qb ? 'text-chalk' : 'text-chalk/70') + '">' +
+              '<span class="num">' + esc(row.team.abbr) + '</span> ' + esc(row.item.position) + ' ' +
+              esc(row.item.name) + ' \u2014 ' + esc(row.item.status) + '</p>';
+          }).join('') +
+          (lines.length > 4 ? '<p class="mt-1 text-xs text-chalk/45">and ' + (lines.length - 4) + ' more</p>' : '') +
+        '</div>';
+      }
+    }
+
     // Tap to swap between the model's pick and the underdog.
     var cost = isNum(sel.modelProb) ? (2 * sel.modelProb - 1) : null;
     var swapBtn = '<button type="button" data-swap="' + esc(g.game_id) + '" ' +
@@ -617,7 +653,7 @@
           bar('Kalshi', kalshi, 'bg-sky') +
           bar('Polymarket', poly, 'bg-poly') +
         '</div>' +
-        publicHtml + gap + upset + leverage + swapBtn + swapNote +
+        publicHtml + gap + moveHtml + upset + leverage + injuryHtml + swapBtn + swapNote +
       '</article>';
   }
 
@@ -668,6 +704,31 @@
       '</section>';
   }
 
+  function checklist(d) {
+    var items = sortedGames(d).filter(function (g) {
+      return !g.completed && ((g.injuries && g.injuries.qb_watch) || (g.movement && g.movement.notable));
+    });
+    if (!items.length) return '';
+    var rows = items.map(function (g) {
+      var why = [];
+      if (g.injuries && g.injuries.qb_watch) {
+        why.push(g.injuries.qb_watch.map(function (q) {
+          return q.team + ' QB ' + q.name + ' ' + q.status.toLowerCase();
+        }).join('; '));
+      }
+      if (g.movement && g.movement.notable && isNum(g.movement.home_prob_change)) {
+        var d2 = Math.round(g.movement.home_prob_change * 100);
+        why.push(nick(d2 >= 0 ? g.home : g.away) + ' up ' + Math.abs(d2) + ' pts since the last run');
+      }
+      return '<li class="mt-1.5 text-sm"><span class="font-semibold">' + esc(g.short_name || g.name) + '</span>' +
+        '<span class="text-chalk/70"> \u2014 ' + esc(why.join('. ')) + '</span></li>';
+    }).join('');
+    return '<section class="rounded-xl border border-bulb/40 bg-bulb/5 p-4">' +
+        '<h2 class="font-display text-xl font-semibold text-bulb">Check before you submit</h2>' +
+        '<ul class="mt-1">' + rows + '</ul>' +
+      '</section>';
+  }
+
   function banners(d) {
     var out = [];
     if (state.offline) {
@@ -681,7 +742,8 @@
       out.push('ESPN was unavailable, so games came from the sportsbook feed and the week number is an estimate. Games already played this week may be missing.');
     }
     var src = d.sources || {};
-    var names = { odds_api: 'Sportsbook odds', kalshi: 'Kalshi prices', polymarket: 'Polymarket prices', action_network: 'Public betting splits' };
+    var names = { odds_api: 'Sportsbook odds', kalshi: 'Kalshi prices', polymarket: 'Polymarket prices',
+                  action_network: 'Public betting splits', espn_injuries: 'The injury report' };
     Object.keys(names).forEach(function (k) {
       if (src[k] && src[k].ok === false) {
         out.push(names[k] + ' were unavailable on the last run' + (src[k].error ? ' (' + src[k].error + ')' : '') + '.');
@@ -709,6 +771,7 @@
 
     var html = [];
     html.push(banners(d));
+    html.push(checklist(d));
 
     var mnf = mnfGames(d);
     if (mnf.length) {

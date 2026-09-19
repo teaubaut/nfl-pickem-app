@@ -257,7 +257,7 @@
   var STALE_HOURS = 24;
   var PTR_THRESHOLD = 64;
 
-  var APP_BUILD = '2026-09-19.5';   // bump when index.html changes
+  var APP_BUILD = '2026-09-19.6';   // bump when index.html changes
   var HISTORY_URL = 'history.json';
   var LOG_KEY = 'poolpicks:log';
   var SB_KEY = 'poolpicks:supabase';
@@ -489,6 +489,26 @@
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
+  /** Kickoff forecast: emoji plus temperature, with wind and rain when they matter. */
+  function weatherChip(g) {
+    var w = g.weather;
+    if (!w) return '';
+    if (w.indoor || w.roof === 'dome') {
+      return '<p class="mt-1 text-xs text-chalk/50" title="Indoor stadium">\U0001f3df\ufe0f Indoors</p>';
+    }
+    var bits = [];
+    if (isNum(w.temp_f)) bits.push(w.temp_f + '\u00b0');
+    if (isNum(w.wind_mph) && w.wind_mph >= 12) bits.push(w.wind_mph + ' mph');
+    if (isNum(w.precip_pct) && w.precip_pct >= 30) bits.push(w.precip_pct + '%');
+    if (!bits.length && !w.icon) return '';
+    var rough = (isNum(w.wind_mph) && w.wind_mph >= 18) ||
+                (isNum(w.precip_pct) && w.precip_pct >= 60) ||
+                (isNum(w.temp_f) && w.temp_f <= 25);
+    return '<p class="mt-1 num text-xs ' + (rough ? 'text-flag' : 'text-chalk/50') + '" title="' +
+      esc((w.summary || '') + (w.roof === 'retractable' ? ', retractable roof' : '')) + '">' +
+      (w.icon ? esc(w.icon) + ' ' : '') + esc(bits.join(', ')) + '</p>';
+  }
+
   function statusChip(g) {
     if (g.completed) return '<span class="rounded bg-chalk/10 px-1.5 py-0.5 text-xs font-semibold text-chalk/70">Final</span>';
     var s = (g.status || '').toLowerCase();
@@ -517,6 +537,7 @@
         '</h3>' +
         '<div class="shrink-0 pt-1 text-right">' +
           '<time class="num block text-sm text-chalk/70" datetime="' + esc(g.kickoff_utc) + '">' + esc(kickoffLabel(g.kickoff_utc)) + '</time>' +
+          weatherChip(g) +
           '<div class="mt-1">' + statusChip(g) + '</div>' +
         '</div>' +
       '</div>';

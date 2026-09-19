@@ -2,9 +2,9 @@ name: Update odds and picks
 
 on:
   schedule:
-    - cron: "0 13 * * 4"   # Thursdays 13:00 UTC = 8 AM CDT / 7 AM CST
-    - cron: "0 15 * * 4"   # Thursdays 15:00 UTC = 10 AM CDT / 9 AM CST (backup)
-    - cron: "0 13 * * 0"   # Sundays 13:00 UTC (before the early Sunday games)
+    - cron: "0 13 * * *"   # Every day 13:00 UTC = 8 AM CDT / 7 AM CST
+    - cron: "0 1 * * *"    # Every day 01:00 UTC = 8 PM CDT / 7 PM CST (overnight moves)
+    - cron: "0 15 * * 4"   # Thursdays 15:00 UTC = 10 AM CDT / 9 AM CST (before picks lock)
   workflow_dispatch:        # Run manually: Actions tab > Update odds and picks > Run workflow
     inputs:
       week:
@@ -67,11 +67,11 @@ jobs:
           fi
           python fetch_data.py "${ARGS[@]}"
 
-      - name: Commit and push data.json if it changed
+      - name: Commit and push data.json and history.json if they changed
         id: commit
         run: |
-          if git diff --quiet -- data.json && git ls-files --error-unmatch data.json >/dev/null 2>&1; then
-            echo "data.json unchanged; nothing to commit."
+          if git diff --quiet -- data.json history.json && git ls-files --error-unmatch data.json history.json >/dev/null 2>&1; then
+            echo "Nothing changed; nothing to commit."
             echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -81,7 +81,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data.json
+          git add data.json history.json
           git commit -m "Update week ${WEEK_NUM} odds and picks (${STAMP})"
 
           # Retry in case something else was pushed while this job ran.
@@ -118,6 +118,15 @@ jobs:
                                                ("high_leverage_underdog", "Contrarian dog")) if p.get(key)]
               print(f"| {p.get('matchup')} | {p.get('pick') or '-'} | {fmt(p.get('win_probability'))} "
                     f"| {fmt(p.get('public_pick_pct'))} | {', '.join(flags)} |")
+          hist = {}
+          try:
+              hist = json.load(open("history.json")).get("games", {})
+          except Exception:
+              pass
+          if hist:
+              weeks = sorted({g.get("week") for g in hist.values() if g.get("week")})
+              pts = sum(len(g.get("points") or []) for g in hist.values())
+              print(f"\nHistory: {len(hist)} games across weeks {weeks}, {pts} price points.")
           for m in d.get("monday_night_football", []):
               if m.get("projection_available"):
                   pr = m["projected"]

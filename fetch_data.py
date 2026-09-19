@@ -12,6 +12,7 @@ Pipeline
      Public splits      -> Action Network moneyline ticket % as a proxy for pool picks
      Injuries           -> ESPN injury report: quarterbacks and ruled-out players
      Movement           -> how each number moved since the previous run
+  9. History            -> append every run to history.json (this week and next)
   7. Monday Night       -> projected final score snapped to key numbers
   8. Write data.json
 
@@ -81,6 +82,9 @@ INJURY_URLS = [
 # the point is knowing which games to read news on before picks lock.
 SIDELINED = {"out", "doubtful", "injured reserve", "suspension", "physically unable to perform"}
 MOVEMENT_FLAG = 0.03             # probability swing worth showing on a card
+HISTORY_FILE = "history.json"
+HISTORY_MAX_POINTS = 400         # per game
+HISTORY_RETAIN_DAYS = 28         # drop games whose kickoff is older than this
 ACTION_CONSENSUS_BOOK_ID = 15    # preferred odds row for public splits when present
 PUBLIC_DEBUG_FILE = "public_debug.json"
 LEVERAGE_FLAG = 0.15             # win prob minus public % that counts as "high leverage"
@@ -1076,6 +1080,120 @@ def movement(game_id: str, home_prob: Optional[float], odds: Optional[dict],
 
 
 # --------------------------------------------------------------------------- #
+# 6e. Odds history (one point per run, per game)
+# --------------------------------------------------------------------------- #
+def load_history(path: str) -> dict:
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+    except (OSError, ValueError):
+        return {"games": {}}
+    if not isinstance(data.get("games"), dict):
+        data["games"] = {}
+    return data
+
+
+def history_point(stamp: str, home_prob: Optional[float], odds: Optional[dict],
+                  probs: dict, public_home: Optional[float]) -> dict:
+    """Short keys: the file is committed on every run."""
+    point = {"t": stamp, "p": r4(home_prob)}
+    for key, value in (("v", probs.get("sportsbook")), ("k", probs.get("kalshi")),
+                       ("m", probs.get("polymarket"))):
+        if value is not None:
+            point[key] = r4(value)
+    spread = ((odds or {}).get("spread") or {}).get("home")
+    if spread is not None:
+        point["s"] = spread
+    if (odds or {}).get("total") is not None:
+        point["o"] = odds["total"]
+    if public_home is not None:
+        point["pub"] = r4(public_home)
+    return point
+
+
+def _same_point(a: dict, b: dict) -> bool:
+    keys = set(a) | set(b)
+    keys.discard("t")
+    return all(a.get(k) == b.get(k) for k in keys)
+
+
+def append_history(history: dict, game: dict, meta: dict, point: dict) -> None:
+    entry = history["games"].setdefault(game["game_id"], {
+        "matchup": game["short_name"] or game["name"],
+        "season": meta.get("season"),
+        "week": meta.get("week"),
+        "kickoff": game["kickoff"].astimezone(timezone.utc).isoformat(),
+        "points": [],
+    })
+    entry["week"] = meta.get("week", entry.get("week"))
+    points = entry["points"]
+    if point.get("p") is None and len(point) <= 2:
+        return                                   # nothing priced yet
+    if points and _same_point(points[-1], point):
+        points[-1]["t"] = point["t"]             # unchanged: just move the timestamp
+    else:
+        points.append(point)
+    entry["points"] = points[-HISTORY_MAX_POINTS:]
+
+
+def prune_history(history: dict, now: datetime) -> None:
+    cutoff = now - timedelta(days=HISTORY_RETAIN_DAYS)
+    for game_id in list(history["games"]):
+        kickoff = parse_iso(history["games"][game_id].get("kickoff"))
+        if kickoff and kickoff < cutoff:
+            del history["games"][game_id]
+
+
+def trend(points: list[dict], now: datetime) -> Optional[dict]:
+    """Opening, 24-hour and latest movement in the blended home probability."""
+    priced = [p for p in points if isinstance(p.get("p"), (int, float))]
+    if len(priced) < 2:
+        return None
+    latest = priced[-1]
+    day_ago = now - timedelta(hours=24)
+    earlier = [p for p in priced[:-1] if (parse_iso(p.get("t")) or now) <= day_ago]
+    out = {
+        "points": len(priced),
+        "opened": priced[0]["p"],
+        "opened_at": priced[0]["t"],
+        "now": latest["p"],
+        "since_open": r4(latest["p"] - priced[0]["p"]),
+    }
+    if earlier:
+        out["since_24h"] = r4(latest["p"] - earlier[-1]["p"])
+    out["notable"] = abs(out["since_open"]) >= MOVEMENT_FLAG
+    return out
+
+
+def snapshot_games(games: list[dict], meta: dict, odds_events: list[dict],
+                   kalshi_events: list[dict], poly_candidates: list[dict],
+                   weights: dict, history: dict, stamp: str) -> int:
+    """Price a set of games and append them to history (used for next week)."""
+    added = 0
+    for g in games:
+        odds_ev = find_matching(
+            g, odds_events,
+            lambda e: {resolve_team(e.get("home_team")), resolve_team(e.get("away_team"))},
+            lambda e: parse_iso(e.get("commence_time")),
+        )
+        odds = summarize_odds(odds_ev, g["home"], g["away"]) if odds_ev else None
+        kalshi = kalshi_for_game(g, kalshi_events)
+        poly = polymarket_for_game(g, poly_candidates)
+        probs = {
+            "sportsbook": odds["vig_free_home_prob"] if odds else None,
+            "kalshi": kalshi["home_prob"] if kalshi else None,
+            "polymarket": poly["home_prob"] if poly else None,
+        }
+        combined, _ = blend(probs, weights)
+        point = history_point(stamp, combined, odds, probs, None)
+        if point.get("p") is None and len(point) <= 2:
+            continue
+        append_history(history, g, meta, point)
+        added += 1
+    return added
+
+
+# --------------------------------------------------------------------------- #
 # 7. Monday Night Football projection
 # --------------------------------------------------------------------------- #
 def snap_to_key(raw: float) -> int:
@@ -1197,6 +1315,10 @@ def build(args: argparse.Namespace) -> dict:
         log.error("Injury report failed: %s", exc)
         sources["espn_injuries"] = {"ok": False, "error": str(exc)}
 
+    history = load_history(args.history)
+    now_utc = datetime.now(timezone.utc)
+    stamp = now_utc.isoformat(timespec="minutes")
+
     previous = load_previous(args.output)
     if previous.get("generated_at"):
         log.info("Comparing against the run from %s", previous["generated_at"])
@@ -1274,11 +1396,36 @@ def build(args: argparse.Namespace) -> dict:
             "public_pct": public,
             "injuries": game_injuries(g, injuries),
             "movement": movement(g["game_id"], combined, odds, previous),
+            "trend": None,   # filled in below, once this run is in the history
             "pick": pick,
         }
+        append_history(history, g, meta, history_point(
+            stamp, combined, odds,
+            {"sportsbook": book_p, "kalshi": kalshi_p, "polymarket": poly_p},
+            (public or {}).get("home")))
+        record["trend"] = trend(history["games"].get(g["game_id"], {}).get("points", []), now_utc)
         out_games.append(record)
         if is_mnf:
             mnf.append(project_mnf(g, odds, pick))
+
+    # Look ahead so next week already has an opening line to compare against.
+    if args.lookahead and meta.get("week") and meta.get("season_type") == 2:
+        for ahead in range(1, args.lookahead + 1):
+            next_week = meta["week"] + ahead
+            if next_week > 18:
+                break
+            try:
+                future, future_meta = fetch_espn_games(next_week, meta.get("season"), 2)
+                added = snapshot_games(future, future_meta, odds_events, kalshi_events,
+                                       poly_candidates, weights, history, stamp)
+                log.info("Look-ahead week %s: %d games priced into history", next_week, added)
+            except Exception as exc:
+                log.warning("Look-ahead week %s failed: %s", next_week, exc)
+
+    prune_history(history, now_utc)
+    history["updated_at"] = stamp
+    write_json(history, args.history)
+    log.info("History: %d games tracked in %s", len(history["games"]), args.history)
 
     picks = [
         {
@@ -1312,6 +1459,7 @@ def build(args: argparse.Namespace) -> dict:
             "key_scores": KEY_SCORES,
         },
         "previous_run": previous.get("generated_at"),
+        "history_file": args.history,
         "sources": sources,
         "summary": {
             "games": len(out_games),
@@ -1343,6 +1491,10 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
                    help="relative weight of Kalshi (default: 1)")
     p.add_argument("--poly-weight", type=float, default=DEFAULT_WEIGHTS["polymarket"],
                    help="relative weight of Polymarket (default: 1; 0 turns it off)")
+    p.add_argument("--history", default=HISTORY_FILE,
+                   help=f"running odds history file (default: {HISTORY_FILE})")
+    p.add_argument("--lookahead", type=int, default=1,
+                   help="also price this many future weeks into the history (default: 1, 0 to skip)")
     p.add_argument("--debug-public", action="store_true",
                    help=f"write raw Action Network diagnostics to {PUBLIC_DEBUG_FILE}")
     p.add_argument("--verbose", "-v", action="store_true")

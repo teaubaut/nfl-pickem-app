@@ -257,7 +257,7 @@
   var STALE_HOURS = 24;
   var PTR_THRESHOLD = 64;
 
-  var APP_BUILD = '2026-09-19.6';   // bump when index.html changes
+  var APP_BUILD = '2026-09-19.7';   // bump when index.html changes
   var HISTORY_URL = 'history.json';
   var LOG_KEY = 'poolpicks:log';
   var SB_KEY = 'poolpicks:supabase';
@@ -494,7 +494,7 @@
     var w = g.weather;
     if (!w) return '';
     if (w.indoor || w.roof === 'dome') {
-      return '<p class="mt-1 text-xs text-chalk/50" title="Indoor stadium">\U0001f3df\ufe0f Indoors</p>';
+      return '<p class="mt-1 text-xs text-chalk/50" title="Indoor stadium">\uD83C\uDFDF\uFE0F Indoors</p>';
     }
     var bits = [];
     if (isNum(w.temp_f)) bits.push(w.temp_f + '\u00b0');

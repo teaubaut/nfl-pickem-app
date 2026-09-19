@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T14:16:43+00:00",
+  "generated_at": "2026-09-19T14:31:34+00:00",
   "season": 2026,
   "season_type": 2,
   "week": 2,
@@ -42,14 +42,14 @@
       45
     ]
   },
-  "previous_run": "2026-09-19T13:58:10+00:00",
+  "previous_run": "2026-09-19T14:16:43+00:00",
   "history_file": "history.json",
   "sources": {
     "odds_api": {
       "ok": true,
       "events": 29,
-      "requests_remaining": "455",
-      "requests_used": "45"
+      "requests_remaining": "452",
+      "requests_used": "48"
     },
     "kalshi": {
       "ok": true,
@@ -71,6 +71,10 @@
     "espn_injuries": {
       "ok": true,
       "teams": 32
+    },
+    "weather": {
+      "ok": true,
+      "games": 12
     },
     "action_network": {
       "ok": true,
@@ -394,6 +398,7 @@
         "home": 0.91,
         "away": 0.09
       },
+      "weather": null,
       "injuries": {
         "home": [
           {
@@ -580,9 +585,9 @@
         "best_ask": 0.58,
         "last_trade": 0.57,
         "method": "bid_ask_midpoint",
-        "volume": 57161.18070299999,
-        "volume_24h": 8388.810457,
-        "liquidity": 325543.1718
+        "volume": 57161.180703000005,
+        "volume_24h": 8143.24701,
+        "liquidity": 325646.0695
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -610,6 +615,10 @@
       "public_pct": {
         "home": 0.22,
         "away": 0.78
+      },
+      "weather": {
+        "roof": "dome",
+        "indoor": true
       },
       "injuries": {
         "home": [
@@ -666,8 +675,8 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
-        "home_prob_change": -0.0003,
+        "since": "2026-09-19T14:16:43+00:00",
+        "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
@@ -779,9 +788,9 @@
         "best_ask": 0.34,
         "last_trade": 0.34,
         "method": "bid_ask_midpoint",
-        "volume": 53438.693224,
-        "volume_24h": 18289.842794,
-        "liquidity": 348953.0346
+        "volume": 53440.18575999999,
+        "volume_24h": 18250.426239,
+        "liquidity": 348660.912
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -809,6 +818,15 @@
       "public_pct": {
         "home": 0.9,
         "away": 0.1
+      },
+      "weather": {
+        "summary": "Heavy drizzle",
+        "icon": "🌧️",
+        "temp_f": 67,
+        "wind_mph": 14,
+        "precip_pct": 38,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -848,7 +866,7 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -961,9 +979,9 @@
         "best_ask": 0.76,
         "last_trade": 0.76,
         "method": "bid_ask_midpoint",
-        "volume": 60164.254228,
-        "volume_24h": 24322.28995800002,
-        "liquidity": 361685.1912
+        "volume": 60165.570015000005,
+        "volume_24h": 23207.63574500003,
+        "liquidity": 361641.2444
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -991,6 +1009,15 @@
       "public_pct": {
         "home": 0.02,
         "away": 0.98
+      },
+      "weather": {
+        "summary": "Mostly clear",
+        "icon": "🌤️",
+        "temp_f": 96,
+        "wind_mph": 6,
+        "precip_pct": 2,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -1024,7 +1051,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -1137,9 +1164,9 @@
         "best_ask": 0.32,
         "last_trade": 0.32,
         "method": "bid_ask_midpoint",
-        "volume": 30756.837197000008,
-        "volume_24h": 13357.164355999994,
-        "liquidity": 465611.0268
+        "volume": 30756.837197000004,
+        "volume_24h": 13147.824355999992,
+        "liquidity": 462679.1536
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1167,6 +1194,15 @@
       "public_pct": {
         "home": 0.83,
         "away": 0.17
+      },
+      "weather": {
+        "summary": "Overcast",
+        "icon": "☁️",
+        "temp_f": 64,
+        "wind_mph": 9,
+        "precip_pct": 27,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -1200,7 +1236,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -1314,8 +1350,8 @@
         "last_trade": 0.62,
         "method": "bid_ask_midpoint",
         "volume": 15896.928051,
-        "volume_24h": 7022.904501000006,
-        "liquidity": 515489.8895
+        "volume_24h": 6831.574501000007,
+        "liquidity": 524860.8663
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1343,6 +1379,15 @@
       "public_pct": {
         "home": 0.09,
         "away": 0.91
+      },
+      "weather": {
+        "summary": "Overcast",
+        "icon": "☁️",
+        "temp_f": 66,
+        "wind_mph": 7,
+        "precip_pct": 41,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -1394,7 +1439,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -1507,9 +1552,9 @@
         "best_ask": 0.22,
         "last_trade": 0.22,
         "method": "bid_ask_midpoint",
-        "volume": 60639.54836700001,
-        "volume_24h": 53535.00570100001,
-        "liquidity": 842914.1027
+        "volume": 60639.54836700002,
+        "volume_24h": 53462.64570100001,
+        "liquidity": 843547.4738
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1537,6 +1582,15 @@
       "public_pct": {
         "home": 0.97,
         "away": 0.03
+      },
+      "weather": {
+        "summary": "Partly cloudy",
+        "icon": "⛅",
+        "temp_f": 86,
+        "wind_mph": 6,
+        "precip_pct": 4,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -1600,7 +1654,7 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -1713,9 +1767,9 @@
         "best_ask": 0.22,
         "last_trade": 0.22,
         "method": "bid_ask_midpoint",
-        "volume": 10998.834267999999,
-        "volume_24h": 3807.507074999999,
-        "liquidity": 420326.145
+        "volume": 11000.100090999998,
+        "volume_24h": 3773.3370749999995,
+        "liquidity": 418753.087
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1743,6 +1797,15 @@
       "public_pct": {
         "home": 0.97,
         "away": 0.03
+      },
+      "weather": {
+        "summary": "Overcast",
+        "icon": "☁️",
+        "temp_f": 74,
+        "wind_mph": 11,
+        "precip_pct": 7,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -1800,7 +1863,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -1913,9 +1976,9 @@
         "best_ask": 0.43,
         "last_trade": 0.43,
         "method": "bid_ask_midpoint",
-        "volume": 255205.62735799988,
-        "volume_24h": 10659.731957999998,
-        "liquidity": 830216.8869
+        "volume": 255227.95293999996,
+        "volume_24h": 10385.94754,
+        "liquidity": 877453.9068
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1943,6 +2006,15 @@
       "public_pct": {
         "home": 0.7,
         "away": 0.3
+      },
+      "weather": {
+        "summary": "Overcast",
+        "icon": "☁️",
+        "temp_f": 93,
+        "wind_mph": 3,
+        "precip_pct": 4,
+        "roof": "retractable",
+        "rough": true
       },
       "injuries": {
         "home": [
@@ -2012,7 +2084,7 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -2125,9 +2197,9 @@
         "best_ask": 0.42,
         "last_trade": 0.42,
         "method": "bid_ask_midpoint",
-        "volume": 28537.557157999996,
-        "volume_24h": 5165.433314999998,
-        "liquidity": 566978.7023
+        "volume": 28537.557158000003,
+        "volume_24h": 4959.973314999998,
+        "liquidity": 567123.3625
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2155,6 +2227,15 @@
       "public_pct": {
         "home": 0.61,
         "away": 0.39
+      },
+      "weather": {
+        "summary": "Clear",
+        "icon": "☀️",
+        "temp_f": 71,
+        "wind_mph": 7,
+        "precip_pct": 5,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -2206,7 +2287,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -2319,9 +2400,9 @@
         "best_ask": 0.28,
         "last_trade": 0.28,
         "method": "bid_ask_midpoint",
-        "volume": 28684.207533000004,
+        "volume": 28684.207533,
         "volume_24h": 1762.9792350000002,
-        "liquidity": 303388.5873
+        "liquidity": 306147.9434
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2349,6 +2430,10 @@
       "public_pct": {
         "home": 0.86,
         "away": 0.14
+      },
+      "weather": {
+        "roof": "dome",
+        "indoor": true
       },
       "injuries": {
         "home": [
@@ -2400,7 +2485,7 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -2515,7 +2600,7 @@
         "method": "bid_ask_midpoint",
         "volume": 10456.905560000001,
         "volume_24h": 878.475759,
-        "liquidity": 262469.5671
+        "liquidity": 262487.9767
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2543,6 +2628,15 @@
       "public_pct": {
         "home": 0.85,
         "away": 0.15
+      },
+      "weather": {
+        "summary": "Partly cloudy",
+        "icon": "⛅",
+        "temp_f": 97,
+        "wind_mph": 10,
+        "precip_pct": 0,
+        "roof": "retractable",
+        "rough": true
       },
       "injuries": {
         "home": [
@@ -2588,7 +2682,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -2701,9 +2795,9 @@
         "best_ask": 0.66,
         "last_trade": 0.66,
         "method": "bid_ask_midpoint",
-        "volume": 9304.607882,
-        "volume_24h": 1589.0040270000002,
-        "liquidity": 332876.5088
+        "volume": 9306.123034,
+        "volume_24h": 1590.519179,
+        "liquidity": 330680.0429
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2731,6 +2825,15 @@
       "public_pct": {
         "home": 0.07,
         "away": 0.93
+      },
+      "weather": {
+        "summary": "Overcast",
+        "icon": "☁️",
+        "temp_f": 97,
+        "wind_mph": 6,
+        "precip_pct": 0,
+        "roof": "retractable",
+        "rough": true
       },
       "injuries": {
         "home": [
@@ -2782,7 +2885,7 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -2896,8 +2999,8 @@
         "last_trade": 0.11,
         "method": "bid_ask_midpoint",
         "volume": 17558.487431,
-        "volume_24h": 3543.209610999999,
-        "liquidity": 366889.0934
+        "volume_24h": 3491.069611,
+        "liquidity": 367740.0456
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2925,6 +3028,15 @@
       "public_pct": {
         "home": 0.4975,
         "away": 0.5025
+      },
+      "weather": {
+        "summary": "Overcast",
+        "icon": "☁️",
+        "temp_f": 67,
+        "wind_mph": 8,
+        "precip_pct": 0,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -2964,7 +3076,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -3077,9 +3189,9 @@
         "best_ask": 0.28,
         "last_trade": 0.28,
         "method": "bid_ask_midpoint",
-        "volume": 6458.534439,
-        "volume_24h": 1945.948308,
-        "liquidity": 319873.1511
+        "volume": 6459.904301,
+        "volume_24h": 1947.31817,
+        "liquidity": 319855.085
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -3107,6 +3219,15 @@
       "public_pct": {
         "home": 0.98,
         "away": 0.02
+      },
+      "weather": {
+        "summary": "Overcast",
+        "icon": "☁️",
+        "temp_f": 73,
+        "wind_mph": 7,
+        "precip_pct": 6,
+        "roof": "open",
+        "rough": false
       },
       "injuries": {
         "home": [
@@ -3158,7 +3279,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
@@ -3271,9 +3392,9 @@
         "best_ask": 0.26,
         "last_trade": 0.26,
         "method": "bid_ask_midpoint",
-        "volume": 49472.78491,
+        "volume": 49472.78491000001,
         "volume_24h": 1352.613587,
-        "liquidity": 234407.4912
+        "liquidity": 235483.1838
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -3302,6 +3423,10 @@
         "home": 0.89,
         "away": 0.11
       },
+      "weather": {
+        "roof": "dome",
+        "indoor": true
+      },
       "injuries": {
         "home": [
           {
@@ -3322,7 +3447,7 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:58:10+00:00",
+        "since": "2026-09-19T14:16:43+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,

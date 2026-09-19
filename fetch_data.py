@@ -10,6 +10,8 @@ Pipeline
   5. Polymarket (Gamma) -> second prediction market (bid/ask midpoints, volume, liquidity)
   6. Blend              -> weighted average of the three, a pick, and upset flags
      Public splits      -> Action Network moneyline ticket % as a proxy for pool picks
+     Injuries           -> ESPN injury report: quarterbacks and ruled-out players
+     Movement           -> how each number moved since the previous run
   7. Monday Night       -> projected final score snapped to key numbers
   8. Write data.json
 
@@ -71,6 +73,14 @@ ACTION_ENDPOINTS = [
     ("v1", "https://api.actionnetwork.com/web/v1/scoreboard/nfl"),
 ]
 ACTION_BOOK_IDS = "15,30,68,69,71,75,79"
+INJURY_URLS = [
+    "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/injuries",
+    "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries",
+]
+# Anyone at QB, plus anyone ruled out anywhere else. Markets already price these;
+# the point is knowing which games to read news on before picks lock.
+SIDELINED = {"out", "doubtful", "injured reserve", "suspension", "physically unable to perform"}
+MOVEMENT_FLAG = 0.03             # probability swing worth showing on a card
 ACTION_CONSENSUS_BOOK_ID = 15    # preferred odds row for public splits when present
 PUBLIC_DEBUG_FILE = "public_debug.json"
 LEVERAGE_FLAG = 0.15             # win prob minus public % that counts as "high leverage"
@@ -939,6 +949,127 @@ def add_public_leverage(game: dict, pick: dict, home_prob: Optional[float],
 
 
 # --------------------------------------------------------------------------- #
+# 6c. Injury report (ESPN, free)
+# --------------------------------------------------------------------------- #
+def _injury_entries(node: Any, out: list, depth: int = 0) -> list:
+    """ESPN nests injuries a few ways; collect anything with an athlete + status."""
+    if len(out) >= 400 or depth > 6:
+        return out
+    if isinstance(node, dict):
+        athlete = node.get("athlete")
+        status = node.get("status")
+        if isinstance(athlete, dict) and isinstance(status, str):
+            out.append(node)
+        for value in node.values():
+            _injury_entries(value, out, depth + 1)
+    elif isinstance(node, list):
+        for value in node:
+            _injury_entries(value, out, depth + 1)
+    return out
+
+
+def fetch_injuries() -> dict[str, list[dict]]:
+    """{team abbr: [{name, position, status, detail}]} for QBs and ruled-out players."""
+    data, errors = None, []
+    for url in INJURY_URLS:
+        try:
+            data, _ = http_get_json(url, retry_codes=ESPN_RETRY_CODES,
+                                    extra_headers=ESPN_HEADERS, backoff=5)
+            break
+        except Exception as exc:
+            errors.append(str(exc))
+    if data is None:
+        raise RuntimeError("; ".join(errors) or "no injury data")
+
+    groups = data.get("injuries") if isinstance(data, dict) else None
+    by_team: dict[str, list[dict]] = {}
+    for group in groups if isinstance(groups, list) else []:
+        team = (resolve_team(group.get("displayName"))
+                or resolve_team(group.get("abbreviation"))
+                or resolve_team((group.get("team") or {}).get("displayName")))
+        for item in _injury_entries(group, []):
+            athlete = item.get("athlete") or {}
+            position = ((athlete.get("position") or {}).get("abbreviation")
+                        or (athlete.get("position") or {}).get("name") or "").upper()
+            status = str(item.get("status") or "").strip()
+            player_team = team or resolve_team(((athlete.get("team") or {}).get("abbreviation")))
+            if not player_team or not status:
+                continue
+            if position != "QB" and status.lower() not in SIDELINED:
+                continue
+            detail = item.get("shortComment") or (item.get("type") or {}).get("description")
+            entry = {
+                "name": athlete.get("displayName") or athlete.get("shortName"),
+                "position": position or "?",
+                "status": status,
+                "detail": (str(detail)[:140] if detail else None),
+            }
+            bucket = by_team.setdefault(player_team, [])
+            if not any(e["name"] == entry["name"] and e["status"] == entry["status"] for e in bucket):
+                bucket.append(entry)
+
+    for team, items in by_team.items():
+        items.sort(key=lambda e: (e["position"] != "QB", e["status"].lower() not in SIDELINED, e["name"] or ""))
+        by_team[team] = items[:6]
+    log.info("Injuries: %d teams with QB or ruled-out entries", len(by_team))
+    return by_team
+
+
+def game_injuries(game: dict, by_team: dict[str, list[dict]]) -> Optional[dict]:
+    home = by_team.get(game["home"]) or []
+    away = by_team.get(game["away"]) or []
+    if not home and not away:
+        return None
+    qb_watch = [
+        {"team": side_team, "name": e["name"], "status": e["status"]}
+        for side_team, items in ((game["home"], home), (game["away"], away))
+        for e in items if e["position"] == "QB"
+    ]
+    return {"home": home, "away": away, "qb_watch": qb_watch or None}
+
+
+# --------------------------------------------------------------------------- #
+# 6d. Movement since the previous run
+# --------------------------------------------------------------------------- #
+def load_previous(path: str) -> dict:
+    """Read the data.json written by the last run so changes can be shown."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            old = json.load(fh)
+    except (OSError, ValueError):
+        return {}
+    snapshot = {"generated_at": old.get("generated_at"), "games": {}}
+    for g in old.get("games", []):
+        combined = ((g.get("probabilities") or {}).get("combined") or {}).get("home")
+        odds = g.get("odds") or {}
+        snapshot["games"][g.get("game_id")] = {
+            "home_prob": combined,
+            "spread": (odds.get("spread") or {}).get("home"),
+            "total": odds.get("total"),
+        }
+    return snapshot
+
+
+def movement(game_id: str, home_prob: Optional[float], odds: Optional[dict],
+             previous: dict) -> Optional[dict]:
+    prev = (previous.get("games") or {}).get(game_id)
+    if not prev:
+        return None
+    out: dict[str, Any] = {"since": previous.get("generated_at")}
+    if home_prob is not None and prev.get("home_prob") is not None:
+        delta = home_prob - prev["home_prob"]
+        out["home_prob_change"] = r4(delta)
+        out["notable"] = abs(delta) >= MOVEMENT_FLAG
+    spread_now = ((odds or {}).get("spread") or {}).get("home")
+    if spread_now is not None and prev.get("spread") is not None:
+        out["spread_change"] = round(spread_now - prev["spread"], 1)
+    total_now = (odds or {}).get("total")
+    if total_now is not None and prev.get("total") is not None:
+        out["total_change"] = round(total_now - prev["total"], 1)
+    return out if len(out) > 1 else None
+
+
+# --------------------------------------------------------------------------- #
 # 7. Monday Night Football projection
 # --------------------------------------------------------------------------- #
 def snap_to_key(raw: float) -> int:
@@ -1052,6 +1183,18 @@ def build(args: argparse.Namespace) -> dict:
         log.warning("ESPN failed (%s); using %d games from The Odds API, estimated week %s",
                     exc, len(games), meta["week"])
 
+    injuries: dict[str, list[dict]] = {}
+    try:
+        injuries = fetch_injuries()
+        sources["espn_injuries"] = {"ok": True, "teams": len(injuries)}
+    except Exception as exc:
+        log.error("Injury report failed: %s", exc)
+        sources["espn_injuries"] = {"ok": False, "error": str(exc)}
+
+    previous = load_previous(args.output)
+    if previous.get("generated_at"):
+        log.info("Comparing against the run from %s", previous["generated_at"])
+
     game_dates = sorted({g["kickoff"].astimezone(EASTERN).strftime("%Y%m%d") for g in games})
     public_debug: Optional[list] = [] if args.debug_public else None
     public_splits: list[dict] = []
@@ -1123,6 +1266,8 @@ def build(args: argparse.Namespace) -> dict:
                 "weights": effective,
             },
             "public_pct": public,
+            "injuries": game_injuries(g, injuries),
+            "movement": movement(g["game_id"], combined, odds, previous),
             "pick": pick,
         }
         out_games.append(record)
@@ -1137,6 +1282,8 @@ def build(args: argparse.Namespace) -> dict:
             "win_probability": r["pick"].get("win_probability"),
             "confidence": r["pick"].get("confidence"),
             "live_upset_candidate": r["pick"].get("live_upset_candidate", False),
+            "qb_watch": bool((r.get("injuries") or {}).get("qb_watch")),
+            "moved": bool((r.get("movement") or {}).get("notable")),
             "public_pick_pct": r["pick"].get("public_pick_pct"),
             "high_leverage_play": r["pick"].get("high_leverage_play", False),
             "high_leverage_underdog": r["pick"].get("high_leverage_underdog", False),
@@ -1154,9 +1301,11 @@ def build(args: argparse.Namespace) -> dict:
             "weights": weights,
             "upset_band": list(UPSET_BAND),
             "leverage_flag": LEVERAGE_FLAG,
+            "movement_flag": MOVEMENT_FLAG,
             "leverage_max_win_prob": LEVERAGE_MAX_WIN_PROB,
             "key_scores": KEY_SCORES,
         },
+        "previous_run": previous.get("generated_at"),
         "sources": sources,
         "summary": {
             "games": len(out_games),

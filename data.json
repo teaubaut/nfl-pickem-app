@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T13:58:10+00:00",
+  "generated_at": "2026-09-19T14:16:43+00:00",
   "season": 2026,
   "season_type": 2,
   "week": 2,
@@ -42,13 +42,14 @@
       45
     ]
   },
-  "previous_run": "2026-09-19T13:49:56+00:00",
+  "previous_run": "2026-09-19T13:58:10+00:00",
+  "history_file": "history.json",
   "sources": {
     "odds_api": {
       "ok": true,
       "events": 29,
-      "requests_remaining": "458",
-      "requests_used": "42"
+      "requests_remaining": "455",
+      "requests_used": "45"
     },
     "kalshi": {
       "ok": true,
@@ -96,7 +97,7 @@
         "game_id": "401872933",
         "matchup": "CAR @ ATL",
         "pick": "CAR",
-        "win_probability": 0.5753,
+        "win_probability": 0.5756,
         "confidence": "lean",
         "live_upset_candidate": true,
         "qb_watch": true,
@@ -293,7 +294,7 @@
         "game_id": "401872933",
         "matchup": "CAR @ ATL",
         "pick": "CAR",
-        "win_probability": 0.5753,
+        "win_probability": 0.5756,
         "confidence": "lean",
         "live_upset_candidate": true,
         "qb_watch": true,
@@ -485,6 +486,7 @@
         "qb_watch": null
       },
       "movement": null,
+      "trend": null,
       "pick": {
         "team": null,
         "note": "No sportsbook or prediction-market data available"
@@ -528,9 +530,9 @@
           "bovada"
         ],
         "moneyline": {
-          "home": 128,
-          "away": -149,
-          "avg_hold_pct": 3.89
+          "home": 129,
+          "away": -150,
+          "avg_hold_pct": 3.88
         },
         "fair_moneyline": {
           "home": 136,
@@ -578,14 +580,14 @@
         "best_ask": 0.58,
         "last_trade": 0.57,
         "method": "bid_ask_midpoint",
-        "volume": 57161.18070300002,
-        "volume_24h": 8608.420456999998,
-        "liquidity": 290843.0514
+        "volume": 57161.18070299999,
+        "volume_24h": 8388.810457,
+        "liquidity": 325543.1718
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.4241,
-          "away": 0.5759
+          "home": 0.4232,
+          "away": 0.5768
         },
         "kalshi": {
           "home": 0.425,
@@ -596,8 +598,8 @@
           "away": 0.575
         },
         "combined": {
-          "home": 0.4247,
-          "away": 0.5753
+          "home": 0.4244,
+          "away": 0.5756
         },
         "weights": {
           "sportsbook": 0.333,
@@ -664,27 +666,28 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
-        "home_prob_change": -0.0,
+        "since": "2026-09-19T13:58:10+00:00",
+        "home_prob_change": -0.0003,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "CAR",
         "name": "Carolina Panthers",
-        "win_probability": 0.5753,
+        "win_probability": 0.5756,
         "confidence": "lean",
         "coin_flip": false,
         "underdog": "ATL",
-        "underdog_win_probability": 0.4247,
+        "underdog_win_probability": 0.4244,
         "live_upset_candidate": true,
-        "upset_note": "Atlanta Falcons at 42.5% is inside the 42%-49% upset band",
+        "upset_note": "Atlanta Falcons at 42.4% is inside the 42%-49% upset band",
         "public_pick_pct": 0.78,
-        "leverage": -0.2047,
+        "leverage": -0.2044,
         "high_leverage_play": false,
         "underdog_public_pct": 0.22,
-        "underdog_leverage": 0.2047,
+        "underdog_leverage": 0.2044,
         "high_leverage_underdog": true
       }
     },
@@ -776,9 +779,9 @@
         "best_ask": 0.34,
         "last_trade": 0.34,
         "method": "bid_ask_midpoint",
-        "volume": 53338.70322400001,
-        "volume_24h": 18189.852793999995,
-        "liquidity": 312775.8787
+        "volume": 53438.693224,
+        "volume_24h": 18289.842794,
+        "liquidity": 348953.0346
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -845,12 +848,13 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
+        "since": "2026-09-19T13:58:10+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "CHI",
         "name": "Chicago Bears",
@@ -957,9 +961,9 @@
         "best_ask": 0.76,
         "last_trade": 0.76,
         "method": "bid_ask_midpoint",
-        "volume": 58885.984228,
-        "volume_24h": 24008.029958000014,
-        "liquidity": 313994.6929
+        "volume": 60164.254228,
+        "volume_24h": 24322.28995800002,
+        "liquidity": 361685.1912
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1020,12 +1024,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
-        "home_prob_change": 0.0002,
+        "since": "2026-09-19T13:58:10+00:00",
+        "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "PHI",
         "name": "Philadelphia Eagles",
@@ -1133,8 +1138,8 @@
         "last_trade": 0.32,
         "method": "bid_ask_midpoint",
         "volume": 30756.837197000008,
-        "volume_24h": 13566.678267999992,
-        "liquidity": 422949.8889
+        "volume_24h": 13357.164355999994,
+        "liquidity": 465611.0268
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1195,12 +1200,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
+        "since": "2026-09-19T13:58:10+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "NE",
         "name": "New England Patriots",
@@ -1309,7 +1315,7 @@
         "method": "bid_ask_midpoint",
         "volume": 15896.928051,
         "volume_24h": 7022.904501000006,
-        "liquidity": 479755.0055
+        "liquidity": 515489.8895
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1388,12 +1394,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
-        "home_prob_change": 0.0003,
+        "since": "2026-09-19T13:58:10+00:00",
+        "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "GB",
         "name": "Green Bay Packers",
@@ -1500,9 +1507,9 @@
         "best_ask": 0.22,
         "last_trade": 0.22,
         "method": "bid_ask_midpoint",
-        "volume": 60626.89013900001,
-        "volume_24h": 53830.87747300001,
-        "liquidity": 788270.8597
+        "volume": 60639.54836700001,
+        "volume_24h": 53535.00570100001,
+        "liquidity": 842914.1027
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1593,12 +1600,13 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
+        "since": "2026-09-19T13:58:10+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "TB",
         "name": "Tampa Bay Buccaneers",
@@ -1705,9 +1713,9 @@
         "best_ask": 0.22,
         "last_trade": 0.22,
         "method": "bid_ask_midpoint",
-        "volume": 10886.176040000002,
-        "volume_24h": 3980.5188469999994,
-        "liquidity": 368143.3907
+        "volume": 10998.834267999999,
+        "volume_24h": 3807.507074999999,
+        "liquidity": 420326.145
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1792,12 +1800,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
+        "since": "2026-09-19T13:58:10+00:00",
         "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "BAL",
         "name": "Baltimore Ravens",
@@ -1904,9 +1913,9 @@
         "best_ask": 0.43,
         "last_trade": 0.43,
         "method": "bid_ask_midpoint",
-        "volume": 255185.62735800003,
-        "volume_24h": 10639.731957999997,
-        "liquidity": 797104.3956
+        "volume": 255205.62735799988,
+        "volume_24h": 10659.731957999998,
+        "liquidity": 830216.8869
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2003,12 +2012,13 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
-        "home_prob_change": 0.0004,
+        "since": "2026-09-19T13:58:10+00:00",
+        "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "HOU",
         "name": "Houston Texans",
@@ -2116,8 +2126,8 @@
         "last_trade": 0.42,
         "method": "bid_ask_midpoint",
         "volume": 28537.557157999996,
-        "volume_24h": 5231.913314999998,
-        "liquidity": 536141.1068
+        "volume_24h": 5165.433314999998,
+        "liquidity": 566978.7023
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2196,12 +2206,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
+        "since": "2026-09-19T13:58:10+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "DEN",
         "name": "Denver Broncos",
@@ -2308,9 +2319,9 @@
         "best_ask": 0.28,
         "last_trade": 0.28,
         "method": "bid_ask_midpoint",
-        "volume": 28684.207533,
+        "volume": 28684.207533000004,
         "volume_24h": 1762.9792350000002,
-        "liquidity": 258051.9656
+        "liquidity": 303388.5873
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2389,12 +2400,13 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
+        "since": "2026-09-19T13:58:10+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "LAC",
         "name": "Los Angeles Chargers",
@@ -2501,9 +2513,9 @@
         "best_ask": 0.35,
         "last_trade": 0.35,
         "method": "bid_ask_midpoint",
-        "volume": 10456.90556,
+        "volume": 10456.905560000001,
         "volume_24h": 878.475759,
-        "liquidity": 225367.617
+        "liquidity": 262469.5671
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2576,12 +2588,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
+        "since": "2026-09-19T13:58:10+00:00",
         "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "DAL",
         "name": "Dallas Cowboys",
@@ -2688,9 +2701,9 @@
         "best_ask": 0.66,
         "last_trade": 0.66,
         "method": "bid_ask_midpoint",
-        "volume": 9304.607881999998,
+        "volume": 9304.607882,
         "volume_24h": 1589.0040270000002,
-        "liquidity": 293438.7902
+        "liquidity": 332876.5088
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2769,12 +2782,13 @@
         ]
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
-        "home_prob_change": 0.0003,
+        "since": "2026-09-19T13:58:10+00:00",
+        "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "SEA",
         "name": "Seattle Seahawks",
@@ -2881,9 +2895,9 @@
         "best_ask": 0.11,
         "last_trade": 0.11,
         "method": "bid_ask_midpoint",
-        "volume": 17558.487430999998,
-        "volume_24h": 3795.889611,
-        "liquidity": 315809.648
+        "volume": 17558.487431,
+        "volume_24h": 3543.209610999999,
+        "liquidity": 366889.0934
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2950,12 +2964,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
-        "home_prob_change": 0.0002,
+        "since": "2026-09-19T13:58:10+00:00",
+        "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "SF",
         "name": "San Francisco 49ers",
@@ -3064,7 +3079,7 @@
         "method": "bid_ask_midpoint",
         "volume": 6458.534439,
         "volume_24h": 1945.948308,
-        "liquidity": 279546.4717
+        "liquidity": 319873.1511
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -3143,12 +3158,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
-        "home_prob_change": -0.0002,
+        "since": "2026-09-19T13:58:10+00:00",
+        "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "KC",
         "name": "Kansas City Chiefs",
@@ -3255,9 +3271,9 @@
         "best_ask": 0.26,
         "last_trade": 0.26,
         "method": "bid_ask_midpoint",
-        "volume": 49472.784909999995,
+        "volume": 49472.78491,
         "volume_24h": 1352.613587,
-        "liquidity": 209132.9282
+        "liquidity": 234407.4912
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -3306,12 +3322,13 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-09-19T13:49:56+00:00",
-        "home_prob_change": 0.0002,
+        "since": "2026-09-19T13:58:10+00:00",
+        "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
+      "trend": null,
       "pick": {
         "team": "LAR",
         "name": "Los Angeles Rams",

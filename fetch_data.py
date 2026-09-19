@@ -951,21 +951,20 @@ def add_public_leverage(game: dict, pick: dict, home_prob: Optional[float],
 # --------------------------------------------------------------------------- #
 # 6c. Injury report (ESPN, free)
 # --------------------------------------------------------------------------- #
-def _injury_entries(node: Any, out: list, depth: int = 0) -> list:
-    """ESPN nests injuries a few ways; collect anything with an athlete + status."""
-    if len(out) >= 400 or depth > 6:
-        return out
-    if isinstance(node, dict):
-        athlete = node.get("athlete")
-        status = node.get("status")
-        if isinstance(athlete, dict) and isinstance(status, str):
-            out.append(node)
-        for value in node.values():
-            _injury_entries(value, out, depth + 1)
-    elif isinstance(node, list):
-        for value in node:
-            _injury_entries(value, out, depth + 1)
-    return out
+def _injury_items(group: dict) -> list:
+    """The per-player entries of one team group, without diving into nested data."""
+    for key in ("injuries", "items", "entries"):
+        value = group.get(key)
+        if isinstance(value, list):
+            return [v for v in value if isinstance(v, dict)]
+    return []
+
+
+def _athlete_team(athlete: dict) -> Optional[str]:
+    team = athlete.get("team")
+    if isinstance(team, dict):
+        return (resolve_team(team.get("abbreviation")) or resolve_team(team.get("displayName")))
+    return None
 
 
 def fetch_injuries() -> dict[str, list[dict]]:
@@ -984,16 +983,21 @@ def fetch_injuries() -> dict[str, list[dict]]:
     groups = data.get("injuries") if isinstance(data, dict) else None
     by_team: dict[str, list[dict]] = {}
     for group in groups if isinstance(groups, list) else []:
-        team = (resolve_team(group.get("displayName"))
-                or resolve_team(group.get("abbreviation"))
-                or resolve_team((group.get("team") or {}).get("displayName")))
-        for item in _injury_entries(group, []):
-            athlete = item.get("athlete") or {}
+        group_team = (resolve_team(group.get("displayName"))
+                      or resolve_team(group.get("abbreviation"))
+                      or resolve_team((group.get("team") or {}).get("displayName")))
+        for item in _injury_items(group):
+            athlete = item.get("athlete")
+            if not isinstance(athlete, dict):
+                continue
+            status = str(item.get("status") or item.get("type", {}).get("description") or "").strip()
+            if not status or status.lower() in ("active", "healthy"):
+                continue  # ESPN lists healthy players too; they are not news
             position = ((athlete.get("position") or {}).get("abbreviation")
                         or (athlete.get("position") or {}).get("name") or "").upper()
-            status = str(item.get("status") or "").strip()
-            player_team = team or resolve_team(((athlete.get("team") or {}).get("abbreviation")))
-            if not player_team or not status:
+            # The athlete's own team wins: a group can carry entries for opponents.
+            team = _athlete_team(athlete) or group_team
+            if not team:
                 continue
             if position != "QB" and status.lower() not in SIDELINED:
                 continue
@@ -1004,13 +1008,15 @@ def fetch_injuries() -> dict[str, list[dict]]:
                 "status": status,
                 "detail": (str(detail)[:140] if detail else None),
             }
-            bucket = by_team.setdefault(player_team, [])
-            if not any(e["name"] == entry["name"] and e["status"] == entry["status"] for e in bucket):
+            if not entry["name"]:
+                continue
+            bucket = by_team.setdefault(team, [])
+            if not any(e["name"] == entry["name"] for e in bucket):
                 bucket.append(entry)
 
     for team, items in by_team.items():
         items.sort(key=lambda e: (e["position"] != "QB", e["status"].lower() not in SIDELINED, e["name"] or ""))
-        by_team[team] = items[:6]
+        by_team[team] = items[:8]
     log.info("Injuries: %d teams with QB or ruled-out entries", len(by_team))
     return by_team
 

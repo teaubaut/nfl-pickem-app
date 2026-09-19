@@ -1,66 +1,125 @@
-# NFL Pool Picks (Automated Edge)
+# NFL Pool Picks
 
-A zero-cost, automated personal tool designed to give you a mathematical edge in weekly NFL straight-up (win/loss) pick'em pools. 
+A zero-cost, automated tool for a weekly NFL straight-up (win/loss) office pool.
 
-Instead of relying on gut feelings or basic ESPN power rankings, this tool aggregates **vig-free sportsbook moneylines**, **prediction market pricing**, and **public ticket percentages** to identify high-leverage picks and optimal Monday Night tiebreakers. It runs entirely on GitHub Actions and deploys as a mobile-first Progressive Web App (PWA) to GitHub Pages.
+It blends vig-free sportsbook moneylines with two prediction markets, compares the result against public betting splits, and serves everything as a mobile-first web app you can add to your iPhone Home Screen. Everything runs on GitHub Actions and GitHub Pages, with no server and no Python dependencies.
 
-## Key Features
+## What it does
 
-* **Blended Probability Engine:** Averages vig-free implied probabilities from US sportsbooks (The Odds API) with real-time prediction market prices (Kalshi).
-* **Public Leverage Detection:** Scrapes public moneyline ticket percentages (Action Network) to flag games where the public is blindly over-valuing a favorite or under-valuing a live underdog.
-* **Smart MNF Tiebreaker:** Calculates a projected Monday Night Football score based on the spread and total, then mathematically snaps the projection to the closest key NFL scoring numbers (3, 7, 10, 13, etc.) to prevent impossible margins.
-* **Mobile-First PWA:** Designed for iOS. Save it to your Home Screen for a native app experience, complete with pull-to-refresh, dark mode, and a one-tap "Copy Picks" clipboard button.
-* **100% Serverless & Free:** Uses zero third-party Python dependencies. Scheduled via GitHub Actions and hosted statically on GitHub Pages.
+**Blended win probabilities.** Vig is removed from each sportsbook's moneyline, then averaged with Kalshi and Polymarket midpoints. Weights are adjustable, and missing sources drop out of the average instead of breaking it.
 
-## Architecture
+**Contrarian and upset flags.** Public moneyline ticket percentages from Action Network are compared against the blended probability. A close underdog that almost nobody is backing gets flagged, which is where a swap can win you the week.
 
-1. **`fetch_data.py`**: A pure Python (Standard Library) scraper. 
-    * Pulls the weekly schedule from ESPN.
-    * Fetches consensus odds from The Odds API.
-    * Pulls event contracts from the Kalshi API.
-    * Scrapes public consensus from Action Network.
-    * Outputs a compiled `data.json` file.
-2. **`index.html`**: A single-file frontend built with Tailwind CSS (via CDN) that reads `data.json` and renders the mobile UI.
-3. **`.github/workflows/update_odds.yml`**: A GitHub Action that runs automatically on Thursdays and Sundays (or via manual dispatch) on a `macos-latest` runner (to bypass ESPN anti-bot IP blocks), commits the fresh JSON data, and triggers a web deployment.
+**Monday night tiebreaker.** Projects a final score from the spread and total, then snaps both numbers to common NFL scores (17, 20, 21, 24, 27, 30, 31 and so on) so the projection is a score that actually happens.
 
-## Setup & Installation
+**Injury report and kickoff weather.** Quarterbacks at any status and anyone ruled out, plus an Open-Meteo forecast for outdoor stadiums at kickoff. Domes show as indoors and neutral-site games are skipped.
 
-### 1. Repository Configuration
-1. Clone or fork this repository.
-2. Go to your repository **Settings > Pages**. Under **Build and deployment**, set the source to deploy from the `main` branch.
+**Odds history.** Every run appends a price point per game to `history.json`, so each card shows where the line opened, where it is now, and a sparkline of the week. The scraper also prices next week's games, so a fresh week already has an opening line to compare against.
 
-### 2. API Keys
-You will need a free API key from [The Odds API](https://the-odds-api.com/). 
-1. Go to your repository **Settings > Secrets and variables > Actions**.
-2. Click **New repository secret**.
-3. Name it `ODDS_API_KEY` and paste your key into the secret field.
+**Pick tracking.** Tap to swap any pick to the underdog, pick by hand for games with no odds, then log the week. Records fill in automatically once results land. The log lives on the phone and optionally syncs to your own Supabase project.
 
-### 3. First Run
-1. Go to the **Actions** tab in your repository.
-2. Select **Update NFL Picks Data** on the left.
-3. Click **Run workflow**. 
-4. Once the job completes successfully, your site will be live at `https://[your-username].github.io/[repo-name]/`.
+## Files
 
-## iOS Home Screen Installation
+| File | What it is |
+|---|---|
+| `fetch_data.py` | Standard-library Python scraper. Writes `data.json` and `history.json`. |
+| `index.html` | The whole front end: one file, Tailwind via CDN, no build step. |
+| `.github/workflows/update_odds.yml` | Scheduled and manual runs, commits the data back to the repo. |
+| `supabase_setup.sql` | Optional. Creates the pick-log table with row level security. |
+| `data.json` | Current week: games, probabilities, picks, injuries, weather, tiebreaker. |
+| `history.json` | Running odds log, pruned 28 days after kickoff. |
 
-To install this as a native-feeling app on your iPhone:
-1. Open your live GitHub Pages URL in **Safari**.
-2. Tap the **Share** icon at the bottom of the screen.
-3. Scroll down and tap **Add to Home Screen**.
-4. Tap **Add**. You can now launch the app directly from your home screen without browser toolbars.
+### Data sources
 
-## Local Development
+| Source | Used for | Key needed |
+|---|---|---|
+| ESPN scoreboard | Schedule, scores, injury report | No |
+| The Odds API | Moneyline, spread, total | Yes, free tier |
+| Kalshi | Prediction market prices | No |
+| Polymarket (Gamma) | Prediction market prices | No |
+| Action Network | Public ticket percentages | No, unofficial |
+| Open-Meteo | Kickoff forecast | No |
 
-If you want to test the scraper or UI on your local machine, no `pip install` is required. 
+## Setup
+
+### 1. Repository
+
+1. Fork or copy this repo. Put `fetch_data.py`, `index.html` and the workflow at the top level.
+2. **Settings, then Pages:** deploy from your default branch, root folder.
+3. **Settings, then Actions, then General, then Workflow permissions:** choose "Read and write." Without this the workflow can't commit data back.
+
+Note that a GitHub Pages site is public even when the repo is private, unless you're on an Enterprise plan. Anyone with the link can see your picks.
+
+### 2. API key
+
+Get a free key from [The Odds API](https://the-odds-api.com/), then go to **Settings, then Secrets and variables, then Actions**, and add a repository secret named `ODDS_API_KEY`.
+
+Without the key the app still works from prediction markets alone, but with less accuracy.
+
+### 3. First run
+
+Open the **Actions** tab, choose **Update odds and picks**, and click **Run workflow**. When it finishes, the site is live at `https://<username>.github.io/<repo>/`.
+
+### 4. iPhone Home Screen
+
+Open the site in Safari, tap Share, then **Add to Home Screen**. It runs full screen with no browser bars, and pull-to-refresh works inside the app.
+
+### 5. Optional: sync the pick log
+
+Without this, your log lives only in that browser's storage and is lost if you clear Safari or change phones.
+
+1. Create a free project at [supabase.com](https://supabase.com). Under Security, leave "Enable Data API" on and turn off "Automatically expose new tables."
+2. Run `supabase_setup.sql` in the SQL Editor. It creates `pick_log` with policies that limit each user to their own rows.
+3. **Authentication, then Sign In / Providers, then Email:** turn off "Confirm email."
+4. **Project Settings, then API:** copy the Project URL and the anon key. Never use the service role key.
+5. In the app, scroll to Pick log, tap **Set up sync**, enter the URL, key, an email and a password, then tap **Create account**.
+6. Go back to Supabase and turn off "Allow new users to sign up."
+
+## Schedule
+
+The workflow runs daily at 13:00 UTC (8 AM Central) and 01:00 UTC (8 PM Central), plus an extra run Thursday at 15:00 UTC for pools with Thursday deadlines. Edit the `cron` lines to suit your own deadline, and remember GitHub can start scheduled runs 30 or more minutes late. Manual runs from the GitHub mobile app take about a minute.
+
+Each run costs one request against The Odds API quota, so roughly 15 to 20 a week.
+
+## Using it on pick day
+
+1. Open the app and check that "Updated" shows today.
+2. Read the amber **Check before you submit** card, which lists only games with a quarterback question or a line that moved.
+3. Decide your swaps. The header suggests how many based on your pool size: with a dozen people, zero or one; with twenty or more, one or two. Best candidates carry both the red **Upset value** and amber **Contrarian option** boxes.
+4. Tap **Copy all picks**, paste into your pool form, then tap **Log picks**.
+
+Swapping the Monday night game flips the projected score automatically so your tiebreaker agrees with your pick.
+
+## Command-line options
 
 ```bash
-# 1. Export your API key
-export ODDS_API_KEY="your_api_key_here"
+export ODDS_API_KEY="your_key"
+python3 fetch_data.py                      # current week, writes data.json + history.json
+python3 fetch_data.py --week 5 --season 2026 --season-type 2
+python3 fetch_data.py --book-weight 2      # weight sportsbooks double
+python3 fetch_data.py --poly-weight 0      # turn off Polymarket
+python3 fetch_data.py --lookahead 2        # price two future weeks into history
+python3 fetch_data.py --debug-public       # write Action Network diagnostics
+python3 -m http.server                     # then open http://localhost:8000
+```
 
-# 2. Run the scraper to generate data.json
-python3 fetch_data.py
+Python 3.9 or newer. No `pip install` needed. Opening `index.html` straight from disk won't work, because browsers refuse to read `data.json` from a file path.
 
-# 3. Spin up a local web server to view the frontend
-python3 -m http.server
+## Troubleshooting
 
-# 4. Then open ⁠http://localhost:8000⁠ in your browser.
+**ESPN returns 403.** ESPN blocks datacenter traffic at times. The scraper tries an alternate host, retries, and falls back to building the schedule from The Odds API with an estimated week number. The app shows a banner when that happens.
+
+**No public betting splits.** Action Network's feed is unofficial and may be unavailable. Run the workflow with the **Show Action Network diagnostics** option, and the run summary will show what came back for each request.
+
+**The app looks stale.** Check the build stamp at the very bottom of the page. GitHub Pages caches HTML for about ten minutes; add `?v=2` to the URL in Safari to force a fresh copy. An installed Home Screen app caches separately, so removing and re-adding it is the last resort, though that clears its stored swaps and log.
+
+**Sparklines are missing.** Each game needs at least three history points, so they appear after a day or so of runs.
+
+## Honest limits
+
+- The markets already price injuries, weather and news. This tool surfaces that information; it does not beat the market, and it deliberately applies no adjustments of its own.
+- Public ticket percentages come from sports bettors, not your coworkers. They're a decent proxy for what the room will pick, not a count of it.
+- Contrarian swaps lower your expected number of correct picks. They're worth making to win a week outright in a big pool, not as a weekly habit.
+- Action Network and Polymarket endpoints are unofficial and can change or block traffic without notice. Every source fails softly: the run still finishes and the app says which source was unavailable.
+
+Built for personal use in a friendly office pool. Not betting advice.

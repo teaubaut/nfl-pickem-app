@@ -12,7 +12,8 @@ Pipeline
      Public splits      -> Action Network moneyline ticket % as a proxy for pool picks
      Injuries           -> ESPN injury report: quarterbacks and ruled-out players
      Movement           -> how each number moved since the previous run
-  9. History            -> append every run to history.json (this week and next)
+ 9. History            -> append every run to history.json (this week and next)
+ 10. Weather            -> Open-Meteo kickoff forecast for outdoor stadiums
   7. Monday Night       -> projected final score snapped to key numbers
   8. Write data.json
 
@@ -82,6 +83,47 @@ INJURY_URLS = [
 # the point is knowing which games to read news on before picks lock.
 SIDELINED = {"out", "doubtful", "injured reserve", "suspension", "physically unable to perform"}
 MOVEMENT_FLAG = 0.03             # probability swing worth showing on a card
+WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
+WEATHER_MAX_DAYS = 15            # Open-Meteo's forecast horizon
+
+# Home stadiums: lat, lon, roof. Weather is skipped for domes and neutral sites.
+STADIUMS = {
+    "ARI": (33.5277, -112.2626, "retractable"), "ATL": (33.7554, -84.4008, "dome"),
+    "BAL": (39.2780, -76.6227, "open"),         "BUF": (42.7738, -78.7870, "open"),
+    "CAR": (35.2258, -80.8528, "open"),         "CHI": (41.8623, -87.6167, "open"),
+    "CIN": (39.0954, -84.5160, "open"),         "CLE": (41.5061, -81.6995, "open"),
+    "DAL": (32.7473, -97.0945, "retractable"),  "DEN": (39.7439, -105.0201, "open"),
+    "DET": (42.3400, -83.0456, "dome"),         "GB":  (44.5013, -88.0622, "open"),
+    "HOU": (29.6847, -95.4107, "retractable"),  "IND": (39.7601, -86.1639, "retractable"),
+    "JAX": (30.3239, -81.6373, "open"),         "KC":  (39.0489, -94.4839, "open"),
+    "LV":  (36.0909, -115.1833, "dome"),        "LAC": (33.9535, -118.3392, "dome"),
+    "LAR": (33.9535, -118.3392, "dome"),        "MIA": (25.9580, -80.2389, "open"),
+    "MIN": (44.9736, -93.2575, "dome"),         "NE":  (42.0909, -71.2643, "open"),
+    "NO":  (29.9511, -90.0812, "dome"),         "NYG": (40.8135, -74.0745, "open"),
+    "NYJ": (40.8135, -74.0745, "open"),         "PHI": (39.9008, -75.1675, "open"),
+    "PIT": (40.4468, -80.0158, "open"),         "SF":  (37.4033, -121.9694, "open"),
+    "SEA": (47.5952, -122.3316, "open"),        "TB":  (27.9759, -82.5033, "open"),
+    "TEN": (36.1665, -86.7713, "open"),         "WSH": (38.9077, -76.8645, "open"),
+}
+
+# WMO weather codes -> short label + emoji.
+WEATHER_CODES = {
+    0: ("Clear", "\u2600\ufe0f"), 1: ("Mostly clear", "\U0001f324\ufe0f"),
+    2: ("Partly cloudy", "\u26c5"), 3: ("Overcast", "\u2601\ufe0f"),
+    45: ("Fog", "\U0001f32b\ufe0f"), 48: ("Freezing fog", "\U0001f32b\ufe0f"),
+    51: ("Light drizzle", "\U0001f327\ufe0f"), 53: ("Drizzle", "\U0001f327\ufe0f"),
+    55: ("Heavy drizzle", "\U0001f327\ufe0f"), 56: ("Freezing drizzle", "\U0001f9ca"),
+    57: ("Freezing drizzle", "\U0001f9ca"), 61: ("Light rain", "\U0001f326\ufe0f"),
+    63: ("Rain", "\U0001f327\ufe0f"), 65: ("Heavy rain", "\U0001f327\ufe0f"),
+    66: ("Freezing rain", "\U0001f9ca"), 67: ("Freezing rain", "\U0001f9ca"),
+    71: ("Light snow", "\U0001f328\ufe0f"), 73: ("Snow", "\u2744\ufe0f"),
+    75: ("Heavy snow", "\u2744\ufe0f"), 77: ("Snow grains", "\u2744\ufe0f"),
+    80: ("Rain showers", "\U0001f326\ufe0f"), 81: ("Rain showers", "\U0001f327\ufe0f"),
+    82: ("Heavy showers", "\U0001f327\ufe0f"), 85: ("Snow showers", "\U0001f328\ufe0f"),
+    86: ("Snow showers", "\u2744\ufe0f"), 95: ("Thunderstorms", "\u26c8\ufe0f"),
+    96: ("Thunderstorms", "\u26c8\ufe0f"), 99: ("Thunderstorms", "\u26c8\ufe0f"),
+}
+
 HISTORY_FILE = "history.json"
 HISTORY_MAX_POINTS = 400         # per game
 HISTORY_RETAIN_DAYS = 28         # drop games whose kickoff is older than this
@@ -1080,6 +1122,75 @@ def movement(game_id: str, home_prob: Optional[float], odds: Optional[dict],
 
 
 # --------------------------------------------------------------------------- #
+# 6f. Kickoff weather (Open-Meteo, no key)
+# --------------------------------------------------------------------------- #
+def fetch_weather(games: list[dict], now: datetime) -> dict[str, dict]:
+    """One batched request for every outdoor game; {game_id: forecast}."""
+    wanted = []
+    for g in games:
+        roof = (STADIUMS.get(g["home"]) or (None, None, None))[2]
+        days_out = (g["kickoff"] - now).total_seconds() / 86400
+        if g["neutral_site"] or not roof or g["completed"] or days_out > WEATHER_MAX_DAYS:
+            continue
+        if roof == "dome":
+            continue
+        wanted.append(g)
+    if not wanted:
+        return {}
+
+    params = {
+        "latitude": ",".join(str(STADIUMS[g["home"]][0]) for g in wanted),
+        "longitude": ",".join(str(STADIUMS[g["home"]][1]) for g in wanted),
+        "hourly": "temperature_2m,precipitation_probability,wind_speed_10m,weather_code",
+        "temperature_unit": "fahrenheit",
+        "wind_speed_unit": "mph",
+        "precipitation_unit": "inch",
+        "timezone": "UTC",
+        "forecast_days": 16,
+    }
+    data, _ = http_get_json(WEATHER_URL, params)
+    blocks = data if isinstance(data, list) else [data]
+
+    out: dict[str, dict] = {}
+    for game, block in zip(wanted, blocks):
+        hourly = (block or {}).get("hourly") or {}
+        times = hourly.get("time") or []
+        if not times:
+            continue
+        target = game["kickoff"].astimezone(timezone.utc)
+        best_i, best_gap = None, None
+        for i, stamp in enumerate(times):
+            moment = parse_iso(stamp)
+            if not moment:
+                continue
+            gap = abs((moment - target).total_seconds())
+            if best_gap is None or gap < best_gap:
+                best_i, best_gap = i, gap
+        if best_i is None or best_gap > 3 * 3600:
+            continue
+
+        def at(key):
+            values = hourly.get(key) or []
+            return values[best_i] if best_i < len(values) else None
+
+        code = at("weather_code")
+        label, icon = WEATHER_CODES.get(int(code) if isinstance(code, (int, float)) else -1,
+                                        ("Forecast", "\U0001f321\ufe0f"))
+        temp, wind, precip = at("temperature_2m"), at("wind_speed_10m"), at("precipitation_probability")
+        out[game["game_id"]] = {
+            "summary": label,
+            "icon": icon,
+            "temp_f": round(temp) if isinstance(temp, (int, float)) else None,
+            "wind_mph": round(wind) if isinstance(wind, (int, float)) else None,
+            "precip_pct": round(precip) if isinstance(precip, (int, float)) else None,
+            "roof": STADIUMS[game["home"]][2],
+            "rough": STADIUMS[game["home"]][2] == "retractable",
+        }
+    log.info("Weather: forecasts for %d outdoor games", len(out))
+    return out
+
+
+# --------------------------------------------------------------------------- #
 # 6e. Odds history (one point per run, per game)
 # --------------------------------------------------------------------------- #
 def load_history(path: str) -> dict:
@@ -1315,6 +1426,14 @@ def build(args: argparse.Namespace) -> dict:
         log.error("Injury report failed: %s", exc)
         sources["espn_injuries"] = {"ok": False, "error": str(exc)}
 
+    weather: dict[str, dict] = {}
+    try:
+        weather = fetch_weather(games, datetime.now(timezone.utc))
+        sources["weather"] = {"ok": True, "games": len(weather)}
+    except Exception as exc:
+        log.error("Weather failed: %s", exc)
+        sources["weather"] = {"ok": False, "error": str(exc)}
+
     history = load_history(args.history)
     now_utc = datetime.now(timezone.utc)
     stamp = now_utc.isoformat(timespec="minutes")
@@ -1394,6 +1513,9 @@ def build(args: argparse.Namespace) -> dict:
                 "weights": effective,
             },
             "public_pct": public,
+            "weather": weather.get(g["game_id"]) or (
+                {"roof": "dome", "indoor": True} if (STADIUMS.get(g["home"]) or (0, 0, ""))[2] == "dome"
+                and not g["neutral_site"] else None),
             "injuries": game_injuries(g, injuries),
             "movement": movement(g["game_id"], combined, odds, previous),
             "trend": None,   # filled in below, once this run is in the history

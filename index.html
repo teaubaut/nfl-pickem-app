@@ -257,13 +257,15 @@
   var STALE_HOURS = 24;
   var PTR_THRESHOLD = 64;
 
+  var APP_BUILD = '2026-09-19.5';   // bump when index.html changes
+  var HISTORY_URL = 'history.json';
   var LOG_KEY = 'poolpicks:log';
   var SB_KEY = 'poolpicks:supabase';
   var SB_SESSION = 'poolpicks:sbSession';
   var POOL_KEY = 'poolpicks:poolSize';
 
   var state = { data: null, loading: false, offline: false, lastFetch: 0,
-                swaps: {}, manual: {}, openInjuries: {}, poolSize: 11, log: [], sb: null, session: null,
+                swaps: {}, manual: {}, openInjuries: {}, history: null, poolSize: 11, log: [], sb: null, session: null,
                 sync: 'Log is saved on this phone only.' };
 
   function store(key, value) {
@@ -437,6 +439,28 @@
   }
 
   // ---------- rendering ----------
+  /** Tiny line chart of this game's blended probability, from the picked side. */
+  function sparkline(g, side) {
+    var entry = state.history && state.history.games ? state.history.games[g.game_id] : null;
+    var points = (entry && entry.points ? entry.points : []).filter(function (p) { return isNum(p.p); });
+    if (points.length < 3) return '';
+    var values = points.map(function (p) { return side === 'home' ? p.p : 1 - p.p; });
+    var min = Math.min.apply(null, values), max = Math.max.apply(null, values);
+    var span = Math.max(max - min, 0.04);
+    var mid = (min + max) / 2;
+    var lo = mid - span / 2, hi = mid + span / 2;
+    var coords = values.map(function (v, i) {
+      var x = (i / (values.length - 1)) * 100;
+      var y = 26 - ((v - lo) / (hi - lo)) * 24;
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    var rising = values[values.length - 1] >= values[0];
+    return '<svg viewBox="0 0 100 28" preserveAspectRatio="none" class="mt-2 h-7 w-full" aria-hidden="true">' +
+        '<polyline points="' + coords + '" fill="none" stroke="' + (rising ? '#FFB938' : '#FF6B57') + '" ' +
+        'stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>' +
+      '</svg>';
+  }
+
   function bar(label, value, fillClass) {
     var has = isNum(value);
     var width = has ? Math.max(2, Math.min(100, value * 100)) : 0;
@@ -586,6 +610,29 @@
         ' win ' + pct(g.pick.underdog_win_probability) + ' of the time but get only ' + pct(g.pick.underdog_public_pct) + ' of public bets.']);
     }
 
+    // Odds history: how this number has moved through the week.
+    var trendHtml = '';
+    if (g.trend && isNum(g.trend.opened) && isNum(g.trend.now)) {
+      var flip = side === 'home' ? 1 : -1;
+      var opened = side === 'home' ? g.trend.opened : 1 - g.trend.opened;
+      var nowP = side === 'home' ? g.trend.now : 1 - g.trend.now;
+      var sinceOpen = Math.round(g.trend.since_open * 100) * flip;
+      var since24 = isNum(g.trend.since_24h) ? Math.round(g.trend.since_24h * 100) * flip : null;
+      var openedAt = g.trend.opened_at ? new Date(g.trend.opened_at) : null;
+      var bits = [(sinceOpen >= 0 ? '+' : '\u2212') + Math.abs(sinceOpen) + ' since ' +
+        (openedAt && !isNaN(openedAt) ? openedAt.toLocaleDateString([], { weekday: 'short' }) : 'open')];
+      if (since24 !== null && Math.abs(since24) >= 1) {
+        bits.push((since24 >= 0 ? '+' : '\u2212') + Math.abs(since24) + ' in 24 hr');
+      }
+      trendHtml = '<div class="mt-3 border-t border-line pt-2.5">' +
+          '<div class="flex items-center justify-between gap-3">' +
+            '<p class="text-xs text-chalk/55">Opened ' + pct(opened) + ', now ' + pct(nowP) + '</p>' +
+            '<p class="num text-xs font-semibold ' + (sinceOpen >= 0 ? 'text-chalk/80' : 'text-flag') + '">' + esc(bits.join(', ')) + '</p>' +
+          '</div>' +
+          sparkline(g, side) +
+        '</div>';
+    }
+
     // Line movement since the previous scraper run, from the picked team's side.
     var moveHtml = '';
     if (g.movement && g.movement.notable && isNum(g.movement.home_prob_change)) {
@@ -659,7 +706,7 @@
           bar('Kalshi', kalshi, 'bg-sky') +
           bar('Polymarket', poly, 'bg-poly') +
         '</div>' +
-        publicHtml + gap + moveHtml + upset + leverage + injuryHtml + swapBtn + swapNote +
+        publicHtml + gap + moveHtml + upset + leverage + trendHtml + injuryHtml + swapBtn + swapNote +
       '</article>';
   }
 
@@ -807,7 +854,8 @@
 
     var upsets = games.filter(function (g) { return g.pick && g.pick.live_upset_candidate; }).length;
     html.push('<p class="pt-4 text-center text-xs text-chalk/40">' + games.length + ' games, ' + upsets + ' flagged for upset value. ' +
-      (isStandalone() ? 'Pull down' : 'Tap the refresh button') + ' after running the scraper.</p>');
+      (isStandalone() ? 'Pull down' : 'Tap the refresh button') + ' after running the scraper.<br>' +
+      'App build ' + APP_BUILD + '</p>');
 
     $('#app').innerHTML = '<div class="space-y-5">' + html.filter(Boolean).join('') + '</div>';
   }
@@ -850,6 +898,16 @@
     } catch (e) { return null; }
   }
 
+  /** Optional: the running odds log written by the scraper. */
+  function loadHistory() {
+    return fetch(HISTORY_URL + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (h) {
+        if (h && h.games) { state.history = h; if (state.data) render(); }
+      })
+      .catch(function () { /* history is a nicety, not required */ });
+  }
+
   function setLoading(on) {
     state.loading = on;
     $('#reload-icon').classList.toggle('spin', on);
@@ -872,6 +930,7 @@
         loadSwaps();
         saveCache(d);
         render();
+        loadHistory();
         if (userInitiated) toast('Picks refreshed');
       })
       .catch(function (err) {

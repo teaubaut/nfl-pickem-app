@@ -263,7 +263,7 @@
   var POOL_KEY = 'poolpicks:poolSize';
 
   var state = { data: null, loading: false, offline: false, lastFetch: 0,
-                swaps: {}, manual: {}, poolSize: 11, log: [], sb: null, session: null,
+                swaps: {}, manual: {}, openInjuries: {}, poolSize: 11, log: [], sb: null, session: null,
                 sync: 'Log is saved on this phone only.' };
 
   function store(key, value) {
@@ -609,15 +609,21 @@
       });
       lines.sort(function (a, b) { return (a.item.position !== 'QB') - (b.item.position !== 'QB'); });
       if (lines.length) {
+        var open = !!state.openInjuries[g.game_id];
+        var shown = open ? lines : lines.slice(0, 4);
         injuryHtml = '<div class="mt-3 border-t border-line pt-2.5">' +
           '<p class="text-xs text-chalk/50">Injury report</p>' +
-          lines.slice(0, 4).map(function (row) {
+          shown.map(function (row) {
             var qb = row.item.position === 'QB';
             return '<p class="mt-1 text-sm ' + (qb ? 'text-chalk' : 'text-chalk/70') + '">' +
               '<span class="num">' + esc(row.team.abbr) + '</span> ' + esc(row.item.position) + ' ' +
-              esc(row.item.name) + ' \u2014 ' + esc(row.item.status) + '</p>';
+              esc(row.item.name) + ' \u2014 ' + esc(row.item.status) +
+              (row.item.detail ? '<span class="text-chalk/50"> (' + esc(row.item.detail) + ')</span>' : '') + '</p>';
           }).join('') +
-          (lines.length > 4 ? '<p class="mt-1 text-xs text-chalk/45">and ' + (lines.length - 4) + ' more</p>' : '') +
+          (lines.length > 4
+            ? '<button type="button" data-injuries="' + esc(g.game_id) + '" class="mt-1.5 text-xs font-semibold text-bulb underline">' +
+              (open ? 'Show fewer' : 'Show ' + (lines.length - 4) + ' more') + '</button>'
+            : '') +
         '</div>';
       }
     }
@@ -1384,6 +1390,14 @@
     if (e.target.closest('#sync-open')) { openSyncSheet(); return; }
     var swap = e.target.closest('[data-swap]');
     if (swap) { toggleSwap(swap.getAttribute('data-swap')); return; }
+    var moreInjuries = e.target.closest('[data-injuries]');
+    if (moreInjuries) {
+      var id = moreInjuries.getAttribute('data-injuries');
+      if (state.openInjuries[id]) delete state.openInjuries[id];
+      else state.openInjuries[id] = true;
+      render();
+      return;
+    }
     var manual = e.target.closest('[data-manual]');
     if (manual) { setManual(manual.getAttribute('data-manual'), manual.getAttribute('data-side')); return; }
     var del = e.target.closest('[data-dellog]');

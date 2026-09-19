@@ -263,7 +263,7 @@
   var POOL_KEY = 'poolpicks:poolSize';
 
   var state = { data: null, loading: false, offline: false, lastFetch: 0,
-                swaps: {}, poolSize: 11, log: [], sb: null, session: null,
+                swaps: {}, manual: {}, poolSize: 11, log: [], sb: null, session: null,
                 sync: 'Log is saved on this phone only.' };
 
   function store(key, value) {
@@ -280,7 +280,20 @@
   // ---------- swaps (your pick vs the model's) ----------
   function swapKey(d) { return 'poolpicks:swaps:' + (d ? (d.season || '') + '-' + (d.week || '') : ''); }
 
-  function loadSwaps() { state.swaps = restore(swapKey(state.data), {}) || {}; }
+  function manualKey(d) { return 'poolpicks:manual:' + (d ? (d.season || '') + '-' + (d.week || '') : ''); }
+
+  function loadSwaps() {
+    state.swaps = restore(swapKey(state.data), {}) || {};
+    state.manual = restore(manualKey(state.data), {}) || {};
+  }
+
+  /** Games with no odds (already played, or lines not posted) get picked by hand. */
+  function setManual(gameId, side) {
+    if (state.manual[gameId] === side) delete state.manual[gameId];
+    else state.manual[gameId] = side;
+    store(manualKey(state.data), state.manual);
+    render();
+  }
 
   function toggleSwap(gameId) {
     if (state.swaps[gameId]) delete state.swaps[gameId];
@@ -292,7 +305,16 @@
   /** The team you are actually picking: the model's pick unless you swapped it. */
   function selection(g) {
     var sides = pickSides(g);
-    if (!sides) return null;
+    if (!sides) {
+      var manual = state.manual[g.game_id];
+      if (manual !== 'home' && manual !== 'away') return null;
+      var opposite = manual === 'home' ? 'away' : 'home';
+      return {
+        side: manual, other: opposite, swapped: false, manual: true,
+        team: g[manual], opponent: g[opposite], prob: null,
+        modelTeam: null, modelProb: null
+      };
+    }
     var swapped = !!state.swaps[g.game_id];
     var side = swapped ? sides.dog : sides.pick;
     var other = swapped ? sides.pick : sides.dog;
@@ -479,8 +501,29 @@
     var lineHtml = line ? '<p class="mt-0.5 text-sm text-chalk/50">' + esc(line) + '</p>' : '';
 
     if (!sides) {
-      return '<article class="rounded-xl border border-line bg-field p-4">' + head + lineHtml +
-        '<p class="mt-3 text-sm text-chalk/60">No odds or market prices yet. Run the scraper again closer to kickoff.</p></article>';
+      var manualSel = selection(g);
+      var chosen = manualSel ? manualSel.side : null;
+      var why = g.completed
+        ? 'This game is over, so the markets are gone. Pick the side you turned in.'
+        : 'No odds or market prices yet. Pick by hand, or refresh closer to kickoff.';
+      var finalLine = '';
+      if (g.result && isNum(g.result.away_score) && isNum(g.result.home_score)) {
+        finalLine = '<p class="num mt-1 text-sm text-chalk/70">' + esc(nick(g.away)) + ' ' + g.result.away_score +
+          ', ' + esc(nick(g.home)) + ' ' + g.result.home_score + '</p>';
+      }
+      var choice = function (side) {
+        var team = g[side];
+        var on = chosen === side;
+        return '<button type="button" data-manual="' + esc(g.game_id) + '" data-side="' + side + '" ' +
+          'class="rounded-lg border px-3 py-2.5 text-sm font-semibold active:bg-turf focus:outline-none focus-visible:ring-2 focus-visible:ring-bulb ' +
+          (on ? 'border-bulb bg-bulb text-turf' : 'border-line text-chalk/80') + '">' +
+          (on ? 'Picked ' : 'Pick ') + esc(nick(team)) + '</button>';
+      };
+      return '<article class="rounded-xl border bg-field p-4 ' + (chosen ? 'border-bulb/50' : 'border-line') + '">' +
+        head + lineHtml + finalLine +
+        '<p class="mt-3 text-sm text-chalk/60">' + why + '</p>' +
+        '<div class="mt-3 grid grid-cols-2 gap-2">' + choice('away') + choice('home') + '</div>' +
+        '</article>';
     }
 
     var sel = selection(g);
@@ -656,7 +699,7 @@
     var teams = teamMap(d);
     var games = sortedGames(d);
 
-    var hasPicks = games.some(function (g) { return pickSides(g); });
+    var hasPicks = games.some(function (g) { return selection(g); });
     $('#week').textContent = weekTitle(d);
     updateClock();
     $('#copy').disabled = !hasPicks;
@@ -1086,6 +1129,7 @@
           team: item.sel.team.abbr,
           opponent: item.sel.opponent.abbr,
           swapped: item.sel.swapped,
+          manual: !!item.sel.manual,
           win_probability: item.sel.prob
         };
       })
@@ -1277,6 +1321,8 @@
     if (e.target.closest('#sync-open')) { openSyncSheet(); return; }
     var swap = e.target.closest('[data-swap]');
     if (swap) { toggleSwap(swap.getAttribute('data-swap')); return; }
+    var manual = e.target.closest('[data-manual]');
+    if (manual) { setManual(manual.getAttribute('data-manual'), manual.getAttribute('data-side')); return; }
     var del = e.target.closest('[data-dellog]');
     if (del) {
       var removed = state.log.splice(parseInt(del.getAttribute('data-dellog'), 10), 1)[0];

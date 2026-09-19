@@ -2,7 +2,8 @@ name: Update odds and picks
 
 on:
   schedule:
-    - cron: "0 18 * * 4"   # Thursdays 18:00 UTC (before Thursday Night Football)
+    - cron: "0 13 * * 4"   # Thursdays 13:00 UTC = 8 AM CDT / 7 AM CST
+    - cron: "0 15 * * 4"   # Thursdays 15:00 UTC = 10 AM CDT / 9 AM CST (backup)
     - cron: "0 13 * * 0"   # Sundays 13:00 UTC (before the early Sunday games)
   workflow_dispatch:        # Run manually: Actions tab > Update odds and picks > Run workflow
     inputs:

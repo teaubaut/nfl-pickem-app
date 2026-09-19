@@ -173,6 +173,17 @@
               class="mt-3 w-full rounded-lg bg-bulb py-3.5 font-display text-xl font-bold text-turf active:brightness-90 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-chalk focus-visible:ring-offset-2 focus-visible:ring-offset-turf">
         Copy all picks
       </button>
+      <div class="mt-3 flex items-center justify-between gap-3">
+        <label class="flex items-center gap-2 text-sm text-chalk/70" for="pool-size">People in pool
+          <input id="pool-size" type="number" inputmode="numeric" min="2" max="500"
+                 class="num w-16 rounded-md border border-line bg-field px-2 py-1.5 text-center text-base text-chalk focus:outline-none focus-visible:ring-2 focus-visible:ring-bulb">
+        </label>
+        <button id="log" type="button" disabled
+                class="rounded-lg border border-line px-3 py-2 text-sm font-semibold text-chalk/90 active:bg-field disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-bulb">
+          Log picks
+        </button>
+      </div>
+      <p id="swap-advice" class="mt-2 text-xs text-chalk/55"></p>
     </div>
   </header>
 
@@ -187,6 +198,41 @@
   <!-- Toast -->
   <div id="toast" role="status" aria-live="assertive"
        class="toast-pos fixed left-1/2 z-50 -translate-x-1/2 translate-y-3 opacity-0 pointer-events-none rounded-full bg-chalk px-5 py-2.5 font-semibold text-turf shadow-lg"></div>
+
+  <!-- Supabase sync setup -->
+  <div id="sb-sheet" class="fixed inset-0 z-50 hidden bg-black/60" role="dialog" aria-modal="true" aria-labelledby="sb-title">
+    <div class="absolute inset-x-0 bottom-0 max-h-[90vh] overflow-y-auto rounded-t-2xl border-t border-line bg-field p-4 safe-bottom">
+      <div class="mx-auto max-w-xl">
+        <h2 id="sb-title" class="font-display text-2xl font-bold">Sync pick log</h2>
+        <p class="mt-1 text-sm text-chalk/70">Your log is stored in your own Supabase table, readable only by you. Create the account once, then sign in on each device.</p>
+        <div class="mt-3 space-y-3">
+          <label class="block text-sm text-chalk/70">Project URL
+            <input id="sb-url" type="url" placeholder="https://abcdefgh.supabase.co" autocapitalize="off" autocorrect="off" spellcheck="false"
+                   class="mt-1 w-full rounded-md border border-line bg-turf px-3 py-2.5 text-base text-chalk"></label>
+          <label class="block text-sm text-chalk/70">Publishable (anon) key
+            <input id="sb-key" type="password" autocapitalize="off" autocorrect="off" spellcheck="false"
+                   class="mt-1 w-full rounded-md border border-line bg-turf px-3 py-2.5 text-base text-chalk"></label>
+          <label class="block text-sm text-chalk/70">Email
+            <input id="sb-email" type="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="username"
+                   class="mt-1 w-full rounded-md border border-line bg-turf px-3 py-2.5 text-base text-chalk"></label>
+          <label class="block text-sm text-chalk/70">Password
+            <input id="sb-password" type="password" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="current-password"
+                   class="mt-1 w-full rounded-md border border-line bg-turf px-3 py-2.5 text-base text-chalk"></label>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <button id="sb-signin" type="button" class="rounded-lg bg-bulb py-3 font-display text-lg font-bold text-turf active:brightness-90">Sign in</button>
+          <button id="sb-signup" type="button" class="rounded-lg border border-line py-3 font-semibold active:bg-turf">Create account</button>
+        </div>
+        <p id="sb-status" class="mt-3 text-sm text-chalk/70"></p>
+        <div class="mt-3 grid grid-cols-3 gap-2">
+          <button id="sb-sync" type="button" class="rounded-lg border border-line py-2.5 text-sm font-semibold active:bg-turf">Sync now</button>
+          <button id="sb-signout" type="button" class="rounded-lg border border-flag/50 py-2.5 text-sm font-semibold text-flag active:bg-turf">Sign out</button>
+          <button id="sb-close" type="button" class="rounded-lg border border-line py-2.5 text-sm font-semibold active:bg-turf">Close</button>
+        </div>
+        <p class="mt-3 text-xs text-chalk/45">The key and your session stay in this browser. Row level security limits both to your own rows.</p>
+      </div>
+    </div>
+  </div>
 
   <!-- Manual copy sheet (shown only if the clipboard is blocked) -->
   <div id="sheet" class="fixed inset-0 z-50 hidden bg-black/60" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
@@ -211,7 +257,73 @@
   var STALE_HOURS = 24;
   var PTR_THRESHOLD = 64;
 
-  var state = { data: null, loading: false, offline: false, lastFetch: 0 };
+  var LOG_KEY = 'poolpicks:log';
+  var SB_KEY = 'poolpicks:supabase';
+  var SB_SESSION = 'poolpicks:sbSession';
+  var POOL_KEY = 'poolpicks:poolSize';
+
+  var state = { data: null, loading: false, offline: false, lastFetch: 0,
+                swaps: {}, poolSize: 11, log: [], sb: null, session: null,
+                sync: 'Log is saved on this phone only.' };
+
+  function store(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* storage disabled */ }
+  }
+
+  function restore(key, fallback) {
+    try {
+      var raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (e) { return fallback; }
+  }
+
+  // ---------- swaps (your pick vs the model's) ----------
+  function swapKey(d) { return 'poolpicks:swaps:' + (d ? (d.season || '') + '-' + (d.week || '') : ''); }
+
+  function loadSwaps() { state.swaps = restore(swapKey(state.data), {}) || {}; }
+
+  function toggleSwap(gameId) {
+    if (state.swaps[gameId]) delete state.swaps[gameId];
+    else state.swaps[gameId] = true;
+    store(swapKey(state.data), state.swaps);
+    render();
+  }
+
+  /** The team you are actually picking: the model's pick unless you swapped it. */
+  function selection(g) {
+    var sides = pickSides(g);
+    if (!sides) return null;
+    var swapped = !!state.swaps[g.game_id];
+    var side = swapped ? sides.dog : sides.pick;
+    var other = swapped ? sides.pick : sides.dog;
+    var pr = (g.probabilities || {}).combined;
+    return {
+      side: side, other: other, swapped: swapped,
+      team: g[side], opponent: g[other],
+      prob: pr && isNum(pr[side]) ? pr[side] : (swapped ? null : g.pick.win_probability),
+      modelTeam: g[sides.pick], modelProb: g.pick.win_probability
+    };
+  }
+
+  function swapCount() {
+    return sortedGames(state.data || { games: [] }).filter(function (g) {
+      return pickSides(g) && state.swaps[g.game_id];
+    }).length;
+  }
+
+  function swapGuide(n) {
+    if (n <= 12) return { text: '0-1', max: 1 };
+    if (n <= 19) return { text: '1', max: 1 };
+    return { text: '1-2', max: 2 };
+  }
+
+  function renderAdvice() {
+    var n = state.poolSize, used = swapCount(), guide = swapGuide(n);
+    var msg = 'With ' + n + ' people, ' + guide.text + ' contrarian swap' + (guide.text === '1' ? '' : 's') +
+      ' per week. You have ' + used + '.';
+    if (used > guide.max) msg += ' That is more risk than the pool size needs.';
+    $('#swap-advice').textContent = msg;
+  }
 
   // ---------- small helpers ----------
   function $(sel) { return document.querySelector(sel); }
@@ -371,12 +483,14 @@
         '<p class="mt-3 text-sm text-chalk/60">No odds or market prices yet. Run the scraper again closer to kickoff.</p></article>';
     }
 
-    var pickTeam = g[sides.pick];
-    var dogTeam = g[sides.dog];
-    var vegas = pr.sportsbook_vig_free ? pr.sportsbook_vig_free[sides.pick] : null;
-    var kalshi = pr.kalshi ? pr.kalshi[sides.pick] : null;
-    var poly = pr.polymarket ? pr.polymarket[sides.pick] : null;
-    var combined = pr.combined ? pr.combined[sides.pick] : g.pick.win_probability;
+    var sel = selection(g);
+    var side = sel.side;
+    var pickTeam = g[side];
+    var dogTeam = g[sel.other];
+    var vegas = pr.sportsbook_vig_free ? pr.sportsbook_vig_free[side] : null;
+    var kalshi = pr.kalshi ? pr.kalshi[side] : null;
+    var poly = pr.polymarket ? pr.polymarket[side] : null;
+    var combined = pr.combined ? pr.combined[side] : (sel.swapped ? null : g.pick.win_probability);
     var tier = g.pick.confidence ? g.pick.confidence.charAt(0).toUpperCase() + g.pick.confidence.slice(1) : '';
 
     // Call out the prediction market that disagrees most with Vegas.
@@ -408,7 +522,7 @@
     }
 
     // Public betting splits (proxy for what the rest of the pool is picking)
-    var pub = g.public_pct ? g.public_pct[sides.pick] : null;
+    var pub = g.public_pct ? g.public_pct[side] : null;
     var publicHtml = isNum(pub)
       ? '<p class="mt-3 text-sm text-chalk/70"><span class="num font-semibold text-chalk">' + pct(pub) + '</span> of public bets are on the ' + esc(nick(pickTeam)) + '.</p>'
       : '';
@@ -429,15 +543,30 @@
         ' win ' + pct(g.pick.underdog_win_probability) + ' of the time but get only ' + pct(g.pick.underdog_public_pct) + ' of public bets.']);
     }
 
+    // Tap to swap between the model's pick and the underdog.
+    var cost = isNum(sel.modelProb) ? (2 * sel.modelProb - 1) : null;
+    var swapBtn = '<button type="button" data-swap="' + esc(g.game_id) + '" ' +
+      'class="mt-3 w-full rounded-lg border px-3 py-2.5 text-sm font-semibold active:bg-turf focus:outline-none focus-visible:ring-2 focus-visible:ring-bulb ' +
+      (sel.swapped ? 'border-flag/60 text-flag' : 'border-line text-chalk/80') + '">' +
+      (sel.swapped ? 'Undo swap, back to ' + esc(nick(sel.modelTeam)) : 'Swap to ' + esc(nick(dogTeam)) + ' ' + pct(combined ? 1 - combined : null)) +
+      '</button>';
+    var swapNote = '';
+    if (sel.swapped) {
+      swapNote = '<p class="mt-1.5 text-xs text-chalk/55">Model picks ' + esc(nick(sel.modelTeam)) + ' ' + pct(sel.modelProb) +
+        (isNum(cost) ? '. This swap costs about ' + cost.toFixed(2) + ' expected wins' : '') + '.</p>';
+    }
+
     return '' +
-      '<article class="rounded-xl border border-line bg-field p-4">' +
+      '<article class="rounded-xl border bg-field p-4 ' + (sel.swapped ? 'border-flag/60' : 'border-line') + '">' +
         head + lineHtml +
         '<div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">' +
-          '<span class="inline-flex items-baseline gap-2 rounded-md bg-bulb px-3 py-1.5 text-turf">' +
+          '<span class="inline-flex items-baseline gap-2 rounded-md px-3 py-1.5 text-turf ' + (sel.swapped ? 'bg-flag' : 'bg-bulb') + '">' +
             '<span class="font-display text-xl font-extrabold leading-none">Pick ' + esc(nick(pickTeam)) + '</span>' +
             '<span class="num text-sm font-bold">' + pct(combined) + '</span>' +
           '</span>' +
-          (tier ? '<span class="text-sm text-chalk/60">' + esc(tier) + '</span>' : '') +
+          (sel.swapped
+            ? '<span class="text-sm font-semibold text-flag">Your swap</span>'
+            : (tier ? '<span class="text-sm text-chalk/60">' + esc(tier) + '</span>' : '')) +
         '</div>' +
         '<div class="mt-4 space-y-2.5">' +
           '<p class="text-xs text-chalk/55">' + esc(nick(pickTeam)) + ' win chance</p>' +
@@ -445,7 +574,7 @@
           bar('Kalshi', kalshi, 'bg-sky') +
           bar('Polymarket', poly, 'bg-poly') +
         '</div>' +
-        publicHtml + gap + upset + leverage +
+        publicHtml + gap + upset + leverage + swapBtn + swapNote +
       '</article>';
   }
 
@@ -463,8 +592,11 @@
         '</section>';
     }
 
-    var fav = teams[item.favorite] || { abbr: item.favorite, name: item.favorite };
-    var dog = teams[item.underdog] || { abbr: item.underdog, name: item.underdog };
+    var swapped = !!state.swaps[item.game_id];
+    var favAbbr = swapped ? item.underdog : item.favorite;
+    var dogAbbr = swapped ? item.favorite : item.underdog;
+    var fav = teams[favAbbr] || { abbr: favAbbr, name: favAbbr };
+    var dog = teams[dogAbbr] || { abbr: dogAbbr, name: dogAbbr };
     var fs = item.projected.favorite, ds = item.projected.underdog;
     var total = item.projected_total;
     var caption = nick(fav) + ' ' + fs + ' - ' + nick(dog) + ' ' + ds + ' | Total: ' + total;
@@ -487,7 +619,9 @@
           row(fav, fs) + row(dog, ds) +
         '</div>' +
         '<p class="num mt-3 font-display text-xl font-semibold text-chalk">' + esc(caption) + '</p>' +
-        '<p class="mt-1 text-xs text-chalk/50">From ' + esc(nick(fav)) + ' ' + signed(-item.spread) + ' and a ' + esc(item.total) + ' total, snapped to common NFL scores.</p>' +
+        '<p class="mt-1 text-xs text-chalk/50">' + (swapped
+          ? 'Flipped so your swapped pick wins. The line has ' + esc(nick(dog)) + ' ' + signed(-item.spread) + '.'
+          : 'From ' + esc(nick(fav)) + ' ' + signed(-item.spread) + ' and a ' + esc(item.total) + ' total, snapped to common NFL scores.') + '</p>' +
       '</section>';
   }
 
@@ -522,9 +656,13 @@
     var teams = teamMap(d);
     var games = sortedGames(d);
 
+    var hasPicks = games.some(function (g) { return pickSides(g); });
     $('#week').textContent = weekTitle(d);
     updateClock();
-    $('#copy').disabled = !games.some(function (g) { return pickSides(g); });
+    $('#copy').disabled = !hasPicks;
+    $('#log').disabled = !hasPicks;
+    gradeLog(d);
+    renderAdvice();
 
     var html = [];
     html.push(banners(d));
@@ -552,6 +690,8 @@
       });
       flush();
     }
+
+    html.push(historySection());
 
     var upsets = games.filter(function (g) { return g.pick && g.pick.live_upset_candidate; }).length;
     html.push('<p class="pt-4 text-center text-xs text-chalk/40">' + games.length + ' games, ' + upsets + ' flagged for upset value. ' +
@@ -617,6 +757,7 @@
         state.data = d;
         state.offline = false;
         state.lastFetch = Date.now();
+        loadSwaps();
         saveCache(d);
         render();
         if (userInitiated) toast('Picks refreshed');
@@ -626,6 +767,7 @@
         if (fallback) {
           state.data = fallback;
           state.offline = true;
+          loadSwaps();
           render();
           if (userInitiated) toast('Couldn\u2019t refresh. Showing saved picks.');
         } else {
@@ -636,20 +778,359 @@
   }
 
   // ---------- copy ----------
+  function selections(d) {
+    return sortedGames(d).map(function (g) {
+      var sel = selection(g);
+      return sel ? { game: g, sel: sel } : null;
+    }).filter(Boolean);
+  }
+
+  function tiebreakerLine(d) {
+    var tb = tiebreaker(d);
+    if (!tb) return null;
+    var swapped = !!state.swaps[tb.game_id];
+    var winner = swapped ? tb.underdog : tb.favorite;
+    var loser = swapped ? tb.favorite : tb.underdog;
+    return 'MNF Tiebreaker: ' + winner + ' ' + tb.projected.favorite + ' - ' +
+           loser + ' ' + tb.projected.underdog + ', Total ' + tb.projected_total;
+  }
+
   function buildCopyText(d) {
-    var games = sortedGames(d);
-    var picks = [];
-    games.forEach(function (g) {
-      var s = pickSides(g);
-      if (s) picks.push(nick(g[s.pick]) + ' over ' + nick(g[s.dog]));
+    var picks = selections(d).map(function (item) {
+      return nick(item.sel.team) + ' over ' + nick(item.sel.opponent);
     });
     var text = picks.join(', ');
-    var tb = tiebreaker(d);
-    if (tb) {
-      text += '\nMNF Tiebreaker: ' + tb.favorite + ' ' + tb.projected.favorite + ' - ' +
-              tb.underdog + ' ' + tb.projected.underdog + ', Total ' + tb.projected_total;
+    var tb = tiebreakerLine(d);
+    if (tb) text += '\n' + tb;
+    return { text: text, count: picks.length, total: (d.games || []).length };
+  }
+
+  // ---------- Supabase sync ----------
+  // REST + auth calls only, so there is no SDK to load. The anon key and the
+  // signed-in session live in this browser; RLS policies keep rows private.
+  function sbConfig() { return state.sb && state.sb.url && state.sb.key ? state.sb : null; }
+  function sbSignedIn() { return !!(sbConfig() && state.session && state.session.refresh_token); }
+
+  function sbUrl(path) { return state.sb.url.replace(/\/+$/, '') + path; }
+
+  function sbFetch(path, options) {
+    var opts = options || {};
+    var headers = { 'apikey': state.sb.key, 'Content-Type': 'application/json' };
+    if (opts.auth !== false && state.session) headers['Authorization'] = 'Bearer ' + state.session.access_token;
+    Object.keys(opts.headers || {}).forEach(function (k) { headers[k] = opts.headers[k]; });
+    return fetch(sbUrl(path), {
+      method: opts.method || 'GET',
+      headers: headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      cache: 'no-store'
+    });
+  }
+
+  function saveSession(json) {
+    if (!json || !json.access_token) return false;
+    state.session = {
+      access_token: json.access_token,
+      refresh_token: json.refresh_token,
+      expires_at: Date.now() + (json.expires_in || 3600) * 1000,
+      email: (json.user && json.user.email) || (state.sb && state.sb.email) || '',
+      user_id: json.user && json.user.id
+    };
+    store(SB_SESSION, state.session);
+    return true;
+  }
+
+  function signOut() {
+    state.session = null;
+    try { localStorage.removeItem(SB_SESSION); } catch (e) { /* ignore */ }
+    setSync('Signed out. The log is still on this phone.', true);
+  }
+
+  /** Refresh the access token when it is close to expiring. */
+  function ensureSession() {
+    if (!sbConfig() || !state.session) return Promise.resolve(false);
+    if (Date.now() < state.session.expires_at - 60000) return Promise.resolve(true);
+    return sbFetch('/auth/v1/token?grant_type=refresh_token', {
+      method: 'POST', auth: false, body: { refresh_token: state.session.refresh_token }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Session expired. Sign in again.');
+      return res.json();
+    }).then(saveSession).catch(function (err) {
+      signOut();
+      setSync(err.message, true);
+      return false;
+    });
+  }
+
+  function readSheetConfig() {
+    var cfg = {
+      url: $('#sb-url').value.trim(),
+      key: $('#sb-key').value.trim(),
+      email: $('#sb-email').value.trim()
+    };
+    if (!cfg.url || !cfg.key || !cfg.email) {
+      $('#sb-status').textContent = 'Project URL, key and email are all required.';
+      return null;
     }
-    return { text: text, count: picks.length, total: games.length };
+    if (!$('#sb-password').value) {
+      $('#sb-status').textContent = 'Enter a password.';
+      return null;
+    }
+    state.sb = cfg;
+    store(SB_KEY, cfg);
+    return cfg;
+  }
+
+  function authError(json, status) {
+    var msg = (json && (json.error_description || json.msg || json.message)) || '';
+    if (status === 400 && /invalid login/i.test(msg)) return 'Email or password is wrong.';
+    if (/signup.*disabled/i.test(msg)) return 'Sign-ups are turned off in Supabase. Turn them on to create the account.';
+    if (/confirm/i.test(msg)) return 'Supabase wants an email confirmation. Turn off "Confirm email" under Authentication, Sign In / Providers, Email.';
+    return msg || ('Supabase returned HTTP ' + status + '.');
+  }
+
+  function afterAuth(json) {
+    if (!json.access_token) {
+      $('#sb-status').textContent = 'Account created, but no session came back. Turn off "Confirm email" in Supabase, then sign in.';
+      return;
+    }
+    saveSession(json);
+    $('#sb-password').value = '';
+    $('#sb-status').textContent = 'Signed in. Syncing your log.';
+    syncLog().then(function () { $('#sb-status').textContent = state.sync; });
+  }
+
+  function authRequest(path) {
+    var cfg = readSheetConfig();
+    if (!cfg) return;
+    $('#sb-status').textContent = 'Contacting Supabase...';
+    sbFetch(path, {
+      method: 'POST', auth: false,
+      body: { email: cfg.email, password: $('#sb-password').value }
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (json) {
+        if (!res.ok) throw new Error(authError(json, res.status));
+        return json;
+      });
+    }).then(afterAuth).catch(function (err) {
+      $('#sb-status').textContent = err.message || 'Could not reach Supabase. Check the project URL.';
+    });
+  }
+
+  function signIn() { authRequest('/auth/v1/token?grant_type=password'); }
+  function signUp() { authRequest('/auth/v1/signup'); }
+
+  /** Magic-link return: Supabase puts the session in the URL fragment. */
+  function sessionFromHash() {
+    if (location.hash.indexOf('access_token=') === -1) return false;
+    var params = new URLSearchParams(location.hash.slice(1));
+    var ok = saveSession({
+      access_token: params.get('access_token'),
+      refresh_token: params.get('refresh_token'),
+      expires_in: parseInt(params.get('expires_in'), 10) || 3600
+    });
+    history.replaceState(null, '', location.pathname + location.search);
+    return ok;
+  }
+
+  /** Keep one entry per week: newest wins, with graded picks preferred on a tie. */
+  function mergeLogs(a, b) {
+    var byWeek = {};
+    [].concat(a || [], b || []).forEach(function (entry) {
+      if (!entry || !Array.isArray(entry.picks)) return;
+      var key = (entry.season || '') + '-' + (entry.week || '');
+      var prev = byWeek[key];
+      if (!prev) { byWeek[key] = entry; return; }
+      var newer = Date.parse(entry.logged_at || 0) - Date.parse(prev.logged_at || 0);
+      var graded = function (e) { return e.picks.filter(function (p) { return typeof p.won === 'boolean'; }).length; };
+      if (newer > 0 || (newer === 0 && graded(entry) > graded(prev))) byWeek[key] = entry;
+    });
+    return Object.keys(byWeek).map(function (k) { return byWeek[k]; }).sort(function (x, y) {
+      return (y.season - x.season) || (y.week - x.week) || 0;
+    }).slice(0, 50);
+  }
+
+  function rowToEntry(row) {
+    return {
+      season: row.season || null,
+      week: row.week || null,
+      logged_at: row.logged_at,
+      pool_size: row.pool_size,
+      tiebreaker: row.tiebreaker,
+      picks: Array.isArray(row.picks) ? row.picks : []
+    };
+  }
+
+  function entryToRow(entry) {
+    return {
+      user_id: state.session.user_id,
+      season: entry.season || 0,
+      week: entry.week || 0,
+      logged_at: entry.logged_at,
+      pool_size: entry.pool_size || null,
+      tiebreaker: entry.tiebreaker || null,
+      picks: entry.picks
+    };
+  }
+
+  function pullLog() {
+    return sbFetch('/rest/v1/pick_log?select=*').then(function (res) {
+      if (!res.ok) throw new Error('Supabase read failed (HTTP ' + res.status + ').');
+      return res.json();
+    }).then(function (rows) {
+      var before = JSON.stringify(state.log);
+      state.log = mergeLogs((rows || []).map(rowToEntry), state.log);
+      if (JSON.stringify(state.log) !== before) saveLog();
+      return true;
+    });
+  }
+
+  function pushLog() {
+    if (!state.log.length) return Promise.resolve(true);
+    return sbFetch('/rest/v1/pick_log?on_conflict=user_id,season,week', {
+      method: 'POST',
+      headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+      body: state.log.map(entryToRow)
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Supabase write failed (HTTP ' + res.status + ').');
+      return true;
+    });
+  }
+
+  /** Pull, merge, push: safe to call after any log change. */
+  function syncLog() {
+    if (!sbSignedIn()) return Promise.resolve(false);
+    setSync('Syncing...');
+    return ensureSession().then(function (ok) {
+      if (!ok) return false;
+      return pullLog().then(pushLog).then(function () {
+        setSync('Synced at ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '.', true);
+        return true;
+      });
+    }).catch(function (err) {
+      setSync(err.message || 'Sync failed.', true);
+      return false;
+    });
+  }
+
+  function deleteRemoteEntry(entry) {
+    if (!sbSignedIn()) return Promise.resolve();
+    return ensureSession().then(function (ok) {
+      if (!ok) return;
+      return sbFetch('/rest/v1/pick_log?season=eq.' + (entry.season || 0) + '&week=eq.' + (entry.week || 0),
+                     { method: 'DELETE', headers: { 'Prefer': 'return=minimal' } });
+    }).catch(function () { /* local delete already happened */ });
+  }
+
+  function setSync(text, rerender) {
+    state.sync = text;
+    if (rerender && state.data) render();
+  }
+
+  function openSyncSheet() {
+    var cfg = state.sb || { url: '', key: '', email: '' };
+    $('#sb-url').value = cfg.url || '';
+    $('#sb-key').value = cfg.key || '';
+    $('#sb-email').value = cfg.email || '';
+    $('#sb-password').value = '';
+    $('#sb-status').textContent = sbSignedIn() ? 'Signed in as ' + (state.session.email || cfg.email) + '.' : '';
+    $('#sb-sheet').classList.remove('hidden');
+  }
+
+  // ---------- pick log ----------
+  function saveLog() { store(LOG_KEY, state.log); }
+
+  function gradeLog(d) {
+    var byId = {};
+    (d.games || []).forEach(function (g) { byId[g.game_id] = g; });
+    var changed = false;
+    state.log.forEach(function (entry) {
+      entry.picks.forEach(function (p) {
+        var g = byId[p.game_id];
+        var r = g && g.result;
+        if (!r || !r.final || !r.winner || typeof p.won === 'boolean') return;
+        p.won = r.winner === p.team;
+        changed = true;
+      });
+    });
+    if (changed) {
+      saveLog();
+      syncLog();
+    }
+  }
+
+  function logRecord(entry) {
+    var won = 0, lost = 0, pending = 0;
+    entry.picks.forEach(function (p) {
+      if (p.won === true) won++;
+      else if (p.won === false) lost++;
+      else pending++;
+    });
+    if (!won && !lost) return { text: 'Pending', detail: entry.picks.length + ' games' };
+    return { text: won + '-' + lost, detail: pending ? pending + ' pending' : 'Final' };
+  }
+
+  function onLog() {
+    var d = state.data;
+    if (!d) return;
+    var items = selections(d);
+    if (!items.length) return;
+    var entry = {
+      season: d.season || null,
+      week: d.week || null,
+      logged_at: new Date().toISOString(),
+      pool_size: state.poolSize,
+      tiebreaker: tiebreakerLine(d),
+      picks: items.map(function (item) {
+        return {
+          game_id: item.game.game_id,
+          team: item.sel.team.abbr,
+          opponent: item.sel.opponent.abbr,
+          swapped: item.sel.swapped,
+          win_probability: item.sel.prob
+        };
+      })
+    };
+    state.log = state.log.filter(function (e) { return !(e.week === entry.week && e.season === entry.season); });
+    state.log.unshift(entry);
+    state.log = state.log.slice(0, 25);
+    saveLog();
+    render();
+    toast('Logged ' + entry.picks.length + ' picks for week ' + (entry.week || '?'));
+    syncLog();
+  }
+
+  function historySection() {
+    var rows = !state.log.length
+      ? '<p class="py-2 text-sm text-chalk/60">No weeks logged yet. Tap \u201cLog picks\u201d after you send yours in.</p>'
+      : state.log.map(function (entry, i) {
+      var rec = logRecord(entry);
+      var swaps = entry.picks.filter(function (p) { return p.swapped; });
+      var when = new Date(entry.logged_at);
+      var meta = entry.picks.length + ' picks' +
+        (swaps.length ? ', swapped ' + swaps.map(function (p) { return p.team; }).join(', ') : ', no swaps') +
+        ' \u00b7 ' + (isNaN(when) ? '' : when.toLocaleDateString([], { month: 'short', day: 'numeric' }));
+      return '<div class="flex items-start justify-between gap-3 border-b border-line py-2.5 last:border-0">' +
+          '<div class="min-w-0">' +
+            '<p class="font-display text-lg font-semibold">Week ' + esc(entry.week == null ? '?' : entry.week) + '</p>' +
+            '<p class="text-xs text-chalk/55">' + esc(meta) + '</p>' +
+          '</div>' +
+          '<div class="shrink-0 text-right">' +
+            '<p class="num font-display text-xl font-bold ' + (rec.text === 'Pending' ? 'text-chalk/50' : 'text-bulb') + '">' + esc(rec.text) + '</p>' +
+            '<p class="text-xs text-chalk/45">' + esc(rec.detail) + '</p>' +
+            '<button type="button" data-dellog="' + i + '" class="text-xs text-chalk/40 underline">Remove</button>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+    return '<section class="rounded-xl border border-line bg-field p-4">' +
+        '<h2 class="font-display text-xl font-semibold">Pick log</h2>' +
+        '<p class="mb-1 text-xs text-chalk/50">Records fill in once results land in data.json.</p>' +
+        rows +
+        '<div class="mt-3 flex items-center justify-between gap-3 border-t border-line pt-3">' +
+          '<p class="min-w-0 text-xs text-chalk/55">' + esc(state.sync) + '</p>' +
+          '<button type="button" id="sync-open" class="shrink-0 rounded-lg border border-line px-3 py-2 text-sm font-semibold active:bg-turf">' +
+            (sbSignedIn() ? 'Sync settings' : 'Set up sync') + '</button>' +
+        '</div>' +
+      '</section>';
   }
 
   function legacyCopy(text) {
@@ -770,6 +1251,40 @@
   // ---------- wire up ----------
   $('#reload').addEventListener('click', function () { loadData(true); });
   $('#copy').addEventListener('click', onCopy);
+  $('#log').addEventListener('click', onLog);
+
+  $('#pool-size').addEventListener('change', function () {
+    var n = parseInt(this.value, 10);
+    if (!isFinite(n) || n < 2) { n = 2; }
+    if (n > 500) { n = 500; }
+    state.poolSize = n;
+    this.value = String(n);
+    store(POOL_KEY, n);
+    renderAdvice();
+  });
+
+  $('#sb-signin').addEventListener('click', signIn);
+  $('#sb-signup').addEventListener('click', signUp);
+  $('#sb-password').addEventListener('keydown', function (e) { if (e.key === 'Enter') signIn(); });
+  $('#sb-sync').addEventListener('click', function () {
+    syncLog().then(function () { $('#sb-status').textContent = state.sync; });
+  });
+  $('#sb-signout').addEventListener('click', function () { signOut(); $('#sb-status').textContent = state.sync; });
+  $('#sb-close').addEventListener('click', function () { $('#sb-sheet').classList.add('hidden'); });
+  $('#sb-sheet').addEventListener('click', function (e) { if (e.target === this) this.classList.add('hidden'); });
+
+  $('#app').addEventListener('click', function (e) {
+    if (e.target.closest('#sync-open')) { openSyncSheet(); return; }
+    var swap = e.target.closest('[data-swap]');
+    if (swap) { toggleSwap(swap.getAttribute('data-swap')); return; }
+    var del = e.target.closest('[data-dellog]');
+    if (del) {
+      var removed = state.log.splice(parseInt(del.getAttribute('data-dellog'), 10), 1)[0];
+      saveLog();
+      render();
+      deleteRemoteEntry(removed);
+    }
+  });
   $('#sheet-close').addEventListener('click', closeSheet);
   $('#sheet').addEventListener('click', function (e) { if (e.target === this) closeSheet(); });
   document.addEventListener('keydown', function (e) {
@@ -787,8 +1302,19 @@
   setupPullToRefresh();
 
   // Show saved picks instantly, then fetch fresh data.
+  state.poolSize = restore(POOL_KEY, 11) || 11;
+  state.log = restore(LOG_KEY, []) || [];
+  state.sb = restore(SB_KEY, null);
+  state.session = restore(SB_SESSION, null);
+  if (sessionFromHash()) toast('Signed in');
+  if (sbSignedIn()) {
+    state.sync = 'Signed in as ' + (state.session.email || state.sb.email) + '.';
+    syncLog();
+  }
+  $('#pool-size').value = String(state.poolSize);
+  renderAdvice();
   var cached = readCache();
-  if (cached && Array.isArray(cached.games)) { state.data = cached; render(); }
+  if (cached && Array.isArray(cached.games)) { state.data = cached; loadSwaps(); render(); }
   loadData(false);
 })();
 </script>

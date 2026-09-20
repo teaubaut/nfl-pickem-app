@@ -257,7 +257,13 @@
   var STALE_HOURS = 24;
   var PTR_THRESHOLD = 64;
 
-  var APP_BUILD = '2026-09-19.7';   // bump when index.html changes
+  var APP_BUILD = '2026-09-20.1';
+  var LIVE_URLS = [
+    'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard',
+    'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard'
+  ];
+  var LIVE_POLL_MS = 45000;        // while a game is in progress
+  var LIVE_IDLE_MS = 5 * 60000;    // while kickoff is near but nothing is live   // bump when index.html changes
   var HISTORY_URL = 'history.json';
   var LOG_KEY = 'poolpicks:log';
   var SB_KEY = 'poolpicks:supabase';
@@ -265,7 +271,7 @@
   var POOL_KEY = 'poolpicks:poolSize';
 
   var state = { data: null, loading: false, offline: false, lastFetch: 0,
-                swaps: {}, manual: {}, openInjuries: {}, history: null, poolSize: 11, log: [], sb: null, session: null,
+                swaps: {}, manual: {}, openInjuries: {}, history: null, live: {}, liveAt: 0, poolSize: 11, log: [], sb: null, session: null,
                 sync: 'Log is saved on this phone only.' };
 
   function store(key, value) {
@@ -509,6 +515,27 @@
       (w.icon ? esc(w.icon) + ' ' : '') + esc(bits.join(', ')) + '</p>';
   }
 
+  /** Live score and clock if the game is on, final score if it is over, else kickoff. */
+  function scoreBlock(g) {
+    var live = state.live[g.game_id];
+    var result = g.result;
+    var away = live && isNum(live.away_score) ? live.away_score : (result ? result.away_score : null);
+    var home = live && isNum(live.home_score) ? live.home_score : (result ? result.home_score : null);
+    var inPlay = live && live.state === 'in';
+    var done = (live && live.state === 'post') || (result && result.final) || g.completed;
+
+    if ((inPlay || done) && isNum(away) && isNum(home)) {
+      var line = esc(g.away.abbr) + ' ' + away + '  ' + esc(g.home.abbr) + ' ' + home;
+      var detail = live && live.detail ? live.detail : 'Final';
+      return '<p class="num text-base font-bold leading-tight">' + line + '</p>' +
+        '<p class="num mt-0.5 text-xs ' + (inPlay ? 'text-flag' : 'text-chalk/60') + '">' +
+          (inPlay ? '<span class="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-flag align-middle"></span>' : '') +
+          esc(detail) + '</p>';
+    }
+    return '<time class="num block text-sm text-chalk/70" datetime="' + esc(g.kickoff_utc) + '">' +
+      esc(kickoffLabel(g.kickoff_utc)) + '</time>';
+  }
+
   function statusChip(g) {
     if (g.completed) return '<span class="rounded bg-chalk/10 px-1.5 py-0.5 text-xs font-semibold text-chalk/70">Final</span>';
     var s = (g.status || '').toLowerCase();
@@ -536,7 +563,7 @@
           '<span class="' + teamClass(homeIsPick) + '">' + esc(nick(g.home)) + '</span>' +
         '</h3>' +
         '<div class="shrink-0 pt-1 text-right">' +
-          '<time class="num block text-sm text-chalk/70" datetime="' + esc(g.kickoff_utc) + '">' + esc(kickoffLabel(g.kickoff_utc)) + '</time>' +
+          scoreBlock(g) +
           weatherChip(g) +
           '<div class="mt-1">' + statusChip(g) + '</div>' +
         '</div>' +
@@ -629,6 +656,20 @@
       leverage = levBox(['+' + Math.round(g.pick.underdog_leverage * 100),
         '<span class="font-semibold text-bulb">Contrarian option.</span> The ' + esc(nick(dogTeam)) +
         ' win ' + pct(g.pick.underdog_win_probability) + ' of the time but get only ' + pct(g.pick.underdog_public_pct) + ' of public bets.']);
+    }
+
+    // Is your pick ahead right now?
+    var liveNow = state.live[g.game_id];
+    var standing = '';
+    if (liveNow && (liveNow.state === 'in' || liveNow.state === 'post') &&
+        isNum(liveNow.home_score) && isNum(liveNow.away_score)) {
+      var mine = side === 'home' ? liveNow.home_score : liveNow.away_score;
+      var theirs = side === 'home' ? liveNow.away_score : liveNow.home_score;
+      var done = liveNow.state === 'post';
+      var word = mine > theirs ? (done ? 'won' : 'leading') : (mine < theirs ? (done ? 'lost' : 'trailing') : 'tied');
+      var tone = mine > theirs ? 'text-bulb' : (mine < theirs ? 'text-flag' : 'text-chalk/70');
+      standing = '<p class="mt-2 text-sm font-semibold ' + tone + '">' + esc(nick(pickTeam)) + ' ' + word +
+        (word === 'tied' ? '' : ' by ' + Math.abs(mine - theirs)) + '.</p>';
     }
 
     // Odds history: how this number has moved through the week.
@@ -727,7 +768,7 @@
           bar('Kalshi', kalshi, 'bg-sky') +
           bar('Polymarket', poly, 'bg-poly') +
         '</div>' +
-        publicHtml + gap + moveHtml + upset + leverage + trendHtml + injuryHtml + swapBtn + swapNote +
+        standing + publicHtml + gap + moveHtml + upset + leverage + trendHtml + injuryHtml + swapBtn + swapNote +
       '</article>';
   }
 
@@ -919,6 +960,77 @@
     } catch (e) { return null; }
   }
 
+  // ---------- live scores (straight from ESPN, no scraper run needed) ----------
+  function parseLive(json) {
+    var out = {};
+    (json && json.events ? json.events : []).forEach(function (ev) {
+      var comp = (ev.competitions || [])[0] || {};
+      var sides = {};
+      (comp.competitors || []).forEach(function (c) { sides[c.homeAway] = c; });
+      if (!sides.home || !sides.away) return;
+      var type = ((comp.status || ev.status || {}).type) || {};
+      var score = function (c) {
+        var n = parseInt(c.score, 10);
+        return isFinite(n) ? n : null;
+      };
+      out[String(ev.id)] = {
+        state: type.state || null,                 // pre, in, post
+        detail: type.shortDetail || type.detail || null,
+        home_score: score(sides.home),
+        away_score: score(sides.away),
+        home_abbr: (sides.home.team || {}).abbreviation,
+        away_abbr: (sides.away.team || {}).abbreviation,
+        winner: sides.home.winner ? 'home' : (sides.away.winner ? 'away' : null),
+        possession: comp.situation ? comp.situation.possessionText : null
+      };
+    });
+    return out;
+  }
+
+  function fetchLive(index) {
+    var i = index || 0;
+    if (i >= LIVE_URLS.length) return Promise.resolve(false);
+    return fetch(LIVE_URLS[i] + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (json) {
+        var live = parseLive(json);
+        if (!Object.keys(live).length) return false;
+        state.live = live;
+        state.liveAt = Date.now();
+        if (state.data) render();
+        return true;
+      })
+      .catch(function () { return fetchLive(i + 1); });
+  }
+
+  /** Poll fast during games, slowly near kickoff, not at all otherwise. */
+  var liveTimer = null;
+  function scheduleLive() {
+    clearTimeout(liveTimer);
+    if (!state.data || document.visibilityState !== 'visible') return;
+    var now = Date.now(), soonest = Infinity, anyLive = false;
+    sortedGames(state.data).forEach(function (g) {
+      var live = state.live[g.game_id];
+      if (live && live.state === 'in') { anyLive = true; return; }
+      if (live && live.state === 'post') return;
+      if (g.completed) return;
+      var kickoff = Date.parse(g.kickoff_utc);
+      if (kickoff && kickoff > now) soonest = Math.min(soonest, kickoff - now);
+      else if (kickoff) anyLive = true;   // past kickoff, status not known yet
+    });
+    var wait = anyLive ? LIVE_POLL_MS : (soonest < 2 * 3600 * 1000 ? LIVE_IDLE_MS : 0);
+    if (!wait) return;
+    liveTimer = setTimeout(function () { fetchLive().then(scheduleLive); }, wait);
+  }
+
+  function startLive() {
+    if (!state.data) return;
+    fetchLive().then(scheduleLive);
+  }
+
   /** Optional: the running odds log written by the scraper. */
   function loadHistory() {
     return fetch(HISTORY_URL + '?t=' + Date.now(), { cache: 'no-store' })
@@ -952,6 +1064,7 @@
         saveCache(d);
         render();
         loadHistory();
+        startLive();
         if (userInitiated) toast('Picks refreshed');
       })
       .catch(function (err) {
@@ -1237,10 +1350,16 @@
     var changed = false;
     state.log.forEach(function (entry) {
       entry.picks.forEach(function (p) {
+        if (typeof p.won === 'boolean') return;
         var g = byId[p.game_id];
         var r = g && g.result;
-        if (!r || !r.final || !r.winner || typeof p.won === 'boolean') return;
-        p.won = r.winner === p.team;
+        var winner = r && r.final && r.winner ? r.winner : null;
+        var live = state.live[p.game_id];
+        if (!winner && live && live.state === 'post' && live.winner && g) {
+          winner = live.winner === 'home' ? g.home.abbr : g.away.abbr;
+        }
+        if (!winner) return;
+        p.won = winner === p.team;
         changed = true;
       });
     });
@@ -1496,9 +1615,9 @@
 
   // Refetch when reopening the app after a while.
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'visible' && Date.now() - state.lastFetch > 5 * 60 * 1000) {
-      loadData(false);
-    }
+    if (document.visibilityState !== 'visible') { clearTimeout(liveTimer); return; }
+    if (Date.now() - state.lastFetch > 5 * 60 * 1000) loadData(false);
+    if (Date.now() - state.liveAt > 30000) startLive(); else scheduleLive();
   });
 
   setInterval(updateClock, 60 * 1000);
@@ -1517,7 +1636,7 @@
   $('#pool-size').value = String(state.poolSize);
   renderAdvice();
   var cached = readCache();
-  if (cached && Array.isArray(cached.games)) { state.data = cached; loadSwaps(); render(); }
+  if (cached && Array.isArray(cached.games)) { state.data = cached; loadSwaps(); render(); startLive(); }
   loadData(false);
 })();
 </script>

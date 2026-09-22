@@ -365,6 +365,43 @@ def fetch_espn_games(week: Optional[int], season: Optional[int],
     return games, meta
 
 
+def next_week_of(meta: dict) -> Optional[tuple[int, int]]:
+    """(week, season_type) after the given one: 18 regular weeks, then playoffs."""
+    week, season_type = meta.get("week"), meta.get("season_type")
+    if not week or not season_type:
+        return None
+    if season_type == 1:                       # preseason rolls into week 1
+        return (week + 1, 1) if week < 3 else (1, 2)
+    if season_type == 2:
+        return (week + 1, 2) if week < 18 else (1, 3)
+    if season_type == 3 and week < 5:
+        return (week + 1, 3)
+    return None
+
+
+def advance_if_finished(games: list[dict], meta: dict, sources: dict) -> tuple[list[dict], dict]:
+    """ESPN keeps showing last week until Tuesday or Wednesday. Once every game
+    is final, the pool has moved on, so load the next week instead."""
+    if not games or not all(g["completed"] for g in games):
+        return games, meta
+    nxt = next_week_of(meta)
+    if not nxt:
+        return games, meta
+    week, season_type = nxt
+    try:
+        upcoming, upcoming_meta = fetch_espn_games(week, meta.get("season"), season_type)
+    except Exception as exc:
+        log.warning("Week %s is final but week %s could not be loaded: %s", meta.get("week"), week, exc)
+        return games, meta
+    if not upcoming:
+        return games, meta
+    upcoming_meta["advanced_from_week"] = meta.get("week")
+    sources["espn"]["advanced_from_week"] = meta.get("week")
+    log.info("Week %s is final; loaded week %s (%d games) instead",
+             meta.get("week"), upcoming_meta.get("week"), len(upcoming))
+    return upcoming, upcoming_meta
+
+
 # --------------------------------------------------------------------------- #
 # 1b. Fallback schedule from The Odds API (used only if ESPN is unreachable)
 # --------------------------------------------------------------------------- #
@@ -1407,6 +1444,8 @@ def build(args: argparse.Namespace) -> dict:
         games, meta = fetch_espn_games(args.week, args.season, args.season_type)
         sources["espn"] = {"ok": True, "games": len(games)}
         log.info("ESPN: %d games (season %s, week %s)", len(games), meta["season"], meta["week"])
+        if not args.week:
+            games, meta = advance_if_finished(games, meta, sources)
     except Exception as exc:
         now = datetime.now(timezone.utc)
         games = games_from_odds(odds_events, now) if not args.week else []

@@ -257,7 +257,7 @@
   var STALE_HOURS = 24;
   var PTR_THRESHOLD = 64;
 
-  var APP_BUILD = '2026-09-20.1';
+  var APP_BUILD = '2026-09-22.1';
   var LIVE_URLS = [
     'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard',
     'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard'
@@ -852,6 +852,13 @@
     var age = (Date.now() - Date.parse(d.generated_at)) / 36e5;
     if (isNum(age) && age > STALE_HOURS) {
       out.push('This data is over a day old. Run fetch_data.py, then refresh.');
+    }
+    var allFinal = (d.games || []).length && (d.games || []).every(function (g) {
+      var live = state.live[g.game_id];
+      return g.completed || (g.result && g.result.final) || (live && live.state === 'post');
+    });
+    if (allFinal) {
+      out.push('Week ' + (d.week || '') + ' is over. Next week loads on the next scheduled update, or run the workflow now from the GitHub app.');
     }
     if (d.schedule_source === 'odds_api_fallback') {
       out.push('ESPN was unavailable, so games came from the sportsbook feed and the week number is an estimate. Games already played this week may be missing.');

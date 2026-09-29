@@ -257,7 +257,7 @@
   var STALE_HOURS = 24;
   var PTR_THRESHOLD = 64;
 
-  var APP_BUILD = '2026-09-22.1';
+  var APP_BUILD = '2026-09-29.1';
   var LIVE_URLS = [
     'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard',
     'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard'
@@ -337,7 +337,10 @@
 
   function swapCount() {
     return sortedGames(state.data || { games: [] }).filter(function (g) {
-      return pickSides(g) && state.swaps[g.game_id];
+      if (!pickSides(g)) return false;
+      var flipped = !!(g.pick && g.pick.optimizer_flip);
+      var swapped = !!state.swaps[g.game_id];
+      return flipped !== swapped;   // underdog is the final pick either way
     }).length;
   }
 
@@ -791,6 +794,9 @@
     var dogAbbr = swapped ? item.favorite : item.underdog;
     var fav = teams[favAbbr] || { abbr: favAbbr, name: favAbbr };
     var dog = teams[dogAbbr] || { abbr: dogAbbr, name: dogAbbr };
+    var lineFavAbbr = item.line_favorite || item.favorite;
+    var lineFav = teams[lineFavAbbr] || { abbr: lineFavAbbr, name: lineFavAbbr };
+    var pickIsDog = favAbbr !== lineFavAbbr;
     var fs = item.projected.favorite, ds = item.projected.underdog;
     var total = item.projected_total;
     var caption = nick(fav) + ' ' + fs + ' - ' + nick(dog) + ' ' + ds + ' | Total: ' + total;
@@ -813,9 +819,10 @@
           row(fav, fs) + row(dog, ds) +
         '</div>' +
         '<p class="num mt-3 font-display text-xl font-semibold text-chalk">' + esc(caption) + '</p>' +
-        '<p class="mt-1 text-xs text-chalk/50">' + (swapped
-          ? 'Flipped so your swapped pick wins. The line has ' + esc(nick(dog)) + ' ' + signed(-item.spread) + '.'
-          : 'From ' + esc(nick(fav)) + ' ' + signed(-item.spread) + ' and a ' + esc(item.total) + ' total, snapped to common NFL scores.') + '</p>' +
+        '<p class="mt-1 text-xs text-chalk/50">' + (pickIsDog
+          ? 'Flipped so your pick wins. The line has ' + esc(nick(lineFav)) + ' ' + signed(-item.spread) + '.'
+          : 'From ' + esc(nick(lineFav)) + ' ' + signed(-item.spread) + ' and a ' + esc(item.total) + ' total' +
+            (item.total_node ? ', total set to the ' + esc(item.total_node) + ' tiebreaker node.' : ', snapped to common NFL scores.')) + '</p>' +
       '</section>';
   }
 

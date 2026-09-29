@@ -14,6 +14,8 @@ Pipeline
      Movement           -> how each number moved since the previous run
  9. History            -> append every run to history.json (this week and next)
  10. Weather            -> Open-Meteo kickoff forecast for outdoor stadiums
+ 11. Leverage optimizer -> flip the top 2-3 tight-spread underdogs by public/sharp
+                           divergence; snap the MNF tiebreaker total to a node
   7. Monday Night       -> projected final score snapped to key numbers
   8. Write data.json
 
@@ -123,6 +125,14 @@ WEATHER_CODES = {
     86: ("Snow showers", "\u2744\ufe0f"), 95: ("Thunderstorms", "\u26c8\ufe0f"),
     96: ("Thunderstorms", "\u26c8\ufe0f"), 99: ("Thunderstorms", "\u26c8\ufe0f"),
 }
+
+# Leverage optimizer (post-processing on top of the chalk picks)
+OPTIMIZER_SPREAD_RANGE = (1.5, 3.5)   # underdog getting +1.5 to +3.5 points
+OPTIMIZER_QUOTA = 2                   # underdogs to flip each week
+OPTIMIZER_MAX = 3                     # a tie at the cutoff can raise it to this
+OPTIMIZER_MIN_LEVERAGE = 0.0          # never flip a dog the public already overbets
+MNF_TOTAL_NODES = (41, 44, 47, 51)    # tiebreaker totals to snap to
+MNF_NODE_MAX_SHIFT = 3                # at most a field goal; farther means leave it
 
 HISTORY_FILE = "history.json"
 HISTORY_MAX_POINTS = 400         # per game
@@ -1342,6 +1352,151 @@ def snapshot_games(games: list[dict], meta: dict, odds_events: list[dict],
 
 
 # --------------------------------------------------------------------------- #
+# 6g. Leverage optimizer (runs after every game has its chalk pick)
+# --------------------------------------------------------------------------- #
+def _underdog_spread(record: dict) -> Optional[float]:
+    """Points the model's underdog is getting, positive when it is a spread dog."""
+    spread = (record.get("odds") or {}).get("spread") or {}
+    pick = record.get("pick") or {}
+    dog = pick.get("underdog")
+    if not dog:
+        return None
+    side = "home" if dog == record["home"]["abbr"] else "away"
+    value = spread.get(side)
+    return float(value) if isinstance(value, (int, float)) else None
+
+
+def _has_started(record: dict, now: datetime) -> bool:
+    kickoff = parse_iso(record.get("kickoff_utc"))
+    return bool(record.get("completed")) or (kickoff is not None and kickoff <= now)
+
+
+def _flip_pick(record: dict, rank: int) -> None:
+    """Make the underdog the pick and swap every pick-relative field with it,
+    so the app, copy text and log all read the flipped game correctly."""
+    pick = record["pick"]
+    chalk, dog = pick["team"], pick["underdog"]
+    chalk_p, dog_p = pick["win_probability"], pick["underdog_win_probability"]
+    pick.update({
+        "team": dog,
+        "name": TEAMS[dog]["name"],
+        "win_probability": dog_p,
+        "confidence": "upset",
+        "underdog": chalk,
+        "underdog_win_probability": chalk_p,
+        # Public/leverage fields follow the team they describe.
+        "public_pick_pct": pick.get("underdog_public_pct"),
+        "underdog_public_pct": pick.get("public_pick_pct"),
+        "leverage": r4(pick.get("underdog_leverage")),
+        "underdog_leverage": r4(pick.get("leverage")),
+        "high_leverage_play": True,
+        "high_leverage_underdog": False,
+        # The upset is already taken, so the "upset value" warning no longer applies.
+        "live_upset_candidate": False,
+        "upset_note": None,
+        "optimizer_flip": True,
+        "optimizer": {
+            "rank": rank,
+            "chalk_team": chalk,
+            "chalk_win_probability": chalk_p,
+            "expected_wins_cost": r4(chalk_p - dog_p),
+        },
+    })
+
+
+def optimize_leverage_picks(out_games: list[dict], quota: int = OPTIMIZER_QUOTA,
+                            max_flips: int = OPTIMIZER_MAX,
+                            spread_range: tuple = OPTIMIZER_SPREAD_RANGE,
+                            min_leverage: float = OPTIMIZER_MIN_LEVERAGE,
+                            now: Optional[datetime] = None) -> dict:
+    """Slate-level override of the chalk picks.
+
+    1. Eligible: the model's underdog is getting +1.5 to +3.5, the game has not
+       started, and public splits exist (so underdog_leverage is known).
+    2. Rank eligible dogs by underdog_leverage (dog win prob minus dog public %).
+    3. Flip the top `quota`; a tie at the cutoff (same whole-point leverage)
+       extends the list up to `max_flips`. Everything else stays chalk.
+    """
+    now = now or datetime.now(timezone.utc)
+    lo, hi = spread_range
+    eligible = []
+    for record in out_games:
+        pick = record.get("pick") or {}
+        if not pick.get("team") or pick.get("optimizer_flip"):
+            continue
+        points = _underdog_spread(record)
+        leverage = pick.get("underdog_leverage")
+        if points is None or not (lo <= points <= hi):
+            continue
+        if leverage is None or leverage <= min_leverage or _has_started(record, now):
+            continue
+        eligible.append((leverage, points, record))
+
+    eligible.sort(key=lambda item: item[0], reverse=True)
+    chosen = eligible[:quota]
+    if quota > 0 and len(eligible) > quota:
+        cutoff = round(eligible[quota - 1][0] * 100)
+        for extra in eligible[quota:max_flips]:
+            if round(extra[0] * 100) == cutoff:
+                chosen.append(extra)
+
+    flipped = []
+    for rank, (leverage, points, record) in enumerate(chosen, start=1):
+        _flip_pick(record, rank)
+        flipped.append({
+            "rank": rank,
+            "game_id": record["game_id"],
+            "matchup": record["short_name"],
+            "pick": record["pick"]["team"],
+            "over": record["pick"]["underdog"],
+            "spread": points,
+            "underdog_leverage": r4(leverage),
+            "win_probability": record["pick"]["win_probability"],
+            "public_pick_pct": record["pick"]["public_pick_pct"],
+            "expected_wins_cost": record["pick"]["optimizer"]["expected_wins_cost"],
+        })
+    return {
+        "quota": quota,
+        "spread_range": list(spread_range),
+        "eligible": len(eligible),
+        "flipped": flipped,
+        "expected_wins_cost": r4(sum(f["expected_wins_cost"] or 0 for f in flipped)),
+        "note": None if flipped else (
+            "Optimizer off (quota 0); chalk slate stands." if quota <= 0 else
+            "No eligible underdogs: none in the spread range with positive leverage and public splits."),
+    }
+
+
+def snap_total_to_node(fav_score: int, dog_score: int, margin_required: bool,
+                       nodes: tuple = MNF_TOTAL_NODES,
+                       max_shift: int = MNF_NODE_MAX_SHIFT) -> tuple[int, int, Optional[int]]:
+    """Move the combined total onto the nearest tiebreaker node.
+
+    The favorite's score absorbs the change, never more than a field goal.
+    If that would erase the favorite's lead, the underdog's score moves
+    instead. A total more than a field goal from every node (a projected
+    shootout or slugfest) is left alone rather than misstated.
+    Returns (fav, dog, node or None).
+    """
+    total = fav_score + dog_score
+    if total in nodes:
+        return fav_score, dog_score, total
+    # Nearest node; on a tie, prefer the one that keeps the favorite ahead.
+    candidates = sorted(nodes, key=lambda n: (abs(n - total), n < total))
+    for node in candidates[:2]:
+        delta = node - total
+        if abs(delta) > max_shift:
+            continue
+        new_fav = fav_score + delta
+        if not margin_required or new_fav > dog_score:
+            return new_fav, dog_score, node
+        new_dog = dog_score + delta
+        if new_dog >= 0 and fav_score > new_dog:
+            return fav_score, new_dog, node
+    return fav_score, dog_score, None
+
+
+# --------------------------------------------------------------------------- #
 # 7. Monday Night Football projection
 # --------------------------------------------------------------------------- #
 def snap_to_key(raw: float) -> int:
@@ -1376,16 +1531,30 @@ def project_mnf(game: dict, odds: Optional[dict], pick: dict) -> dict:
     fav_score, dog_score = snap_to_key(fav_raw), snap_to_key(dog_raw)
     if magnitude > 0 and fav_score <= dog_score:
         fav_score = next((k for k in KEY_SCORES if k > dog_score), dog_score + 3)
+    key_snapped = {"favorite": fav_score, "underdog": dog_score, "total": fav_score + dog_score}
+
+    # Strategic tiebreaker: land the combined total on a high-frequency node.
+    fav_score, dog_score, node = snap_total_to_node(fav_score, dog_score, magnitude > 0)
+
+    # If the optimizer flipped this game, the tiebreaker has to agree with the pick:
+    # the picked underdog gets the higher score, the total stays on the node.
+    line_favorite = fav
+    if pick.get("optimizer_flip") and pick.get("team") == dog:
+        fav, dog = dog, fav
 
     scores = {fav: fav_score, dog: dog_score}
     return {
         **base,
         "projection_available": True,
-        "favorite": fav,
+        "favorite": fav,            # projected winner (the pick, if flipped)
         "underdog": dog,
+        "line_favorite": line_favorite,
+        "optimizer_flip": bool(pick.get("optimizer_flip")),
         "spread": magnitude,
         "total": total,
         "raw": {"favorite": round(fav_raw, 2), "underdog": round(dog_raw, 2)},
+        "key_snapped": key_snapped,
+        "total_node": node,
         "projected": {"favorite": fav_score, "underdog": dog_score},
         "projected_final": {
             "home": {"team": game["home"], "score": scores[game["home"]]},
@@ -1499,6 +1668,7 @@ def build(args: argparse.Namespace) -> dict:
         log.info("Wrote Action Network diagnostics to %s", PUBLIC_DEBUG_FILE)
 
     out_games, mnf = [], []
+    mnf_inputs: list[tuple] = []
     for g in sorted(games, key=lambda x: x["kickoff"]):
         odds_ev = find_matching(
             g, odds_events,
@@ -1567,7 +1737,15 @@ def build(args: argparse.Namespace) -> dict:
         record["trend"] = trend(history["games"].get(g["game_id"], {}).get("points", []), now_utc)
         out_games.append(record)
         if is_mnf:
-            mnf.append(project_mnf(g, odds, pick))
+            mnf_inputs.append((g, odds, pick))   # projected after the optimizer runs
+
+    # ======================================================================= #
+    # >>> LEVERAGE OPTIMIZER: post-processing on the finished chalk slate. <<<
+    # Flips the top 2-3 tight-spread underdogs, then builds the MNF tiebreaker
+    # so it agrees with whatever the final pick is.
+    # ======================================================================= #
+    optimizer = optimize_leverage_picks(out_games, quota=args.upset_quota)
+    mnf = [project_mnf(g, odds, pick) for g, odds, pick in mnf_inputs]
 
     # Look ahead so next week already has an opening line to compare against.
     if args.lookahead and meta.get("week") and meta.get("season_type") == 2:
@@ -1598,6 +1776,7 @@ def build(args: argparse.Namespace) -> dict:
             "live_upset_candidate": r["pick"].get("live_upset_candidate", False),
             "qb_watch": bool((r.get("injuries") or {}).get("qb_watch")),
             "moved": bool((r.get("movement") or {}).get("notable")),
+            "optimizer_flip": bool(r["pick"].get("optimizer_flip")),
             "public_pick_pct": r["pick"].get("public_pick_pct"),
             "high_leverage_play": r["pick"].get("high_leverage_play", False),
             "high_leverage_underdog": r["pick"].get("high_leverage_underdog", False),
@@ -1616,6 +1795,10 @@ def build(args: argparse.Namespace) -> dict:
             "upset_band": list(UPSET_BAND),
             "leverage_flag": LEVERAGE_FLAG,
             "movement_flag": MOVEMENT_FLAG,
+            "optimizer": {"quota": args.upset_quota, "max": OPTIMIZER_MAX,
+                          "spread_range": list(OPTIMIZER_SPREAD_RANGE),
+                          "min_leverage": OPTIMIZER_MIN_LEVERAGE,
+                          "mnf_total_nodes": list(MNF_TOTAL_NODES)},
             "leverage_max_win_prob": LEVERAGE_MAX_WIN_PROB,
             "key_scores": KEY_SCORES,
         },
@@ -1627,6 +1810,7 @@ def build(args: argparse.Namespace) -> dict:
             "picks": picks,
             "live_upset_candidates": [p for p in picks if p["live_upset_candidate"]],
         },
+        "optimizer": optimizer,
         "monday_night_football": mnf,
         "games": out_games,
     }
@@ -1652,6 +1836,9 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
                    help="relative weight of Kalshi (default: 1)")
     p.add_argument("--poly-weight", type=float, default=DEFAULT_WEIGHTS["polymarket"],
                    help="relative weight of Polymarket (default: 1; 0 turns it off)")
+    p.add_argument("--upset-quota", type=int, default=OPTIMIZER_QUOTA,
+                   help=f"underdogs the optimizer flips each week (default: {OPTIMIZER_QUOTA}; "
+                        f"ties can raise it to {OPTIMIZER_MAX}; 0 keeps pure chalk)")
     p.add_argument("--history", default=HISTORY_FILE,
                    help=f"running odds history file (default: {HISTORY_FILE})")
     p.add_argument("--lookahead", type=int, default=1,
@@ -1660,6 +1847,8 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
                    help=f"write raw Action Network diagnostics to {PUBLIC_DEBUG_FILE}")
     p.add_argument("--verbose", "-v", action="store_true")
     args = p.parse_args(argv)
+    if args.upset_quota < 0:
+        p.error("--upset-quota must be 0 or more")
     ws = (args.book_weight, args.kalshi_weight, args.poly_weight)
     if min(ws) < 0 or sum(ws) == 0:
         p.error("weights must be >= 0 and at least one must be positive")
@@ -1679,10 +1868,46 @@ def main(argv: Optional[list[str]] = None) -> int:
     write_json(payload, args.output)
     log.info("Wrote %d games to %s", payload["summary"]["games"], args.output)
     for p in payload["summary"]["picks"]:
-        flag = "  <- upset watch" if p["live_upset_candidate"] else ""
+        if p.get("optimizer_flip"):
+            flag = "  <- OPTIMIZER UPSET"
+        elif p["live_upset_candidate"]:
+            flag = "  <- upset watch"
+        else:
+            flag = ""
         prob = f"{p['win_probability']:.1%}" if p["win_probability"] is not None else "n/a"
         log.info("  %-12s pick %-4s %6s%s", p["matchup"], p["pick"] or "-", prob, flag)
+    log_optimizer(payload)
     return 0
+
+
+def log_optimizer(payload: dict) -> None:
+    opt = payload.get("optimizer") or {}
+    lo, hi = opt.get("spread_range") or OPTIMIZER_SPREAD_RANGE
+    bar = "=" * 64
+    log.info(bar)
+    log.info("LEVERAGE OPTIMIZER  quota %s, underdogs +%s to +%s, %s eligible",
+             opt.get("quota"), lo, hi, opt.get("eligible", 0))
+    flipped = opt.get("flipped") or []
+    if not flipped:
+        log.info("  No games flipped. %s", opt.get("note") or "Chalk slate stands.")
+    for f in flipped:
+        log.info("  #%d FLIPPED  %-12s  %s over %s  (+%s)  win %s, public %s, leverage %+d",
+                 f["rank"], f["matchup"], f["pick"], f["over"], f["spread"],
+                 f"{f['win_probability']:.0%}" if f["win_probability"] is not None else "n/a",
+                 f"{f['public_pick_pct']:.0%}" if f["public_pick_pct"] is not None else "n/a",
+                 round((f["underdog_leverage"] or 0) * 100))
+    if flipped:
+        log.info("  Cost vs. all-chalk: about %.2f expected wins this week",
+                 opt.get("expected_wins_cost") or 0)
+    for m in payload.get("monday_night_football") or []:
+        if m.get("projection_available"):
+            node = m.get("total_node")
+            log.info("  MNF tiebreaker: %s %s - %s %s, total %s (%s)%s",
+                     m["favorite"], m["projected"]["favorite"], m["underdog"],
+                     m["projected"]["underdog"], m["projected_total"],
+                     f"node {node}" if node else "more than a field goal from any node, left as projected",
+                     "  [follows optimizer flip]" if m.get("optimizer_flip") else "")
+    log.info(bar)
 
 
 if __name__ == "__main__":

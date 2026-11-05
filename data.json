@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T20:27:51+00:00",
+  "generated_at": "2026-11-05T21:19:33+00:00",
   "season": 2026,
   "season_type": 2,
   "week": 9,
@@ -57,14 +57,14 @@
       45
     ]
   },
-  "previous_run": "2026-11-05T07:45:26+00:00",
+  "previous_run": "2026-11-05T20:27:51+00:00",
   "history_file": "history.json",
   "sources": {
     "odds_api": {
       "ok": true,
       "events": 28,
-      "requests_remaining": "470",
-      "requests_used": "30"
+      "requests_remaining": "467",
+      "requests_used": "33"
     },
     "kalshi": {
       "ok": true,
@@ -103,7 +103,7 @@
         "game_id": "401873037",
         "matchup": "JAX @ BAL",
         "pick": "JAX",
-        "win_probability": 0.8046,
+        "win_probability": 0.8043,
         "confidence": "strong",
         "live_upset_candidate": false,
         "qb_watch": true,
@@ -117,7 +117,7 @@
         "game_id": "401873038",
         "matchup": "CIN VS ATL",
         "pick": "CIN",
-        "win_probability": 0.612,
+        "win_probability": 0.6122,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": false,
@@ -173,7 +173,7 @@
         "game_id": "401873039",
         "matchup": "CLE @ NO",
         "pick": "NO",
-        "win_probability": 0.6032,
+        "win_probability": 0.604,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": true,
@@ -187,7 +187,7 @@
         "game_id": "401873044",
         "matchup": "NYG @ PHI",
         "pick": "NYG",
-        "win_probability": 0.6201,
+        "win_probability": 0.6196,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": false,
@@ -201,7 +201,7 @@
         "game_id": "401873043",
         "matchup": "LAR @ WSH",
         "pick": "LAR",
-        "win_probability": 0.6678,
+        "win_probability": 0.6656,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": false,
@@ -229,7 +229,7 @@
         "game_id": "401873046",
         "matchup": "HOU @ LAC",
         "pick": "HOU",
-        "win_probability": 0.6743,
+        "win_probability": 0.6823,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": false,
@@ -243,7 +243,7 @@
         "game_id": "401873049",
         "matchup": "GB @ NE",
         "pick": "NE",
-        "win_probability": 0.6086,
+        "win_probability": 0.6093,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": false,
@@ -257,7 +257,7 @@
         "game_id": "401873047",
         "matchup": "LV @ SF",
         "pick": "SF",
-        "win_probability": 0.8014,
+        "win_probability": 0.8011,
         "confidence": "strong",
         "live_upset_candidate": false,
         "qb_watch": false,
@@ -285,7 +285,7 @@
         "game_id": "401873050",
         "matchup": "TB @ CHI",
         "pick": "CHI",
-        "win_probability": 0.7125,
+        "win_probability": 0.7121,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": false,
@@ -428,13 +428,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": 393,
-          "away": -510,
-          "avg_hold_pct": 4.09
+          "home": 390,
+          "away": -500,
+          "avg_hold_pct": 4.17
         },
         "fair_moneyline": {
-          "home": 410,
-          "away": -410
+          "home": 407,
+          "away": -407
         },
         "spread": {
           "home": 10.0,
@@ -476,16 +476,16 @@
         "quoted_team": "JAX",
         "best_bid": 0.8,
         "best_ask": 0.81,
-        "last_trade": 0.8,
+        "last_trade": 0.81,
         "method": "bid_ask_midpoint",
-        "volume": 229694.08716800003,
-        "volume_24h": 135885.51602600003,
-        "liquidity": 925231.7302
+        "volume": 231001.158149,
+        "volume_24h": 137191.819202,
+        "liquidity": 1835930.8966
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.1961,
-          "away": 0.8039
+          "home": 0.1971,
+          "away": 0.8029
         },
         "kalshi": {
           "home": 0.195,
@@ -496,8 +496,8 @@
           "away": 0.805
         },
         "combined": {
-          "home": 0.1954,
-          "away": 0.8046
+          "home": 0.1957,
+          "away": 0.8043
         },
         "weights": {
           "sportsbook": 0.333,
@@ -512,19 +512,25 @@
       "weather": {
         "summary": "Overcast",
         "icon": "☁️",
-        "temp_f": 67,
+        "temp_f": 68,
         "wind_mph": 4,
-        "precip_pct": 28,
+        "precip_pct": 27,
         "roof": "open",
         "rough": false
       },
       "injuries": {
         "home": [
           {
+            "name": "Lamar Jackson",
+            "position": "QB",
+            "status": "Injured Reserve",
+            "detail": "ir"
+          },
+          {
             "name": "Tyler Huntley",
             "position": "QB",
-            "status": "Out",
-            "detail": "Huntley (toe) has reportedly sustained a season-ending turf toe injury, Adam Schefter of ESPN reports."
+            "status": "Injured Reserve",
+            "detail": "ir"
           },
           {
             "name": "Adam Randall",
@@ -562,42 +568,47 @@
         "qb_watch": [
           {
             "team": "BAL",
+            "name": "Lamar Jackson",
+            "status": "Injured Reserve"
+          },
+          {
+            "team": "BAL",
             "name": "Tyler Huntley",
-            "status": "Out"
+            "status": "Injured Reserve"
           }
         ]
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": 0.0071,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": 0.0003,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
       "trend": {
-        "points": 21,
+        "points": 22,
         "opened": 0.3448,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.1954,
-        "since_open": -0.1494,
-        "since_24h": 0.0077,
+        "now": 0.1957,
+        "since_open": -0.1491,
+        "since_24h": 0.008,
         "notable": true
       },
       "pick": {
         "team": "JAX",
         "name": "Jacksonville Jaguars",
-        "win_probability": 0.8046,
+        "win_probability": 0.8043,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "BAL",
-        "underdog_win_probability": 0.1954,
+        "underdog_win_probability": 0.1957,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.87,
-        "leverage": -0.0654,
+        "leverage": -0.0657,
         "high_leverage_play": false,
         "underdog_public_pct": 0.13,
-        "underdog_leverage": 0.0654,
+        "underdog_leverage": 0.0657,
         "high_leverage_underdog": false
       }
     },
@@ -642,7 +653,7 @@
         "moneyline": {
           "home": 145,
           "away": -170,
-          "avg_hold_pct": 4.0
+          "avg_hold_pct": 4.03
         },
         "fair_moneyline": {
           "home": 154,
@@ -690,14 +701,14 @@
         "best_ask": 0.62,
         "last_trade": 0.62,
         "method": "bid_ask_midpoint",
-        "volume": 3981.156656,
-        "volume_24h": 1192.801445,
-        "liquidity": 130076.7113
+        "volume": 3982.769558,
+        "volume_24h": 1069.568192,
+        "liquidity": 127424.2606
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.394,
-          "away": 0.606
+          "home": 0.3935,
+          "away": 0.6065
         },
         "kalshi": {
           "home": 0.385,
@@ -708,8 +719,8 @@
           "away": 0.615
         },
         "combined": {
-          "home": 0.388,
-          "away": 0.612
+          "home": 0.3878,
+          "away": 0.6122
         },
         "weights": {
           "sportsbook": 0.333,
@@ -784,36 +795,36 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.0022,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": -0.0002,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
       "trend": {
-        "points": 21,
+        "points": 22,
         "opened": 0.36,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.388,
-        "since_open": 0.028,
-        "since_24h": -0.0028,
+        "now": 0.3878,
+        "since_open": 0.0278,
+        "since_24h": -0.003,
         "notable": false
       },
       "pick": {
         "team": "CIN",
         "name": "Cincinnati Bengals",
-        "win_probability": 0.612,
+        "win_probability": 0.6122,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "ATL",
-        "underdog_win_probability": 0.388,
+        "underdog_win_probability": 0.3878,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.88,
-        "leverage": -0.268,
+        "leverage": -0.2678,
         "high_leverage_play": false,
         "underdog_public_pct": 0.12,
-        "underdog_leverage": 0.268,
+        "underdog_leverage": 0.2678,
         "high_leverage_underdog": true
       }
     },
@@ -906,9 +917,9 @@
         "best_ask": 0.7,
         "last_trade": 0.7,
         "method": "bid_ask_midpoint",
-        "volume": 7893.588218,
-        "volume_24h": 2113.806822,
-        "liquidity": 124104.9573
+        "volume": 7929.302503999999,
+        "volume_24h": 2149.521108,
+        "liquidity": 133228.2987
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -972,8 +983,8 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.0005,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
@@ -1096,7 +1107,7 @@
         "method": "bid_ask_midpoint",
         "volume": 24644.790577,
         "volume_24h": 21758.102206,
-        "liquidity": 192902.8046
+        "liquidity": 198509.2665
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1172,8 +1183,8 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": 0.0005,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
@@ -1295,8 +1306,8 @@
         "last_trade": 0.75,
         "method": "bid_ask_midpoint",
         "volume": 81867.273575,
-        "volume_24h": 80621.820507,
-        "liquidity": 155106.9918
+        "volume_24h": 80611.82050700003,
+        "liquidity": 155056.8813
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1330,7 +1341,7 @@
         "icon": "☁️",
         "temp_f": 84,
         "wind_mph": 10,
-        "precip_pct": 11,
+        "precip_pct": 3,
         "roof": "open",
         "rough": false
       },
@@ -1372,8 +1383,8 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.0021,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": 0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
@@ -1444,13 +1455,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": -165,
-          "away": 140,
-          "avg_hold_pct": 4.03
+          "home": -166,
+          "away": 142,
+          "avg_hold_pct": 3.94
         },
         "fair_moneyline": {
-          "home": -150,
-          "away": 150
+          "home": -151,
+          "away": 151
         },
         "spread": {
           "home": -3.0,
@@ -1494,14 +1505,14 @@
         "best_ask": 0.4,
         "last_trade": 0.4,
         "method": "bid_ask_midpoint",
-        "volume": 37622.115813,
-        "volume_24h": 1018.6040879999999,
-        "liquidity": 114683.9657
+        "volume": 37733.115813,
+        "volume_24h": 1129.604088,
+        "liquidity": 114062.0823
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.5995,
-          "away": 0.4005
+          "home": 0.6021,
+          "away": 0.3979
         },
         "kalshi": {
           "home": 0.605,
@@ -1512,8 +1523,8 @@
           "away": 0.395
         },
         "combined": {
-          "home": 0.6032,
-          "away": 0.3968
+          "home": 0.604,
+          "away": 0.396
         },
         "weights": {
           "sportsbook": 0.333,
@@ -1567,36 +1578,36 @@
         ]
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": 0.0017,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": 0.0008,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
       "trend": {
-        "points": 20,
+        "points": 21,
         "opened": 0.615,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.6032,
-        "since_open": -0.0118,
-        "since_24h": 0.0024,
+        "now": 0.604,
+        "since_open": -0.011,
+        "since_24h": 0.0032,
         "notable": false
       },
       "pick": {
         "team": "NO",
         "name": "New Orleans Saints",
-        "win_probability": 0.6032,
+        "win_probability": 0.604,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "CLE",
-        "underdog_win_probability": 0.3968,
+        "underdog_win_probability": 0.396,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.57,
-        "leverage": 0.0332,
+        "leverage": 0.034,
         "high_leverage_play": false,
         "underdog_public_pct": 0.43,
-        "underdog_leverage": -0.0332,
+        "underdog_leverage": -0.034,
         "high_leverage_underdog": false
       }
     },
@@ -1639,13 +1650,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": 148,
+          "home": 145,
           "away": -175,
-          "avg_hold_pct": 4.06
+          "avg_hold_pct": 4.05
         },
         "fair_moneyline": {
-          "home": 157,
-          "away": -157
+          "home": 156,
+          "away": -156
         },
         "spread": {
           "home": 3.0,
@@ -1691,12 +1702,12 @@
         "method": "bid_ask_midpoint",
         "volume": 3199.954767,
         "volume_24h": 1936.775175,
-        "liquidity": 113839.702
+        "liquidity": 106440.7962
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.3897,
-          "away": 0.6103
+          "home": 0.3912,
+          "away": 0.6088
         },
         "kalshi": {
           "home": 0.375,
@@ -1707,8 +1718,8 @@
           "away": 0.625
         },
         "combined": {
-          "home": 0.3799,
-          "away": 0.6201
+          "home": 0.3804,
+          "away": 0.6196
         },
         "weights": {
           "sportsbook": 0.333,
@@ -1725,7 +1736,7 @@
         "icon": "☁️",
         "temp_f": 60,
         "wind_mph": 14,
-        "precip_pct": 1,
+        "precip_pct": 0,
         "roof": "open",
         "rough": false
       },
@@ -1742,36 +1753,36 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.001,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": 0.0005,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
       "trend": {
-        "points": 21,
+        "points": 22,
         "opened": 0.4,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.3799,
-        "since_open": -0.0201,
-        "since_24h": -0.0006,
+        "now": 0.3804,
+        "since_open": -0.0196,
+        "since_24h": -0.0001,
         "notable": false
       },
       "pick": {
         "team": "NYG",
         "name": "New York Giants",
-        "win_probability": 0.6201,
+        "win_probability": 0.6196,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "PHI",
-        "underdog_win_probability": 0.3799,
+        "underdog_win_probability": 0.3804,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.82,
-        "leverage": -0.1999,
+        "leverage": -0.2004,
         "high_leverage_play": false,
         "underdog_public_pct": 0.18,
-        "underdog_leverage": 0.1999,
+        "underdog_leverage": 0.2004,
         "high_leverage_underdog": true
       }
     },
@@ -1834,22 +1845,22 @@
           {
             "ticker": "KXNFLGAME-26NOV08LARWAS-WAS",
             "team": "WSH",
-            "yes_bid": 0.32,
+            "yes_bid": 0.33,
             "yes_ask": 0.34,
             "no_bid": 0.66,
-            "no_ask": 0.68,
-            "yes_prob": 0.33,
+            "no_ask": 0.67,
+            "yes_prob": 0.335,
             "method": "bid_ask_midpoint",
             "volume": null
           },
           {
             "ticker": "KXNFLGAME-26NOV08LARWAS-LAR",
             "team": "LAR",
-            "yes_bid": 0.67,
-            "yes_ask": 0.68,
-            "no_bid": 0.32,
-            "no_ask": 0.33,
-            "yes_prob": 0.675,
+            "yes_bid": 0.66,
+            "yes_ask": 0.67,
+            "no_bid": 0.33,
+            "no_ask": 0.34,
+            "yes_prob": 0.665,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -1865,8 +1876,8 @@
         "last_trade": 0.67,
         "method": "bid_ask_midpoint",
         "volume": 18477.789470999996,
-        "volume_24h": 16993.682169,
-        "liquidity": 138637.5639
+        "volume_24h": 16891.502169000003,
+        "liquidity": 136909.4837
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -1874,16 +1885,16 @@
           "away": 0.6668
         },
         "kalshi": {
-          "home": 0.3284,
-          "away": 0.6716
+          "home": 0.335,
+          "away": 0.665
         },
         "polymarket": {
           "home": 0.335,
           "away": 0.665
         },
         "combined": {
-          "home": 0.3322,
-          "away": 0.6678
+          "home": 0.3344,
+          "away": 0.6656
         },
         "weights": {
           "sportsbook": 0.333,
@@ -1978,36 +1989,36 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": 0.0026,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": 0.0022,
         "notable": false,
         "spread_change": 0.0,
-        "total_change": 0.5
+        "total_change": 0.0
       },
       "trend": {
-        "points": 21,
+        "points": 22,
         "opened": 0.33,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.3322,
-        "since_open": 0.0022,
-        "since_24h": 0.0211,
+        "now": 0.3344,
+        "since_open": 0.0044,
+        "since_24h": 0.0233,
         "notable": false
       },
       "pick": {
         "team": "LAR",
         "name": "Los Angeles Rams",
-        "win_probability": 0.6678,
+        "win_probability": 0.6656,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "WSH",
-        "underdog_win_probability": 0.3322,
+        "underdog_win_probability": 0.3344,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.92,
-        "leverage": -0.2522,
+        "leverage": -0.2544,
         "high_leverage_play": false,
         "underdog_public_pct": 0.08,
-        "underdog_leverage": 0.2522,
+        "underdog_leverage": 0.2544,
         "high_leverage_underdog": false
       }
     },
@@ -2101,8 +2112,8 @@
         "last_trade": 0.58,
         "method": "bid_ask_midpoint",
         "volume": 6010.859923,
-        "volume_24h": 398.67082,
-        "liquidity": 119316.0354
+        "volume_24h": 398.67082000000005,
+        "liquidity": 119169.0937
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2184,8 +2195,8 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": 0.0027,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
@@ -2263,17 +2274,17 @@
           "bovada"
         ],
         "moneyline": {
-          "home": 190,
-          "away": -235,
-          "avg_hold_pct": 4.29
+          "home": 200,
+          "away": -245,
+          "avg_hold_pct": 4.3
         },
         "fair_moneyline": {
-          "home": 202,
-          "away": -202
+          "home": 210,
+          "away": -210
         },
         "spread": {
-          "home": 4.5,
-          "away": -4.5
+          "home": 5.5,
+          "away": -5.5
         },
         "total": 40.5
       },
@@ -2294,11 +2305,11 @@
           {
             "ticker": "KXNFLGAME-26NOV08HOULAC-HOU",
             "team": "HOU",
-            "yes_bid": 0.66,
-            "yes_ask": 0.67,
-            "no_bid": 0.33,
-            "no_ask": 0.34,
-            "yes_prob": 0.665,
+            "yes_bid": 0.68,
+            "yes_ask": 0.69,
+            "no_bid": 0.31,
+            "no_ask": 0.32,
+            "yes_prob": 0.685,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -2309,30 +2320,30 @@
         "url": "https://polymarket.com/event/nfl-hou-lac-2026-11-08",
         "question": "Texans vs. Chargers",
         "quoted_team": "HOU",
-        "best_bid": 0.67,
-        "best_ask": 0.68,
-        "last_trade": 0.68,
+        "best_bid": 0.68,
+        "best_ask": 0.69,
+        "last_trade": 0.69,
         "method": "bid_ask_midpoint",
-        "volume": 987.062908,
-        "volume_24h": 806.976111,
-        "liquidity": 88620.3999
+        "volume": 1823.1612340000004,
+        "volume_24h": 1643.074437,
+        "liquidity": 181706.8692
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.3308,
-          "away": 0.6692
+          "home": 0.323,
+          "away": 0.677
         },
         "kalshi": {
-          "home": 0.3214,
-          "away": 0.6786
+          "home": 0.315,
+          "away": 0.685
         },
         "polymarket": {
-          "home": 0.325,
-          "away": 0.675
+          "home": 0.315,
+          "away": 0.685
         },
         "combined": {
-          "home": 0.3257,
-          "away": 0.6743
+          "home": 0.3177,
+          "away": 0.6823
         },
         "weights": {
           "sportsbook": 0.333,
@@ -2392,36 +2403,36 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.0014,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": -0.008,
         "notable": false,
-        "spread_change": 0.0,
+        "spread_change": 1.0,
         "total_change": 0.0
       },
       "trend": {
-        "points": 21,
+        "points": 22,
         "opened": 0.3175,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.3257,
-        "since_open": 0.0082,
-        "since_24h": -0.0065,
+        "now": 0.3177,
+        "since_open": 0.0002,
+        "since_24h": -0.0145,
         "notable": false
       },
       "pick": {
         "team": "HOU",
         "name": "Houston Texans",
-        "win_probability": 0.6743,
+        "win_probability": 0.6823,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "LAC",
-        "underdog_win_probability": 0.3257,
+        "underdog_win_probability": 0.3177,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.87,
-        "leverage": -0.1957,
+        "leverage": -0.1877,
         "high_leverage_play": false,
         "underdog_public_pct": 0.13,
-        "underdog_leverage": 0.1957,
+        "underdog_leverage": 0.1877,
         "high_leverage_underdog": false
       }
     },
@@ -2485,10 +2496,10 @@
             "ticker": "KXNFLGAME-26NOV08GBNE-NE",
             "team": "NE",
             "yes_bid": 0.6,
-            "yes_ask": 0.61,
-            "no_bid": 0.39,
+            "yes_ask": 0.62,
+            "no_bid": 0.38,
             "no_ask": 0.4,
-            "yes_prob": 0.605,
+            "yes_prob": 0.61,
             "method": "bid_ask_midpoint",
             "volume": null
           },
@@ -2516,7 +2527,7 @@
         "method": "bid_ask_midpoint",
         "volume": 13420.996711,
         "volume_24h": 938.9727050000001,
-        "liquidity": 110097.2789
+        "liquidity": 110588.001
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2524,16 +2535,16 @@
           "away": 0.3942
         },
         "kalshi": {
-          "home": 0.605,
-          "away": 0.395
+          "home": 0.607,
+          "away": 0.393
         },
         "polymarket": {
           "home": 0.615,
           "away": 0.385
         },
         "combined": {
-          "home": 0.6086,
-          "away": 0.3914
+          "home": 0.6093,
+          "away": 0.3907
         },
         "weights": {
           "sportsbook": 0.333,
@@ -2550,7 +2561,7 @@
         "icon": "⛅",
         "temp_f": 49,
         "wind_mph": 12,
-        "precip_pct": 3,
+        "precip_pct": 2,
         "roof": "open",
         "rough": false
       },
@@ -2586,36 +2597,36 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.0039,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": 0.0007,
         "notable": false,
         "spread_change": 0.0,
-        "total_change": -0.5
+        "total_change": 0.0
       },
       "trend": {
-        "points": 21,
+        "points": 22,
         "opened": 0.49,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.6086,
-        "since_open": 0.1186,
-        "since_24h": 0.0009,
+        "now": 0.6093,
+        "since_open": 0.1193,
+        "since_24h": 0.0016,
         "notable": true
       },
       "pick": {
         "team": "NE",
         "name": "New England Patriots",
-        "win_probability": 0.6086,
+        "win_probability": 0.6093,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "GB",
-        "underdog_win_probability": 0.3914,
+        "underdog_win_probability": 0.3907,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.65,
-        "leverage": -0.0414,
+        "leverage": -0.0407,
         "high_leverage_play": false,
         "underdog_public_pct": 0.35,
-        "underdog_leverage": 0.0414,
+        "underdog_leverage": 0.0407,
         "high_leverage_underdog": false
       }
     },
@@ -2658,13 +2669,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": -475,
-          "away": 360,
-          "avg_hold_pct": 4.27
+          "home": -460,
+          "away": 358,
+          "avg_hold_pct": 4.2
         },
         "fair_moneyline": {
-          "home": -386,
-          "away": 386
+          "home": -384,
+          "away": 384
         },
         "spread": {
           "home": -10.0,
@@ -2708,14 +2719,14 @@
         "best_ask": 0.2,
         "last_trade": 0.2,
         "method": "bid_ask_midpoint",
-        "volume": 1893.3167529999998,
-        "volume_24h": 127.854568,
-        "liquidity": 118439.2743
+        "volume": 2793.316753,
+        "volume_24h": 935.234568,
+        "liquidity": 116291.8719
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.7941,
-          "away": 0.2059
+          "home": 0.7932,
+          "away": 0.2068
         },
         "kalshi": {
           "home": 0.805,
@@ -2726,8 +2737,8 @@
           "away": 0.195
         },
         "combined": {
-          "home": 0.8014,
-          "away": 0.1986
+          "home": 0.8011,
+          "away": 0.1989
         },
         "weights": {
           "sportsbook": 0.333,
@@ -2786,36 +2797,36 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.0008,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": -0.0003,
         "notable": false,
         "spread_change": 0.0,
-        "total_change": -1.0
+        "total_change": 0.0
       },
       "trend": {
-        "points": 21,
+        "points": 22,
         "opened": 0.7042,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.8014,
-        "since_open": 0.0972,
-        "since_24h": -0.0023,
+        "now": 0.8011,
+        "since_open": 0.0969,
+        "since_24h": -0.0026,
         "notable": true
       },
       "pick": {
         "team": "SF",
         "name": "San Francisco 49ers",
-        "win_probability": 0.8014,
+        "win_probability": 0.8011,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "LV",
-        "underdog_win_probability": 0.1986,
+        "underdog_win_probability": 0.1989,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.97,
-        "leverage": -0.1686,
+        "leverage": -0.1689,
         "high_leverage_play": false,
         "underdog_public_pct": 0.03,
-        "underdog_leverage": 0.1686,
+        "underdog_leverage": 0.1689,
         "high_leverage_underdog": false
       }
     },
@@ -2908,9 +2919,9 @@
         "best_ask": 0.23,
         "last_trade": 0.23,
         "method": "bid_ask_midpoint",
-        "volume": 49485.365594,
-        "volume_24h": 5581.300108,
-        "liquidity": 92962.9005
+        "volume": 50168.365594,
+        "volume_24h": 4082.3998829999996,
+        "liquidity": 92949.9505
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -2944,7 +2955,7 @@
         "icon": "🌧️",
         "temp_f": 55,
         "wind_mph": 9,
-        "precip_pct": 13,
+        "precip_pct": 12,
         "roof": "open",
         "rough": false
       },
@@ -3003,8 +3014,8 @@
         ]
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": 0.0008,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
@@ -3075,13 +3086,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": -275,
-          "away": 225,
-          "avg_hold_pct": 4.2
+          "home": -270,
+          "away": 222,
+          "avg_hold_pct": 4.28
         },
         "fair_moneyline": {
-          "home": -240,
-          "away": 240
+          "home": -237,
+          "away": 237
         },
         "spread": {
           "home": -6.0,
@@ -3095,11 +3106,11 @@
           {
             "ticker": "KXNFLGAME-26NOV08TBCHI-CHI",
             "team": "CHI",
-            "yes_bid": 0.71,
+            "yes_bid": 0.72,
             "yes_ask": 0.73,
             "no_bid": 0.27,
-            "no_ask": 0.29,
-            "yes_prob": 0.72,
+            "no_ask": 0.28,
+            "yes_prob": 0.725,
             "method": "bid_ask_midpoint",
             "volume": null
           },
@@ -3127,24 +3138,24 @@
         "method": "bid_ask_midpoint",
         "volume": 3121.047829,
         "volume_24h": 666.448276,
-        "liquidity": 89414.1139
+        "liquidity": 85710.9339
       },
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.7061,
-          "away": 0.2939
+          "home": 0.7035,
+          "away": 0.2965
         },
         "kalshi": {
-          "home": 0.7164,
-          "away": 0.2836
+          "home": 0.7178,
+          "away": 0.2822
         },
         "polymarket": {
           "home": 0.715,
           "away": 0.285
         },
         "combined": {
-          "home": 0.7125,
-          "away": 0.2875
+          "home": 0.7121,
+          "away": 0.2879
         },
         "weights": {
           "sportsbook": 0.333,
@@ -3209,36 +3220,36 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.0015,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": -0.0004,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
       "trend": {
-        "points": 21,
+        "points": 22,
         "opened": 0.735,
         "opened_at": "2026-10-27T06:02+00:00",
-        "now": 0.7125,
-        "since_open": -0.0225,
-        "since_24h": -0.0023,
+        "now": 0.7121,
+        "since_open": -0.0229,
+        "since_24h": -0.0027,
         "notable": false
       },
       "pick": {
         "team": "CHI",
         "name": "Chicago Bears",
-        "win_probability": 0.7125,
+        "win_probability": 0.7121,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "TB",
-        "underdog_win_probability": 0.2875,
+        "underdog_win_probability": 0.2879,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.95,
-        "leverage": -0.2375,
+        "leverage": -0.2379,
         "high_leverage_play": false,
         "underdog_public_pct": 0.05,
-        "underdog_leverage": 0.2375,
+        "underdog_leverage": 0.2379,
         "high_leverage_underdog": false
       }
     },
@@ -3331,9 +3342,9 @@
         "best_ask": 0.63,
         "last_trade": 0.63,
         "method": "bid_ask_midpoint",
-        "volume": 57895.49270299999,
-        "volume_24h": 56429.595942,
-        "liquidity": 82599.6968
+        "volume": 58314.492702999996,
+        "volume_24h": 56848.59594199999,
+        "liquidity": 94769.622
       },
       "probabilities": {
         "sportsbook_vig_free": {
@@ -3392,11 +3403,11 @@
         ]
       },
       "movement": {
-        "since": "2026-11-05T07:45:26+00:00",
-        "home_prob_change": -0.0007,
+        "since": "2026-11-05T20:27:51+00:00",
+        "home_prob_change": -0.0,
         "notable": false,
         "spread_change": 0.0,
-        "total_change": -0.5
+        "total_change": 0.0
       },
       "trend": {
         "points": 20,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T07:37:42+00:00",
+  "generated_at": "2026-11-15T19:14:05+00:00",
   "season": 2026,
   "season_type": 2,
   "week": 10,
@@ -57,19 +57,19 @@
       45
     ]
   },
-  "previous_run": "2026-11-14T18:39:33+00:00",
+  "previous_run": "2026-11-15T07:37:42+00:00",
   "history_file": "history.json",
   "sources": {
     "odds_api": {
       "ok": true,
-      "events": 26,
-      "requests_remaining": "407",
-      "requests_used": "93"
+      "events": 13,
+      "requests_remaining": "404",
+      "requests_used": "96"
     },
     "kalshi": {
       "ok": true,
-      "markets": 52,
-      "events": 26
+      "markets": 50,
+      "events": 25
     },
     "polymarket": {
       "ok": false,
@@ -112,70 +112,70 @@
       {
         "game_id": "401873053",
         "matchup": "NE VS DET",
-        "pick": "NE",
-        "win_probability": 0.426,
-        "confidence": "upset",
+        "pick": null,
+        "win_probability": null,
+        "confidence": null,
         "live_upset_candidate": false,
-        "qb_watch": false,
+        "qb_watch": true,
         "moved": false,
-        "optimizer_flip": true,
-        "public_pick_pct": 0.17,
-        "high_leverage_play": true,
+        "optimizer_flip": false,
+        "public_pick_pct": null,
+        "high_leverage_play": false,
         "high_leverage_underdog": false
       },
       {
         "game_id": "401873058",
         "matchup": "KC @ ATL",
-        "pick": "ATL",
-        "win_probability": 0.383,
-        "confidence": "upset",
+        "pick": "KC",
+        "win_probability": 0.7611,
+        "confidence": "strong",
         "live_upset_candidate": false,
-        "qb_watch": false,
-        "moved": false,
-        "optimizer_flip": true,
-        "public_pick_pct": 0.03,
-        "high_leverage_play": true,
+        "qb_watch": true,
+        "moved": true,
+        "optimizer_flip": false,
+        "public_pick_pct": 0.0,
+        "high_leverage_play": false,
         "high_leverage_underdog": false
       },
       {
         "game_id": "401873056",
         "matchup": "HOU @ CLE",
         "pick": "HOU",
-        "win_probability": 0.6697,
-        "confidence": "solid",
+        "win_probability": 0.8494,
+        "confidence": "strong",
         "live_upset_candidate": false,
-        "qb_watch": false,
-        "moved": false,
+        "qb_watch": true,
+        "moved": true,
         "optimizer_flip": false,
-        "public_pick_pct": 0.92,
+        "public_pick_pct": 0.91,
         "high_leverage_play": false,
         "high_leverage_underdog": false
       },
       {
         "game_id": "401873060",
         "matchup": "MIN @ GB",
-        "pick": "GB",
-        "win_probability": 0.58,
-        "confidence": "lean",
+        "pick": "MIN",
+        "win_probability": 0.8434,
+        "confidence": "strong",
         "live_upset_candidate": false,
         "qb_watch": true,
-        "moved": false,
+        "moved": true,
         "optimizer_flip": false,
-        "public_pick_pct": 0.82,
+        "public_pick_pct": 0.19,
         "high_leverage_play": false,
-        "high_leverage_underdog": true
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401873057",
         "matchup": "JAX @ TEN",
         "pick": "JAX",
-        "win_probability": 0.831,
+        "win_probability": 0.8206,
         "confidence": "strong",
         "live_upset_candidate": false,
         "qb_watch": false,
         "moved": false,
         "optimizer_flip": false,
-        "public_pick_pct": 0.4975,
+        "public_pick_pct": 1.0,
         "high_leverage_play": false,
         "high_leverage_underdog": false
       },
@@ -183,27 +183,27 @@
         "game_id": "401873059",
         "matchup": "MIA @ IND",
         "pick": "IND",
-        "win_probability": 0.6594,
+        "win_probability": 0.6858,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": true,
         "moved": false,
         "optimizer_flip": false,
-        "public_pick_pct": 0.86,
+        "public_pick_pct": 1.0,
         "high_leverage_play": false,
         "high_leverage_underdog": false
       },
       {
         "game_id": "401873055",
         "matchup": "CAR @ NO",
-        "pick": "NO",
-        "win_probability": 0.5396,
-        "confidence": "toss-up",
-        "live_upset_candidate": true,
-        "qb_watch": false,
-        "moved": false,
+        "pick": "CAR",
+        "win_probability": 0.7882,
+        "confidence": "strong",
+        "live_upset_candidate": false,
+        "qb_watch": true,
+        "moved": true,
         "optimizer_flip": false,
-        "public_pick_pct": 0.5,
+        "public_pick_pct": 1.0,
         "high_leverage_play": false,
         "high_leverage_underdog": false
       },
@@ -211,13 +211,13 @@
         "game_id": "401873054",
         "matchup": "BUF @ NYJ",
         "pick": "BUF",
-        "win_probability": 0.7892,
+        "win_probability": 0.8959,
         "confidence": "strong",
         "live_upset_candidate": false,
-        "qb_watch": false,
-        "moved": false,
+        "qb_watch": true,
+        "moved": true,
         "optimizer_flip": false,
-        "public_pick_pct": 0.4975,
+        "public_pick_pct": 0.0,
         "high_leverage_play": false,
         "high_leverage_underdog": false
       },
@@ -225,13 +225,13 @@
         "game_id": "401873062",
         "matchup": "SEA @ LV",
         "pick": "SEA",
-        "win_probability": 0.7147,
+        "win_probability": 0.714,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": true,
         "moved": false,
         "optimizer_flip": false,
-        "public_pick_pct": 0.96,
+        "public_pick_pct": 0.95,
         "high_leverage_play": false,
         "high_leverage_underdog": false
       },
@@ -239,7 +239,7 @@
         "game_id": "401873061",
         "matchup": "LAR @ ARI",
         "pick": "LAR",
-        "win_probability": 0.7988,
+        "win_probability": 0.8013,
         "confidence": "strong",
         "live_upset_candidate": false,
         "qb_watch": true,
@@ -253,61 +253,46 @@
         "game_id": "401873063",
         "matchup": "SF @ DAL",
         "pick": "SF",
-        "win_probability": 0.6548,
+        "win_probability": 0.6544,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": false,
         "moved": false,
         "optimizer_flip": false,
-        "public_pick_pct": 0.95,
+        "public_pick_pct": 0.94,
         "high_leverage_play": false,
         "high_leverage_underdog": false
       },
       {
         "game_id": "401873064",
         "matchup": "PIT @ CIN",
-        "pick": "CIN",
-        "win_probability": 0.6309,
-        "confidence": "solid",
+        "pick": "PIT",
+        "win_probability": 0.3665,
+        "confidence": "upset",
         "live_upset_candidate": false,
         "qb_watch": false,
         "moved": false,
-        "optimizer_flip": false,
-        "public_pick_pct": 0.85,
-        "high_leverage_play": false,
-        "high_leverage_underdog": true
+        "optimizer_flip": true,
+        "public_pick_pct": 0.15,
+        "high_leverage_play": true,
+        "high_leverage_underdog": false
       },
       {
         "game_id": "401873065",
         "matchup": "LAC @ BAL",
         "pick": "BAL",
-        "win_probability": 0.6589,
+        "win_probability": 0.6649,
         "confidence": "solid",
         "live_upset_candidate": false,
         "qb_watch": true,
         "moved": false,
         "optimizer_flip": false,
-        "public_pick_pct": 0.81,
+        "public_pick_pct": 0.82,
         "high_leverage_play": false,
         "high_leverage_underdog": false
       }
     ],
-    "live_upset_candidates": [
-      {
-        "game_id": "401873055",
-        "matchup": "CAR @ NO",
-        "pick": "NO",
-        "win_probability": 0.5396,
-        "confidence": "toss-up",
-        "live_upset_candidate": true,
-        "qb_watch": false,
-        "moved": false,
-        "optimizer_flip": false,
-        "public_pick_pct": 0.5,
-        "high_leverage_play": false,
-        "high_leverage_underdog": false
-      }
-    ]
+    "live_upset_candidates": []
   },
   "optimizer": {
     "quota": 2,
@@ -315,34 +300,22 @@
       1.5,
       3.5
     ],
-    "eligible": 4,
+    "eligible": 1,
     "flipped": [
       {
         "rank": 1,
-        "game_id": "401873058",
-        "matchup": "KC @ ATL",
-        "pick": "ATL",
-        "over": "KC",
-        "spread": 3.0,
-        "underdog_leverage": 0.353,
-        "win_probability": 0.383,
-        "public_pick_pct": 0.03,
-        "expected_wins_cost": 0.234
-      },
-      {
-        "rank": 2,
-        "game_id": "401873053",
-        "matchup": "NE VS DET",
-        "pick": "NE",
-        "over": "DET",
-        "spread": 2.5,
-        "underdog_leverage": 0.256,
-        "win_probability": 0.426,
-        "public_pick_pct": 0.17,
-        "expected_wins_cost": 0.148
+        "game_id": "401873064",
+        "matchup": "PIT @ CIN",
+        "pick": "PIT",
+        "over": "CIN",
+        "spread": 3.5,
+        "underdog_leverage": 0.2165,
+        "win_probability": 0.3665,
+        "public_pick_pct": 0.15,
+        "expected_wins_cost": 0.267
       }
     ],
-    "expected_wins_cost": 0.382,
+    "expected_wins_cost": 0.267,
     "note": null
   },
   "monday_night_football": [
@@ -356,10 +329,10 @@
       "line_favorite": "BAL",
       "optimizer_flip": false,
       "spread": 4.5,
-      "total": 38.5,
+      "total": 39.0,
       "raw": {
-        "favorite": 21.5,
-        "underdog": 17.0
+        "favorite": 21.75,
+        "underdog": 17.25
       },
       "key_snapped": {
         "favorite": 21,
@@ -546,18 +519,18 @@
       "game_id": "401873053",
       "name": "New England Patriots at Detroit Lions",
       "short_name": "NE VS DET",
-      "status": "Scheduled",
-      "completed": false,
+      "status": "Final",
+      "completed": true,
       "neutral_site": true,
       "kickoff_utc": "2026-11-15T14:30:00+00:00",
       "kickoff_et": "2026-11-15T09:30:00-05:00",
       "weekday_et": "Sunday",
       "is_monday_night": false,
       "result": {
-        "home_score": 0.0,
-        "away_score": 0.0,
-        "winner": null,
-        "final": false
+        "home_score": 35.0,
+        "away_score": 10.0,
+        "winner": "DET",
+        "final": true
       },
       "home": {
         "abbr": "DET",
@@ -567,79 +540,17 @@
         "abbr": "NE",
         "name": "New England Patriots"
       },
-      "odds": {
-        "odds_api_event_id": "b8c10fdf1e0ac4e13deee7f7c0af0b0b",
-        "bookmakers_used": [
-          "draftkings",
-          "fanduel",
-          "betmgm",
-          "mybookieag",
-          "betus",
-          "betonlineag",
-          "lowvig",
-          "betrivers",
-          "bovada"
-        ],
-        "moneyline": {
-          "home": -148,
-          "away": 125,
-          "avg_hold_pct": 3.93
-        },
-        "fair_moneyline": {
-          "home": -134,
-          "away": 134
-        },
-        "spread": {
-          "home": -2.5,
-          "away": 2.5
-        },
-        "total": 49.5
-      },
-      "kalshi": {
-        "event_ticker": "KXNFLGAME-26NOV15NEDET",
-        "markets": [
-          {
-            "ticker": "KXNFLGAME-26NOV15NEDET-DET",
-            "team": "DET",
-            "yes_bid": 0.57,
-            "yes_ask": 0.58,
-            "no_bid": 0.42,
-            "no_ask": 0.43,
-            "yes_prob": 0.575,
-            "method": "bid_ask_midpoint",
-            "volume": null
-          },
-          {
-            "ticker": "KXNFLGAME-26NOV15NEDET-NE",
-            "team": "NE",
-            "yes_bid": 0.42,
-            "yes_ask": 0.43,
-            "no_bid": 0.57,
-            "no_ask": 0.58,
-            "yes_prob": 0.425,
-            "method": "bid_ask_midpoint",
-            "volume": null
-          }
-        ]
-      },
+      "odds": null,
+      "kalshi": null,
       "polymarket": null,
       "probabilities": {
-        "sportsbook_vig_free": {
-          "home": 0.573,
-          "away": 0.427
-        },
-        "kalshi": {
-          "home": 0.575,
-          "away": 0.425
-        },
+        "sportsbook_vig_free": null,
+        "kalshi": null,
         "polymarket": null,
-        "combined": {
-          "home": 0.574,
-          "away": 0.426
-        },
+        "combined": null,
         "weights": {
-          "sportsbook": 0.5,
-          "kalshi": 0.5,
+          "sportsbook": 0.0,
+          "kalshi": 0.0,
           "polymarket": 0.0
         }
       },
@@ -651,22 +562,34 @@
       "injuries": {
         "home": [
           {
+            "name": "Ahmed Hassanein",
+            "position": "DE",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Aidan Hutchinson",
+            "position": "DE",
+            "status": "Doubtful",
+            "detail": "doubtful"
+          },
+          {
+            "name": "Amen Ogbongbemiga",
+            "position": "LB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
             "name": "Cade Mays",
             "position": "C",
             "status": "Out",
-            "detail": "Mays (ankle) is not traveling with the Lions to Munich ahead of their Week 10 matchup against the Patriots."
+            "detail": "inactive"
           },
           {
             "name": "D.J. Reed",
             "position": "CB",
             "status": "Out",
-            "detail": "Reed (hip) did not travel to Munich with the Lions and is ruled out for Sunday's matchup against the Patriots."
-          },
-          {
-            "name": "Isiah Pacheco",
-            "position": "RB",
-            "status": "Injured Reserve",
-            "detail": "Lions coach Dan Campbell said Friday that Pacheco (back) has a chance to return in late December, Justin Rogers of DetroitFootball.net repor"
+            "detail": "inactive"
           },
           {
             "name": "Jack Campbell",
@@ -681,80 +604,95 @@
             "detail": "Rolder (hamstring) was placed on injured reserve Tuesday."
           },
           {
-            "name": "Kerby Joseph",
-            "position": "S",
+            "name": "Keith Abney II",
+            "position": "CB",
             "status": "Out",
-            "detail": "Joseph (knee) did not travel to Munich with the Lions and is ruled out for Sunday's matchup against the Patriots."
+            "detail": "inactive"
           }
         ],
         "away": [
           {
+            "name": "Behren Morton",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Morton (coach's decision) is inactive but available as the emergency third quarterback for Sunday's game against the Lions in Munich."
+          },
+          {
+            "name": "Drake Maye",
+            "position": "QB",
+            "status": "Questionable",
+            "detail": "Following Sunday's 35-10 loss to the Lions, coach Mike Vrabel said that Maye will need additional testing to determine the severity of the a"
+          },
+          {
             "name": "Ben Brown",
             "position": "C",
             "status": "Out",
-            "detail": "Brown (knee) has been ruled out for Sunday's game against the Lions in Munich, Evan Lazar of the Patriots' official site reports."
+            "detail": "inactive"
+          },
+          {
+            "name": "Brenden Schooler",
+            "position": "S",
+            "status": "Out",
+            "detail": "Schooler (hamstring) is inactive for Sunday's contest against the Patriots in Munich."
           },
           {
             "name": "Carlton Davis III",
             "position": "CB",
             "status": "Out",
-            "detail": "Davis (knee) has been ruled out for Sunday's game against the Lions in Munich, Evan Lazar of the Patriots' official site reports."
+            "detail": "inactive"
+          },
+          {
+            "name": "Dametrious Crownover",
+            "position": "OT",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "TreVeyon Henderson",
             "position": "RB",
             "status": "Injured Reserve",
             "detail": "Henderson (illness) was placed on injured reserve Saturday, Mike Reiss of ESPN.com reports."
+          },
+          {
+            "name": "Walter Rouse",
+            "position": "OL",
+            "status": "Out",
+            "detail": "Rouse is inactive for Sunday's game against the Lions in Munich due to a concussion."
           }
         ],
-        "qb_watch": null
+        "qb_watch": [
+          {
+            "team": "NE",
+            "name": "Behren Morton",
+            "status": "Out"
+          },
+          {
+            "team": "NE",
+            "name": "Drake Maye",
+            "status": "Questionable"
+          }
+        ]
       },
-      "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": -0.002,
-        "notable": false,
-        "spread_change": 0.0,
-        "total_change": 0.0
-      },
+      "movement": null,
       "trend": {
         "points": 27,
         "opened": 0.635,
         "opened_at": "2026-11-03T07:40+00:00",
         "now": 0.574,
         "since_open": -0.061,
-        "since_24h": -0.0031,
+        "since_24h": -0.002,
         "notable": true
       },
       "pick": {
-        "team": "NE",
-        "name": "New England Patriots",
-        "win_probability": 0.426,
-        "confidence": "upset",
-        "coin_flip": false,
-        "underdog": "DET",
-        "underdog_win_probability": 0.574,
-        "live_upset_candidate": false,
-        "upset_note": null,
-        "public_pick_pct": 0.17,
-        "leverage": 0.256,
-        "high_leverage_play": true,
-        "underdog_public_pct": 0.83,
-        "underdog_leverage": -0.256,
-        "high_leverage_underdog": false,
-        "optimizer_flip": true,
-        "optimizer": {
-          "rank": 2,
-          "chalk_team": "DET",
-          "chalk_win_probability": 0.574,
-          "expected_wins_cost": 0.148
-        }
+        "team": null,
+        "note": "No sportsbook or prediction-market data available"
       }
     },
     {
       "game_id": "401873058",
       "name": "Kansas City Chiefs at Atlanta Falcons",
       "short_name": "KC @ ATL",
-      "status": "Scheduled",
+      "status": "In Progress",
       "completed": false,
       "neutral_site": false,
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
@@ -762,8 +700,8 @@
       "weekday_et": "Sunday",
       "is_monday_night": false,
       "result": {
-        "home_score": 0.0,
-        "away_score": 0.0,
+        "home_score": 3.0,
+        "away_score": 7.0,
         "winner": null,
         "final": false
       },
@@ -780,28 +718,25 @@
         "bookmakers_used": [
           "draftkings",
           "fanduel",
-          "betus",
-          "betonlineag",
-          "lowvig",
           "betrivers",
           "mybookieag",
           "betmgm",
           "bovada"
         ],
         "moneyline": {
-          "home": 145,
-          "away": -175,
-          "avg_hold_pct": 3.9
+          "home": 287,
+          "away": -412,
+          "avg_hold_pct": 6.29
         },
         "fair_moneyline": {
-          "home": 156,
-          "away": -156
+          "home": 296,
+          "away": -296
         },
         "spread": {
-          "home": 3.0,
-          "away": -3.0
+          "home": 6.5,
+          "away": -6.5
         },
-        "total": 47.5
+        "total": 36.5
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV15KCATL",
@@ -809,22 +744,22 @@
           {
             "ticker": "KXNFLGAME-26NOV15KCATL-ATL",
             "team": "ATL",
-            "yes_bid": 0.37,
-            "yes_ask": 0.38,
-            "no_bid": 0.62,
-            "no_ask": 0.63,
-            "yes_prob": 0.375,
+            "yes_bid": 0.22,
+            "yes_ask": 0.23,
+            "no_bid": 0.77,
+            "no_ask": 0.78,
+            "yes_prob": 0.225,
             "method": "bid_ask_midpoint",
             "volume": null
           },
           {
             "ticker": "KXNFLGAME-26NOV15KCATL-KC",
             "team": "KC",
-            "yes_bid": 0.62,
-            "yes_ask": 0.63,
-            "no_bid": 0.37,
-            "no_ask": 0.38,
-            "yes_prob": 0.625,
+            "yes_bid": 0.77,
+            "yes_ask": 0.78,
+            "no_bid": 0.22,
+            "no_ask": 0.23,
+            "yes_prob": 0.775,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -833,17 +768,17 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.391,
-          "away": 0.609
+          "home": 0.2527,
+          "away": 0.7473
         },
         "kalshi": {
-          "home": 0.375,
-          "away": 0.625
+          "home": 0.225,
+          "away": 0.775
         },
         "polymarket": null,
         "combined": {
-          "home": 0.383,
-          "away": 0.617
+          "home": 0.2389,
+          "away": 0.7611
         },
         "weights": {
           "sportsbook": 0.5,
@@ -852,8 +787,8 @@
         }
       },
       "public_pct": {
-        "home": 0.03,
-        "away": 0.97
+        "home": 1.0,
+        "away": 0.0
       },
       "weather": {
         "roof": "dome",
@@ -862,10 +797,34 @@
       "injuries": {
         "home": [
           {
+            "name": "Andy Dalton",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Dalton is inactive for Sunday's game against the Chiefs but was designated as his team's emergency third quarterback."
+          },
+          {
+            "name": "Jack Strand",
+            "position": "QB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Avieon Terrell",
+            "position": "CB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
             "name": "Brian Robinson Jr.",
             "position": "RB",
             "status": "Injured Reserve",
             "detail": "Robinson (hamstring) was placed on injured reserve Saturday, Marc Raimondi of ESPN.com reports."
+          },
+          {
+            "name": "Cameron Williams",
+            "position": "OL",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "Divine Deablo",
@@ -874,86 +833,119 @@
             "detail": "Deablo (forearm) was downgraded from doubtful to out Saturday ahead of Sunday's clash against Kansas City, Tori McElhaney of the Falcons' of"
           },
           {
-            "name": "Samson Ebukam",
-            "position": "DE",
-            "status": "Injured Reserve",
-            "detail": "Ebukam (hamstring) was placed on injured reserve by the Falcons on Tuesday, Tori McElhaney of the team's official website reports."
+            "name": "Robert Longerbeam",
+            "position": "CB",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "Zachariah Branch",
             "position": "WR",
             "status": "Out",
-            "detail": "Branch (hamstring) has been ruled out for Sunday's game against the Chiefs."
+            "detail": "inactive"
           }
         ],
         "away": [
           {
+            "name": "Garrett Nussmeier",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Nussmeier (coach's decision) is inactive but will serve as the Chiefs' emergency third quarterback against the Falcons on Sunday."
+          },
+          {
+            "name": "Ben VanSumeren",
+            "position": "FB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Jaydn Ott",
+            "position": "RB",
+            "status": "Out",
+            "detail": "Ott (hamstring) has been ruled out for Sunday's game against the Falcons, Matt McMullen of the Chiefs' official site reports."
+          },
+          {
             "name": "Jaylon Moore",
             "position": "OT",
             "status": "Out",
-            "detail": "Moore (ankle) has been ruled out ahead of Sunday's game against the Falcons."
+            "detail": "inactive"
           },
           {
             "name": "Kenneth Walker III",
             "position": "RB",
             "status": "Out",
-            "detail": "Walker (groin) has been ruled out for Sunday's game against the Falcons, Jordan Schultz of Fox Sports reports."
+            "detail": "Walker (groin), who won't play Sunday in Atlanta, is expected to \"be able to go\" next Sunday against the Cardinals, Ian Rapoport of NFL Netw"
+          },
+          {
+            "name": "Melvin Smith Jr.",
+            "position": "CB",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "Peter Woods",
             "position": "DT",
             "status": "Out",
-            "detail": "Woods (neck) has been ruled out ahead of Sunday's game against the Falcons."
+            "detail": "inactive"
           }
         ],
-        "qb_watch": null
+        "qb_watch": [
+          {
+            "team": "ATL",
+            "name": "Andy Dalton",
+            "status": "Out"
+          },
+          {
+            "team": "ATL",
+            "name": "Jack Strand",
+            "status": "Out"
+          },
+          {
+            "team": "KC",
+            "name": "Garrett Nussmeier",
+            "status": "Out"
+          }
+        ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": 0.0015,
-        "notable": false,
-        "spread_change": 0.0,
-        "total_change": 0.5
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": -0.1441,
+        "notable": true,
+        "spread_change": 3.5,
+        "total_change": -11.0
       },
       "trend": {
-        "points": 26,
+        "points": 27,
         "opened": 0.485,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.383,
-        "since_open": -0.102,
-        "since_24h": 0.0029,
+        "now": 0.2389,
+        "since_open": -0.2461,
+        "since_24h": -0.1426,
         "notable": true
       },
       "pick": {
-        "team": "ATL",
-        "name": "Atlanta Falcons",
-        "win_probability": 0.383,
-        "confidence": "upset",
+        "team": "KC",
+        "name": "Kansas City Chiefs",
+        "win_probability": 0.7611,
+        "confidence": "strong",
         "coin_flip": false,
-        "underdog": "KC",
-        "underdog_win_probability": 0.617,
+        "underdog": "ATL",
+        "underdog_win_probability": 0.2389,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.03,
-        "leverage": 0.353,
-        "high_leverage_play": true,
-        "underdog_public_pct": 0.97,
-        "underdog_leverage": -0.353,
-        "high_leverage_underdog": false,
-        "optimizer_flip": true,
-        "optimizer": {
-          "rank": 1,
-          "chalk_team": "KC",
-          "chalk_win_probability": 0.617,
-          "expected_wins_cost": 0.234
-        }
+        "public_pick_pct": 0.0,
+        "leverage": 0.7611,
+        "high_leverage_play": false,
+        "underdog_public_pct": 1.0,
+        "underdog_leverage": -0.7611,
+        "high_leverage_underdog": false
       }
     },
     {
       "game_id": "401873056",
       "name": "Houston Texans at Cleveland Browns",
       "short_name": "HOU @ CLE",
-      "status": "Scheduled",
+      "status": "In Progress",
       "completed": false,
       "neutral_site": false,
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
@@ -961,8 +953,8 @@
       "weekday_et": "Sunday",
       "is_monday_night": false,
       "result": {
-        "home_score": 0.0,
-        "away_score": 0.0,
+        "home_score": 10.0,
+        "away_score": 17.0,
         "winner": null,
         "final": false
       },
@@ -979,28 +971,25 @@
         "bookmakers_used": [
           "draftkings",
           "fanduel",
-          "betus",
-          "betonlineag",
-          "lowvig",
           "betrivers",
           "mybookieag",
           "betmgm",
           "bovada"
         ],
         "moneyline": {
-          "home": 186,
-          "away": -225,
-          "avg_hold_pct": 4.07
+          "home": 554,
+          "away": -944,
+          "avg_hold_pct": 5.79
         },
         "fair_moneyline": {
-          "home": 198,
-          "away": -198
+          "home": 584,
+          "away": -584
         },
         "spread": {
-          "home": 4.5,
-          "away": -4.5
+          "home": 10.5,
+          "away": -10.5
         },
-        "total": 40.5
+        "total": 52.5
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV15HOUCLE",
@@ -1008,22 +997,22 @@
           {
             "ticker": "KXNFLGAME-26NOV15HOUCLE-CLE",
             "team": "CLE",
-            "yes_bid": 0.32,
-            "yes_ask": 0.33,
-            "no_bid": 0.67,
-            "no_ask": 0.68,
-            "yes_prob": 0.325,
+            "yes_bid": 0.15,
+            "yes_ask": 0.16,
+            "no_bid": 0.84,
+            "no_ask": 0.85,
+            "yes_prob": 0.155,
             "method": "bid_ask_midpoint",
             "volume": null
           },
           {
             "ticker": "KXNFLGAME-26NOV15HOUCLE-HOU",
             "team": "HOU",
-            "yes_bid": 0.67,
-            "yes_ask": 0.68,
-            "no_bid": 0.32,
-            "no_ask": 0.33,
-            "yes_prob": 0.675,
+            "yes_bid": 0.84,
+            "yes_ask": 0.85,
+            "no_bid": 0.15,
+            "no_ask": 0.16,
+            "yes_prob": 0.845,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -1032,17 +1021,17 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.3356,
-          "away": 0.6644
+          "home": 0.1462,
+          "away": 0.8538
         },
         "kalshi": {
-          "home": 0.325,
-          "away": 0.675
+          "home": 0.155,
+          "away": 0.845
         },
         "polymarket": null,
         "combined": {
-          "home": 0.3303,
-          "away": 0.6697
+          "home": 0.1506,
+          "away": 0.8494
         },
         "weights": {
           "sportsbook": 0.5,
@@ -1051,20 +1040,38 @@
         }
       },
       "public_pct": {
-        "home": 0.08,
-        "away": 0.92
+        "home": 0.09,
+        "away": 0.91
       },
       "weather": {
         "summary": "Overcast",
         "icon": "☁️",
-        "temp_f": 45,
-        "wind_mph": 12,
-        "precip_pct": 13,
+        "temp_f": 46,
+        "wind_mph": 14,
+        "precip_pct": 2,
         "roof": "open",
         "rough": false
       },
       "injuries": {
         "home": [
+          {
+            "name": "Dillon Gabriel",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Gabriel (coach's decision) is inactive for Sunday's game against the Texans but will serve as the Browns' emergency third quarterback."
+          },
+          {
+            "name": "Taylen Green",
+            "position": "QB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Justin Jefferson",
+            "position": "LB",
+            "status": "Out",
+            "detail": "inactive"
+          },
           {
             "name": "Michael Burton",
             "position": "FB",
@@ -1072,10 +1079,22 @@
             "detail": "The Browns placed Burton (calf) on injured reserve Saturday, Chris Easterling of the Akron Beacon Journal reports."
           },
           {
+            "name": "Noah Igbinoghene",
+            "position": "CB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Parker Brailsford",
+            "position": "C",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
             "name": "Ronnie Hickman",
             "position": "S",
             "status": "Out",
-            "detail": "Hickman (concussion) has been ruled out for Sunday's game against the Texans, Daniel Oyefusi of ESPN.com reports."
+            "detail": "inactive"
           }
         ],
         "away": [
@@ -1083,19 +1102,19 @@
             "name": "Azeez Al-Shaair",
             "position": "LB",
             "status": "Out",
-            "detail": "Al-Shaair (groin/personal) has been ruled out for Sunday's game against the Browns."
+            "detail": "inactive"
           },
           {
             "name": "Brevin Jordan",
             "position": "TE",
             "status": "Out",
-            "detail": "Jordan (finger) has been ruled out for Sunday's game against the Browns."
+            "detail": "inactive"
           },
           {
             "name": "Danielle Hunter",
             "position": "DE",
             "status": "Out",
-            "detail": "Hunter (hamstring) has been ruled out for Sunday's game against the Browns."
+            "detail": "inactive"
           },
           {
             "name": "David Montgomery",
@@ -1113,48 +1132,65 @@
             "name": "Keylan Rutledge",
             "position": "G",
             "status": "Out",
-            "detail": "Rutledge (neck) has been ruled out ahead of Sunday's game against the Browns."
+            "detail": "inactive"
           },
           {
             "name": "Marvin Harrison Jr.",
             "position": "WR",
             "status": "Out",
-            "detail": "Harrison (hamstring) is ruled out for Sunday's game against the Browns."
+            "detail": "inactive"
+          },
+          {
+            "name": "Wyatt Teller",
+            "position": "G",
+            "status": "Out",
+            "detail": "Teller (illness) is inactive for Sunday's game against the Browns."
           }
         ],
-        "qb_watch": null
+        "qb_watch": [
+          {
+            "team": "CLE",
+            "name": "Dillon Gabriel",
+            "status": "Out"
+          },
+          {
+            "team": "CLE",
+            "name": "Taylen Green",
+            "status": "Out"
+          }
+        ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": 0.0019,
-        "notable": false,
-        "spread_change": 0.0,
-        "total_change": 0.0
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": -0.1797,
+        "notable": true,
+        "spread_change": 6.0,
+        "total_change": 12.0
       },
       "trend": {
-        "points": 25,
+        "points": 26,
         "opened": 0.435,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.3303,
-        "since_open": -0.1047,
-        "since_24h": 0.0028,
+        "now": 0.1506,
+        "since_open": -0.2844,
+        "since_24h": -0.1778,
         "notable": true
       },
       "pick": {
         "team": "HOU",
         "name": "Houston Texans",
-        "win_probability": 0.6697,
-        "confidence": "solid",
+        "win_probability": 0.8494,
+        "confidence": "strong",
         "coin_flip": false,
         "underdog": "CLE",
-        "underdog_win_probability": 0.3303,
+        "underdog_win_probability": 0.1506,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.92,
-        "leverage": -0.2503,
+        "public_pick_pct": 0.91,
+        "leverage": -0.0606,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.08,
-        "underdog_leverage": 0.2503,
+        "underdog_public_pct": 0.09,
+        "underdog_leverage": 0.0606,
         "high_leverage_underdog": false
       }
     },
@@ -1162,7 +1198,7 @@
       "game_id": "401873060",
       "name": "Minnesota Vikings at Green Bay Packers",
       "short_name": "MIN @ GB",
-      "status": "Scheduled",
+      "status": "In Progress",
       "completed": false,
       "neutral_site": false,
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
@@ -1171,7 +1207,7 @@
       "is_monday_night": false,
       "result": {
         "home_score": 0.0,
-        "away_score": 0.0,
+        "away_score": 17.0,
         "winner": null,
         "final": false
       },
@@ -1187,29 +1223,26 @@
         "odds_api_event_id": "5d8d85473b87f772a979ecf294acab94",
         "bookmakers_used": [
           "draftkings",
-          "betus",
           "fanduel",
-          "betonlineag",
-          "lowvig",
           "betrivers",
           "mybookieag",
           "betmgm",
           "bovada"
         ],
         "moneyline": {
-          "home": -150,
-          "away": 125,
-          "avg_hold_pct": 3.95
+          "home": 453,
+          "away": -745,
+          "avg_hold_pct": 5.96
         },
         "fair_moneyline": {
-          "home": -135,
-          "away": 135
+          "home": 479,
+          "away": -479
         },
         "spread": {
-          "home": -3.0,
-          "away": 3.0
+          "home": 10.5,
+          "away": -10.5
         },
-        "total": 42.0
+        "total": 43.5
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV15MINGB",
@@ -1217,22 +1250,22 @@
           {
             "ticker": "KXNFLGAME-26NOV15MINGB-GB",
             "team": "GB",
-            "yes_bid": 0.58,
-            "yes_ask": 0.59,
-            "no_bid": 0.41,
-            "no_ask": 0.42,
-            "yes_prob": 0.585,
+            "yes_bid": 0.13,
+            "yes_ask": 0.15,
+            "no_bid": 0.85,
+            "no_ask": 0.87,
+            "yes_prob": 0.14,
             "method": "bid_ask_midpoint",
             "volume": null
           },
           {
             "ticker": "KXNFLGAME-26NOV15MINGB-MIN",
             "team": "MIN",
-            "yes_bid": 0.41,
-            "yes_ask": 0.42,
-            "no_bid": 0.58,
-            "no_ask": 0.59,
-            "yes_prob": 0.415,
+            "yes_bid": 0.85,
+            "yes_ask": 0.86,
+            "no_bid": 0.14,
+            "no_ask": 0.15,
+            "yes_prob": 0.855,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -1241,17 +1274,17 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.5751,
-          "away": 0.4249
+          "home": 0.1726,
+          "away": 0.8274
         },
         "kalshi": {
-          "home": 0.585,
-          "away": 0.415
+          "home": 0.1407,
+          "away": 0.8593
         },
         "polymarket": null,
         "combined": {
-          "home": 0.58,
-          "away": 0.42
+          "home": 0.1566,
+          "away": 0.8434
         },
         "weights": {
           "sportsbook": 0.5,
@@ -1260,14 +1293,14 @@
         }
       },
       "public_pct": {
-        "home": 0.82,
-        "away": 0.18
+        "home": 0.81,
+        "away": 0.19
       },
       "weather": {
         "summary": "Clear",
         "icon": "☀️",
-        "temp_f": 42,
-        "wind_mph": 2,
+        "temp_f": 43,
+        "wind_mph": 1,
         "precip_pct": 0,
         "roof": "open",
         "rough": false
@@ -1275,10 +1308,16 @@
       "injuries": {
         "home": [
           {
+            "name": "Donovan Jennings",
+            "position": "G",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
             "name": "Josh Jacobs",
             "position": "RB",
             "status": "Out",
-            "detail": "Jacobs underwent surgery on his fractured right ring finger Friday and \"should be back in the next few weeks,\" Tom Pelissero of Netflix repo"
+            "detail": "inactive"
           },
           {
             "name": "Josh Whyle",
@@ -1287,28 +1326,34 @@
             "detail": "Green Bay placed Whyle (concussion) on injured reserve Saturday."
           },
           {
+            "name": "Kevin Zeitler",
+            "position": "G",
+            "status": "Out",
+            "detail": "Zeitler (ankle/triceps) is inactive for Sunday's game against the Vikings, Mike Spofford of the Packers' official site reports."
+          },
+          {
             "name": "Micah Parsons",
             "position": "DE",
             "status": "Out",
             "detail": "Parsons (knee/illness) has been ruled out for Sunday's game against the Vikings, Wes Hodkiewicz of the Packers' official site reports."
           },
           {
+            "name": "Pierre Strong Jr.",
+            "position": "RB",
+            "status": "Out",
+            "detail": "Strong (coach's decision) is inactive for Sunday's game against the Vikings."
+          },
+          {
             "name": "Sean Rhyan",
             "position": "G",
             "status": "Out",
-            "detail": "Rhyan (ankle) has been ruled out for Sunday's game against the Vikings, Wes Hodkiewicz of the Packers' official site reports."
+            "detail": "inactive"
           },
           {
             "name": "Warren Brinson",
             "position": "DT",
             "status": "Injured Reserve",
             "detail": "Coach Matt LaFleur said Thursday that he expects Brinson (IR, calf) to play again at some point this season, Matt Schneidman of The Athletic"
-          },
-          {
-            "name": "Zaire Franklin",
-            "position": "LB",
-            "status": "Doubtful",
-            "detail": "Franklin (shin) is listed as doubtful for Sunday's game against the Vikings, Wes Hodkiewicz of the Packers' official site reports."
           }
         ],
         "away": [
@@ -1316,31 +1361,43 @@
             "name": "Kyler Murray",
             "position": "QB",
             "status": "Out",
-            "detail": "The Vikings are targeting Week 12 against the Falcons on Sunday, Nov. 29, for a return for Murray (hamstring), Tom Pelissero of Netflix repo"
+            "detail": "The Vikings are hopeful that Murray (hamstring) will be available to play Week 12 against the Falcons, Tom Pelissero of Netflix reports."
+          },
+          {
+            "name": "Max Brosmer",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Brosmer (coach's decision) is inactive but will serve as the Vikings' emergency third quarterback against the Packers on Sunday."
           },
           {
             "name": "Blake Cashman",
             "position": "LB",
             "status": "Out",
-            "detail": "Cashman (concussion) has been ruled out for Sunday's game against the Packers, Ben Goessling of The Minnesota Star Tribune reports."
+            "detail": "inactive"
           },
           {
             "name": "Jauan Jennings",
             "position": "WR",
             "status": "Out",
-            "detail": "Jennings (calf) has been ruled out for Sunday's game at Green Bay."
+            "detail": "inactive"
+          },
+          {
+            "name": "Jordan Addison",
+            "position": "WR",
+            "status": "Out",
+            "detail": "Addison (thumb) is inactive for Sunday's game at Green Bay, Tom Pelissero of Netflix reports."
           },
           {
             "name": "T.J. Hockenson",
             "position": "TE",
             "status": "Out",
-            "detail": "Hockenson (wrist) has been ruled out for Sunday's game at Green Bay."
+            "detail": "inactive"
           },
           {
             "name": "Tyrion Ingram-Dawkins",
             "position": "DE",
             "status": "Out",
-            "detail": "Ingram-Dawkins (ankle) has been ruled out for Sunday's game against the Packers, Ben Goessling of The Minnesota Star Tribune reports."
+            "detail": "inactive"
           }
         ],
         "qb_watch": [
@@ -1348,48 +1405,53 @@
             "team": "MIN",
             "name": "Kyler Murray",
             "status": "Out"
+          },
+          {
+            "team": "MIN",
+            "name": "Max Brosmer",
+            "status": "Out"
           }
         ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": -0.0006,
-        "notable": false,
-        "spread_change": 0.0,
-        "total_change": 0.0
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": -0.4234,
+        "notable": true,
+        "spread_change": 13.5,
+        "total_change": 1.5
       },
       "trend": {
-        "points": 25,
+        "points": 26,
         "opened": 0.4273,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.58,
-        "since_open": 0.1527,
-        "since_24h": -0.0027,
+        "now": 0.1566,
+        "since_open": -0.2707,
+        "since_24h": -0.424,
         "notable": true
       },
       "pick": {
-        "team": "GB",
-        "name": "Green Bay Packers",
-        "win_probability": 0.58,
-        "confidence": "lean",
+        "team": "MIN",
+        "name": "Minnesota Vikings",
+        "win_probability": 0.8434,
+        "confidence": "strong",
         "coin_flip": false,
-        "underdog": "MIN",
-        "underdog_win_probability": 0.42,
+        "underdog": "GB",
+        "underdog_win_probability": 0.1566,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.82,
-        "leverage": -0.24,
+        "public_pick_pct": 0.19,
+        "leverage": 0.6534,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.18,
-        "underdog_leverage": 0.24,
-        "high_leverage_underdog": true
+        "underdog_public_pct": 0.81,
+        "underdog_leverage": -0.6534,
+        "high_leverage_underdog": false
       }
     },
     {
       "game_id": "401873057",
       "name": "Jacksonville Jaguars at Tennessee Titans",
       "short_name": "JAX @ TEN",
-      "status": "Scheduled",
+      "status": "In Progress",
       "completed": false,
       "neutral_site": false,
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
@@ -1397,8 +1459,8 @@
       "weekday_et": "Sunday",
       "is_monday_night": false,
       "result": {
-        "home_score": 0.0,
-        "away_score": 0.0,
+        "home_score": 10.0,
+        "away_score": 13.0,
         "winner": null,
         "final": false
       },
@@ -1414,29 +1476,26 @@
         "odds_api_event_id": "28800df7e768ecec14f116454d560f9b",
         "bookmakers_used": [
           "draftkings",
-          "betus",
           "fanduel",
-          "betonlineag",
-          "lowvig",
           "betrivers",
           "mybookieag",
           "betmgm",
           "bovada"
         ],
         "moneyline": {
-          "home": 445,
-          "away": -619,
-          "avg_hold_pct": 4.14
+          "home": 414,
+          "away": -660,
+          "avg_hold_pct": 5.84
         },
         "fair_moneyline": {
-          "home": 478,
-          "away": -478
+          "home": 444,
+          "away": -444
         },
         "spread": {
-          "home": 10.5,
-          "away": -10.5
+          "home": 7.5,
+          "away": -7.5
         },
-        "total": 46.5
+        "total": 49.0
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV15JACTEN",
@@ -1444,22 +1503,22 @@
           {
             "ticker": "KXNFLGAME-26NOV15JACTEN-TEN",
             "team": "TEN",
-            "yes_bid": 0.16,
-            "yes_ask": 0.17,
-            "no_bid": 0.83,
-            "no_ask": 0.84,
-            "yes_prob": 0.165,
+            "yes_bid": 0.17,
+            "yes_ask": 0.18,
+            "no_bid": 0.82,
+            "no_ask": 0.83,
+            "yes_prob": 0.175,
             "method": "bid_ask_midpoint",
             "volume": null
           },
           {
             "ticker": "KXNFLGAME-26NOV15JACTEN-JAC",
             "team": "JAX",
-            "yes_bid": 0.83,
-            "yes_ask": 0.84,
-            "no_bid": 0.16,
-            "no_ask": 0.17,
-            "yes_prob": 0.835,
+            "yes_bid": 0.82,
+            "yes_ask": 0.83,
+            "no_bid": 0.17,
+            "no_ask": 0.18,
+            "yes_prob": 0.825,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -1468,17 +1527,17 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.1731,
-          "away": 0.8269
+          "home": 0.1838,
+          "away": 0.8162
         },
         "kalshi": {
-          "home": 0.165,
-          "away": 0.835
+          "home": 0.175,
+          "away": 0.825
         },
         "polymarket": null,
         "combined": {
-          "home": 0.169,
-          "away": 0.831
+          "home": 0.1794,
+          "away": 0.8206
         },
         "weights": {
           "sportsbook": 0.5,
@@ -1487,14 +1546,14 @@
         }
       },
       "public_pct": {
-        "home": 0.5025,
-        "away": 0.4975
+        "home": 0.0,
+        "away": 1.0
       },
       "weather": {
         "summary": "Clear",
         "icon": "☀️",
-        "temp_f": 53,
-        "wind_mph": 5,
+        "temp_f": 55,
+        "wind_mph": 4,
         "precip_pct": 0,
         "roof": "open",
         "rough": false
@@ -1505,19 +1564,31 @@
             "name": "Anthony Hill Jr.",
             "position": "LB",
             "status": "Out",
-            "detail": "Hill (neck) has been ruled out for Sunday's game against the Jaguars, Jim Wyatt of the Titans' official site reports."
+            "detail": "inactive"
+          },
+          {
+            "name": "Brandon Crenshaw-Dickson",
+            "position": "OT",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "Carnell Tate",
             "position": "WR",
             "status": "Out",
-            "detail": "Tate (shoulder) has been ruled out for Sunday's game against the Jaguars, Jim Wyatt of the Titans' official site reports."
+            "detail": "inactive"
           },
           {
             "name": "Cody Barton",
             "position": "LB",
             "status": "Out",
-            "detail": "Barton (concussion) has been ruled out for Sunday's game against the Jaguars, Jim Wyatt of the Titans' official site reports."
+            "detail": "inactive"
+          },
+          {
+            "name": "Jackie Marshall",
+            "position": "DT",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "James Williams Sr.",
@@ -1526,19 +1597,25 @@
             "detail": "The Titans placed Williams (groin) on injured reserve Monday, Jim Wyatt of the Titans' official site reports."
           },
           {
-            "name": "Peter Skoronski",
-            "position": "G",
-            "status": "Injured Reserve",
-            "detail": "The Titans placed Skoronski (hamstring) on injured reserve Saturday, Jim Wyatt of the team's official site reports."
+            "name": "Jaylon Jones",
+            "position": "CB",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
-            "name": "Tommy Townsend",
-            "position": "P",
-            "status": "Injured Reserve",
-            "detail": "The Titans placed Townsend (knee/Achilles) on IR on Saturday, Jim Wyatt of the Titans' official site reports."
+            "name": "Nicholas Singleton",
+            "position": "RB",
+            "status": "Out",
+            "detail": "Singleton (coach's decision) is inactive for Sunday's game against the Jaguars."
           }
         ],
         "away": [
+          {
+            "name": "Albert Regis",
+            "position": "DT",
+            "status": "Out",
+            "detail": "inactive"
+          },
           {
             "name": "B.J. Green II",
             "position": "DE",
@@ -1546,45 +1623,57 @@
             "detail": "Green (forearm) has been ruled out ahead of Sunday's game against the Titans, Michael DiRocco of ESPN.com reports."
           },
           {
+            "name": "CJ Williams",
+            "position": "WR",
+            "status": "Out",
+            "detail": "Williams (coach's decision) is inactive for Sunday's game against the Titans."
+          },
+          {
             "name": "Jessie Bates III",
             "position": "S",
             "status": "Out",
-            "detail": "Jaguars coach Liam Coen said Friday that Bates and DT Jordan Davis will not play in Sunday's game at Tennessee, Ryan O'Halloran of The Flori"
+            "detail": "inactive"
+          },
+          {
+            "name": "Wesley Williams",
+            "position": "DE",
+            "status": "Out",
+            "detail": "inactive"
           }
         ],
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": -0.0003,
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": 0.0104,
         "notable": false,
-        "spread_change": 0.0,
-        "total_change": 0.0
+        "spread_change": -3.0,
+        "total_change": 2.5
       },
       "trend": {
-        "points": 25,
+        "points": 26,
         "opened": 0.295,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.169,
-        "since_open": -0.126,
-        "since_24h": -0.0003,
+        "now": 0.1794,
+        "since_open": -0.1156,
+        "since_24h": 0.0101,
         "notable": true
       },
       "pick": {
         "team": "JAX",
         "name": "Jacksonville Jaguars",
-        "win_probability": 0.831,
+        "win_probability": 0.8206,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "TEN",
-        "underdog_win_probability": 0.169,
+        "underdog_win_probability": 0.1794,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.4975,
-        "leverage": 0.3335,
+        "public_pick_pct": 1.0,
+        "leverage": -0.1794,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.5025,
-        "underdog_leverage": -0.3335,
+        "underdog_public_pct": 0.0,
+        "underdog_leverage": 0.1794,
         "high_leverage_underdog": false
       }
     },
@@ -1592,7 +1681,7 @@
       "game_id": "401873059",
       "name": "Miami Dolphins at Indianapolis Colts",
       "short_name": "MIA @ IND",
-      "status": "Scheduled",
+      "status": "In Progress",
       "completed": false,
       "neutral_site": false,
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
@@ -1600,8 +1689,8 @@
       "weekday_et": "Sunday",
       "is_monday_night": false,
       "result": {
-        "home_score": 0.0,
-        "away_score": 0.0,
+        "home_score": 7.0,
+        "away_score": 7.0,
         "winner": null,
         "final": false
       },
@@ -1618,28 +1707,25 @@
         "bookmakers_used": [
           "draftkings",
           "fanduel",
-          "betus",
-          "betonlineag",
-          "lowvig",
           "betrivers",
           "mybookieag",
           "betmgm",
           "bovada"
         ],
         "moneyline": {
-          "home": -210,
-          "away": 176,
-          "avg_hold_pct": 3.96
+          "home": -265,
+          "away": 200,
+          "avg_hold_pct": 5.8
         },
         "fair_moneyline": {
-          "home": -189,
-          "away": 189
+          "home": -209,
+          "away": 209
         },
         "spread": {
           "home": -4.5,
           "away": 4.5
         },
-        "total": 37.5
+        "total": 38.5
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV15MIAIND",
@@ -1647,22 +1733,22 @@
           {
             "ticker": "KXNFLGAME-26NOV15MIAIND-IND",
             "team": "IND",
-            "yes_bid": 0.66,
-            "yes_ask": 0.67,
-            "no_bid": 0.33,
-            "no_ask": 0.34,
-            "yes_prob": 0.665,
+            "yes_bid": 0.69,
+            "yes_ask": 0.7,
+            "no_bid": 0.3,
+            "no_ask": 0.31,
+            "yes_prob": 0.695,
             "method": "bid_ask_midpoint",
             "volume": null
           },
           {
             "ticker": "KXNFLGAME-26NOV15MIAIND-MIA",
             "team": "MIA",
-            "yes_bid": 0.33,
-            "yes_ask": 0.34,
-            "no_bid": 0.66,
-            "no_ask": 0.67,
-            "yes_prob": 0.335,
+            "yes_bid": 0.3,
+            "yes_ask": 0.31,
+            "no_bid": 0.69,
+            "no_ask": 0.7,
+            "yes_prob": 0.305,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -1671,17 +1757,17 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.6538,
-          "away": 0.3462
+          "home": 0.6766,
+          "away": 0.3234
         },
         "kalshi": {
-          "home": 0.665,
-          "away": 0.335
+          "home": 0.695,
+          "away": 0.305
         },
         "polymarket": null,
         "combined": {
-          "home": 0.6594,
-          "away": 0.3406
+          "home": 0.6858,
+          "away": 0.3142
         },
         "weights": {
           "sportsbook": 0.5,
@@ -1690,20 +1776,26 @@
         }
       },
       "public_pct": {
-        "home": 0.86,
-        "away": 0.14
+        "home": 1.0,
+        "away": 0.0
       },
       "weather": {
         "summary": "Overcast",
         "icon": "☁️",
-        "temp_f": 46,
-        "wind_mph": 3,
+        "temp_f": 48,
+        "wind_mph": 6,
         "precip_pct": 0,
         "roof": "retractable",
         "rough": true
       },
       "injuries": {
         "home": [
+          {
+            "name": "Riley Leonard",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Leonard (coach's decision) is inactive but will serve as the Colts' emergency third quarterback against the Dolphins on Sunday."
+          },
           {
             "name": "Akeem Davis-Gaither",
             "position": "LB",
@@ -1720,37 +1812,31 @@
             "name": "Jalen Travis",
             "position": "OT",
             "status": "Out",
-            "detail": "Travis (knee) has been ruled out ahead of Sunday's game against the Dolphins, Abby Halpin of the Colts' official site reports."
+            "detail": "inactive"
           },
           {
             "name": "Jaylon Carlies",
             "position": "LB",
             "status": "Out",
-            "detail": "Carlies (neck) has been ruled out ahead of Sunday's game against the Dolphins, Abby Halpin of the Colts' official site reports."
+            "detail": "inactive"
           },
           {
             "name": "Jerry Tillery",
             "position": "DT",
             "status": "Out",
-            "detail": "Tillery (calf) has been ruled out for Sunday's game against Miami, Abby Halpin of the Colts' official site reports."
+            "detail": "inactive"
           },
           {
             "name": "Luke Rhodes",
             "position": "LS",
             "status": "Out",
-            "detail": "Rhodes (hamstring) has been ruled out for Sunday's game against the Dolphins, Abby Halpin of the Colts' official site reports."
+            "detail": "inactive"
           },
           {
             "name": "Mo Alie-Cox",
             "position": "TE",
             "status": "Injured Reserve",
             "detail": "The Colts placed Alie-Cox (groin) on injured reserve Saturday."
-          },
-          {
-            "name": "Will Mallory",
-            "position": "TE",
-            "status": "Out",
-            "detail": "Mallory (hamstring) has been downgraded from questionable to out for Sunday's game against the Dolphins."
           }
         ],
         "away": [
@@ -1764,13 +1850,19 @@
             "name": "Aaron Brewer",
             "position": "C",
             "status": "Out",
-            "detail": "Brewer (concussion) has been ruled out ahead of Sunday's game against the Colts, Barry Jackson of the Miami Herald reports."
+            "detail": "inactive"
+          },
+          {
+            "name": "Caedan Wallace",
+            "position": "OT",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "Chris Bell",
             "position": "WR",
-            "status": "Doubtful",
-            "detail": "Bell (knee) is listed as doubtful for Sunday's game against the Colts."
+            "status": "Out",
+            "detail": "Bell (knee) is inactive for Sunday's Week 10 matchup against the Colts."
           },
           {
             "name": "Darrell Baker Jr.",
@@ -1782,16 +1874,27 @@
             "name": "Jared Wayne",
             "position": "WR",
             "status": "Out",
-            "detail": "Wayne (quadriceps) has been ruled out for Sunday's game against the Colts, David Furones of the South Florida Sun Sentinel reports."
+            "detail": "inactive"
           },
           {
-            "name": "Zach Sieler",
-            "position": "DT",
-            "status": "Injured Reserve",
-            "detail": "The Dolphins placed Sieler (biceps) on injured reserve Tuesday."
+            "name": "Justin Joly",
+            "position": "TE",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Marcellas Dial Jr.",
+            "position": "CB",
+            "status": "Out",
+            "detail": "inactive"
           }
         ],
         "qb_watch": [
+          {
+            "team": "IND",
+            "name": "Riley Leonard",
+            "status": "Out"
+          },
           {
             "team": "MIA",
             "name": "Malik Willis",
@@ -1800,36 +1903,36 @@
         ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": -0.0005,
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": 0.0264,
         "notable": false,
         "spread_change": 0.0,
-        "total_change": 0.0
+        "total_change": 1.0
       },
       "trend": {
-        "points": 27,
+        "points": 28,
         "opened": 0.66,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.6594,
-        "since_open": -0.0006,
-        "since_24h": 0.0012,
+        "now": 0.6858,
+        "since_open": 0.0258,
+        "since_24h": 0.0259,
         "notable": false
       },
       "pick": {
         "team": "IND",
         "name": "Indianapolis Colts",
-        "win_probability": 0.6594,
+        "win_probability": 0.6858,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "MIA",
-        "underdog_win_probability": 0.3406,
+        "underdog_win_probability": 0.3142,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.86,
-        "leverage": -0.2006,
+        "public_pick_pct": 1.0,
+        "leverage": -0.3142,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.14,
-        "underdog_leverage": 0.2006,
+        "underdog_public_pct": 0.0,
+        "underdog_leverage": 0.3142,
         "high_leverage_underdog": false
       }
     },
@@ -1837,7 +1940,7 @@
       "game_id": "401873055",
       "name": "Carolina Panthers at New Orleans Saints",
       "short_name": "CAR @ NO",
-      "status": "Scheduled",
+      "status": "In Progress",
       "completed": false,
       "neutral_site": false,
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
@@ -1846,7 +1949,7 @@
       "is_monday_night": false,
       "result": {
         "home_score": 0.0,
-        "away_score": 0.0,
+        "away_score": 7.0,
         "winner": null,
         "final": false
       },
@@ -1862,29 +1965,26 @@
         "odds_api_event_id": "e5aa20e1364dd639f042af1c2281bbe2",
         "bookmakers_used": [
           "draftkings",
-          "betus",
           "fanduel",
-          "betonlineag",
-          "lowvig",
           "betrivers",
           "mybookieag",
           "betmgm",
           "bovada"
         ],
         "moneyline": {
-          "home": -130,
-          "away": 110,
-          "avg_hold_pct": 4.18
+          "home": 345,
+          "away": -501,
+          "avg_hold_pct": 5.89
         },
         "fair_moneyline": {
-          "home": -119,
-          "away": 119
+          "home": 337,
+          "away": -337
         },
         "spread": {
-          "home": -1.5,
-          "away": 1.5
+          "home": 7.5,
+          "away": -7.5
         },
-        "total": 49.0
+        "total": 34.5
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV15CARNO",
@@ -1892,22 +1992,22 @@
           {
             "ticker": "KXNFLGAME-26NOV15CARNO-NO",
             "team": "NO",
-            "yes_bid": 0.53,
-            "yes_ask": 0.54,
-            "no_bid": 0.46,
-            "no_ask": 0.47,
-            "yes_prob": 0.535,
+            "yes_bid": 0.19,
+            "yes_ask": 0.2,
+            "no_bid": 0.8,
+            "no_ask": 0.81,
+            "yes_prob": 0.195,
             "method": "bid_ask_midpoint",
             "volume": null
           },
           {
             "ticker": "KXNFLGAME-26NOV15CARNO-CAR",
             "team": "CAR",
-            "yes_bid": 0.46,
-            "yes_ask": 0.47,
-            "no_bid": 0.53,
-            "no_ask": 0.54,
-            "yes_prob": 0.465,
+            "yes_bid": 0.8,
+            "yes_ask": 0.81,
+            "no_bid": 0.19,
+            "no_ask": 0.2,
+            "yes_prob": 0.805,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -1916,17 +2016,17 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.5443,
-          "away": 0.4557
+          "home": 0.2286,
+          "away": 0.7714
         },
         "kalshi": {
-          "home": 0.535,
-          "away": 0.465
+          "home": 0.195,
+          "away": 0.805
         },
         "polymarket": null,
         "combined": {
-          "home": 0.5396,
-          "away": 0.4604
+          "home": 0.2118,
+          "away": 0.7882
         },
         "weights": {
           "sportsbook": 0.5,
@@ -1935,8 +2035,8 @@
         }
       },
       "public_pct": {
-        "home": 0.5,
-        "away": 0.5
+        "home": 0.0,
+        "away": 1.0
       },
       "weather": {
         "roof": "dome",
@@ -1945,10 +2045,16 @@
       "injuries": {
         "home": [
           {
+            "name": "Zach Wilson",
+            "position": "QB",
+            "status": "Out",
+            "detail": "Wilson (coach's decision) is inactive but will serve as the Saints' emergency third quarterback against the Panthers on Sunday."
+          },
+          {
             "name": "CJ Donaldson",
             "position": "RB",
             "status": "Out",
-            "detail": "Donaldson (shoulder) has been ruled out for Sunday's game against the Panthers, Nick Underhill of NewOrleans.Football reports."
+            "detail": "inactive"
           },
           {
             "name": "Christen Miller",
@@ -1960,27 +2066,57 @@
             "name": "Erik McCoy",
             "position": "C",
             "status": "Out",
-            "detail": "McCoy (biceps) has been ruled out for Sunday's game against the Panthers, Ross Jackson of WWL-TV reports."
+            "detail": "inactive"
+          },
+          {
+            "name": "Jaylan Ford",
+            "position": "LB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Mike Reid",
+            "position": "CB",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "Taliese Fuaga",
             "position": "OT",
             "status": "Out",
-            "detail": "Fuaga (knee) has been ruled out for Sunday's game against the Panthers, Nick Underhill of NewOrleans.Football reports."
+            "detail": "inactive"
           }
         ],
         "away": [
           {
+            "name": "Haynes King",
+            "position": "QB",
+            "status": "Out",
+            "detail": "King (coach's decision) is inactive but will serve as the emergency third quarterback against the Saints on Sunday, Darin Gantt of the Panth"
+          },
+          {
+            "name": "AJ Dillon",
+            "position": "RB",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
             "name": "Bobby Okereke",
             "position": "LB",
             "status": "Out",
-            "detail": "Okereke (foot) didn't practice Thursday."
+            "detail": "inactive"
           },
           {
             "name": "Brady Christensen",
             "position": "G",
             "status": "Injured Reserve",
             "detail": "Christensen (hamstring) has been downgraded to out for Sunday's game against the Saints, Joe Person of The Athletic reports."
+          },
+          {
+            "name": "Ja'Tavion Sanders",
+            "position": "TE",
+            "status": "Out",
+            "detail": "Sanders (coach's decision) is inactive for Sunday's game against the Saints, Darin Gantt of the Panthers' official site reports."
           },
           {
             "name": "Jaycee Horn",
@@ -2001,39 +2137,50 @@
             "detail": "Jackson (groin) has been downgraded from doubtful to out for Sunday's game against the Saints, Joe Person of The Athletic reports."
           }
         ],
-        "qb_watch": null
+        "qb_watch": [
+          {
+            "team": "NO",
+            "name": "Zach Wilson",
+            "status": "Out"
+          },
+          {
+            "team": "CAR",
+            "name": "Haynes King",
+            "status": "Out"
+          }
+        ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": -0.011,
-        "notable": false,
-        "spread_change": 0.5,
-        "total_change": 0.0
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": -0.3278,
+        "notable": true,
+        "spread_change": 9.0,
+        "total_change": -14.5
       },
       "trend": {
-        "points": 26,
+        "points": 27,
         "opened": 0.555,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.5396,
-        "since_open": -0.0154,
-        "since_24h": -0.0124,
-        "notable": false
+        "now": 0.2118,
+        "since_open": -0.3432,
+        "since_24h": -0.3388,
+        "notable": true
       },
       "pick": {
-        "team": "NO",
-        "name": "New Orleans Saints",
-        "win_probability": 0.5396,
-        "confidence": "toss-up",
+        "team": "CAR",
+        "name": "Carolina Panthers",
+        "win_probability": 0.7882,
+        "confidence": "strong",
         "coin_flip": false,
-        "underdog": "CAR",
-        "underdog_win_probability": 0.4604,
-        "live_upset_candidate": true,
-        "upset_note": "Carolina Panthers at 46.0% is inside the 42%-49% upset band",
-        "public_pick_pct": 0.5,
-        "leverage": 0.0396,
+        "underdog": "NO",
+        "underdog_win_probability": 0.2118,
+        "live_upset_candidate": false,
+        "upset_note": null,
+        "public_pick_pct": 1.0,
+        "leverage": -0.2118,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.5,
-        "underdog_leverage": -0.0396,
+        "underdog_public_pct": 0.0,
+        "underdog_leverage": 0.2118,
         "high_leverage_underdog": false
       }
     },
@@ -2041,7 +2188,7 @@
       "game_id": "401873054",
       "name": "Buffalo Bills at New York Jets",
       "short_name": "BUF @ NYJ",
-      "status": "Scheduled",
+      "status": "In Progress",
       "completed": false,
       "neutral_site": false,
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
@@ -2049,8 +2196,8 @@
       "weekday_et": "Sunday",
       "is_monday_night": false,
       "result": {
-        "home_score": 0.0,
-        "away_score": 0.0,
+        "home_score": 3.0,
+        "away_score": 10.0,
         "winner": null,
         "final": false
       },
@@ -2067,28 +2214,25 @@
         "bookmakers_used": [
           "draftkings",
           "fanduel",
-          "betus",
-          "betonlineag",
-          "lowvig",
           "betrivers",
           "mybookieag",
           "betmgm",
           "bovada"
         ],
         "moneyline": {
-          "home": 350,
-          "away": -455,
-          "avg_hold_pct": 4.13
+          "home": 747,
+          "away": -1499,
+          "avg_hold_pct": 5.68
         },
         "fair_moneyline": {
-          "home": 362,
-          "away": -362
+          "home": 784,
+          "away": -784
         },
         "spread": {
-          "home": 7.5,
-          "away": -7.5
+          "home": 13.5,
+          "away": -13.5
         },
-        "total": 51.0
+        "total": 43.0
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV15BUFNYJ",
@@ -2096,22 +2240,22 @@
           {
             "ticker": "KXNFLGAME-26NOV15BUFNYJ-NYJ",
             "team": "NYJ",
-            "yes_bid": 0.2,
-            "yes_ask": 0.21,
-            "no_bid": 0.79,
-            "no_ask": 0.8,
-            "yes_prob": 0.205,
+            "yes_bid": 0.09,
+            "yes_ask": 0.1,
+            "no_bid": 0.9,
+            "no_ask": 0.91,
+            "yes_prob": 0.095,
             "method": "bid_ask_midpoint",
             "volume": null
           },
           {
             "ticker": "KXNFLGAME-26NOV15BUFNYJ-BUF",
             "team": "BUF",
-            "yes_bid": 0.79,
-            "yes_ask": 0.8,
-            "no_bid": 0.2,
-            "no_ask": 0.21,
-            "yes_prob": 0.795,
+            "yes_bid": 0.9,
+            "yes_ask": 0.91,
+            "no_bid": 0.09,
+            "no_ask": 0.1,
+            "yes_prob": 0.905,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -2120,17 +2264,17 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.2166,
-          "away": 0.7834
+          "home": 0.1131,
+          "away": 0.8869
         },
         "kalshi": {
-          "home": 0.205,
-          "away": 0.795
+          "home": 0.095,
+          "away": 0.905
         },
         "polymarket": null,
         "combined": {
-          "home": 0.2108,
-          "away": 0.7892
+          "home": 0.1041,
+          "away": 0.8959
         },
         "weights": {
           "sportsbook": 0.5,
@@ -2139,39 +2283,87 @@
         }
       },
       "public_pct": {
-        "home": 0.5025,
-        "away": 0.4975
+        "home": 1.0,
+        "away": 0.0
       },
       "weather": {
         "summary": "Mostly clear",
         "icon": "🌤️",
-        "temp_f": 48,
+        "temp_f": 50,
         "wind_mph": 10,
-        "precip_pct": 1,
+        "precip_pct": 0,
         "roof": "open",
         "rough": false
       },
       "injuries": {
         "home": [
           {
-            "name": "Max Mitchell",
-            "position": "OT",
-            "status": "Injured Reserve",
-            "detail": "The Jets placed Mitchell (concussion) on their injured reserve list Tuesday, Amanda Vogt of the team's official site reports."
+            "name": "Jarvis Brownlee Jr.",
+            "position": "CB",
+            "status": "Out",
+            "detail": "Brownlee (illness) is inactive for Sunday's game against the Bills."
+          },
+          {
+            "name": "Jelani Woods",
+            "position": "TE",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Nate Lynn",
+            "position": "DE",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Tim Patrick",
+            "position": "WR",
+            "status": "Out",
+            "detail": "Patrick (coach's decision) is inactive for Sunday's game against the Bills."
           },
           {
             "name": "Trevin Wallace",
             "position": "LB",
             "status": "Out",
-            "detail": "Wallace (groin) has been ruled out for Sunday's game against the Bills, Rich Cimini of ESPN.com reports."
+            "detail": "inactive"
           }
         ],
         "away": [
           {
-            "name": "Spencer Brown",
+            "name": "Shane Buechele",
+            "position": "QB",
+            "status": "Out",
+            "detail": "The Bills elevated Buechele from the practice squad to the active roster Saturday."
+          },
+          {
+            "name": "Ar'maj Reed-Adams",
+            "position": "G",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Greg Gaines",
+            "position": "DT",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Jalon Kilgore",
+            "position": "S",
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Jude Bowry",
             "position": "OT",
-            "status": "Doubtful",
-            "detail": "Brown (ankle) is listed as doubtful for Sunday's game against the Jets."
+            "status": "Out",
+            "detail": "inactive"
+          },
+          {
+            "name": "Mike Danna",
+            "position": "DE",
+            "status": "Out",
+            "detail": "inactive"
           },
           {
             "name": "Tyrell Shavers",
@@ -2180,39 +2372,45 @@
             "detail": "The Bills did not activate Shavers (knee) from the reserve/PUP list, and he will not be available for Sunday's game against the Jets."
           }
         ],
-        "qb_watch": null
+        "qb_watch": [
+          {
+            "team": "BUF",
+            "name": "Shane Buechele",
+            "status": "Out"
+          }
+        ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": 0.0002,
-        "notable": false,
-        "spread_change": -0.5,
-        "total_change": 0.0
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": -0.1067,
+        "notable": true,
+        "spread_change": 6.0,
+        "total_change": -8.0
       },
       "trend": {
-        "points": 26,
+        "points": 27,
         "opened": 0.3082,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.2108,
-        "since_open": -0.0974,
-        "since_24h": 0.0,
+        "now": 0.1041,
+        "since_open": -0.2041,
+        "since_24h": -0.1065,
         "notable": true
       },
       "pick": {
         "team": "BUF",
         "name": "Buffalo Bills",
-        "win_probability": 0.7892,
+        "win_probability": 0.8959,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "NYJ",
-        "underdog_win_probability": 0.2108,
+        "underdog_win_probability": 0.1041,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.4975,
-        "leverage": 0.2917,
+        "public_pick_pct": 0.0,
+        "leverage": 0.8959,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.5025,
-        "underdog_leverage": -0.2917,
+        "underdog_public_pct": 1.0,
+        "underdog_leverage": -0.8959,
         "high_leverage_underdog": false
       }
     },
@@ -2255,13 +2453,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": 235,
-          "away": -286,
-          "avg_hold_pct": 4.18
+          "home": 240,
+          "away": -295,
+          "avg_hold_pct": 4.17
         },
         "fair_moneyline": {
-          "home": 250,
-          "away": -250
+          "home": 248,
+          "away": -248
         },
         "spread": {
           "home": 6.5,
@@ -2299,8 +2497,8 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.2857,
-          "away": 0.7143
+          "home": 0.2871,
+          "away": 0.7129
         },
         "kalshi": {
           "home": 0.285,
@@ -2308,8 +2506,8 @@
         },
         "polymarket": null,
         "combined": {
-          "home": 0.2853,
-          "away": 0.7147
+          "home": 0.286,
+          "away": 0.714
         },
         "weights": {
           "sportsbook": 0.5,
@@ -2318,8 +2516,8 @@
         }
       },
       "public_pct": {
-        "home": 0.04,
-        "away": 0.96
+        "home": 0.05,
+        "away": 0.95
       },
       "weather": {
         "roof": "dome",
@@ -2362,36 +2560,36 @@
         ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": 0.0063,
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": 0.0007,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
       "trend": {
-        "points": 26,
+        "points": 27,
         "opened": 0.49,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.2853,
-        "since_open": -0.2047,
-        "since_24h": 0.0065,
+        "now": 0.286,
+        "since_open": -0.204,
+        "since_24h": 0.007,
         "notable": true
       },
       "pick": {
         "team": "SEA",
         "name": "Seattle Seahawks",
-        "win_probability": 0.7147,
+        "win_probability": 0.714,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "LV",
-        "underdog_win_probability": 0.2853,
+        "underdog_win_probability": 0.286,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.96,
-        "leverage": -0.2453,
+        "public_pick_pct": 0.95,
+        "leverage": -0.236,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.04,
-        "underdog_leverage": 0.2453,
+        "underdog_public_pct": 0.05,
+        "underdog_leverage": 0.236,
         "high_leverage_underdog": false
       }
     },
@@ -2434,17 +2632,17 @@
           "bovada"
         ],
         "moneyline": {
-          "home": 355,
-          "away": -475,
-          "avg_hold_pct": 4.29
+          "home": 386,
+          "away": -500,
+          "avg_hold_pct": 4.1
         },
         "fair_moneyline": {
-          "home": 382,
-          "away": -382
+          "home": 394,
+          "away": -394
         },
         "spread": {
-          "home": 9.5,
-          "away": -9.5
+          "home": 10.0,
+          "away": -10.0
         },
         "total": 38.5
       },
@@ -2478,8 +2676,8 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.2075,
-          "away": 0.7925
+          "home": 0.2025,
+          "away": 0.7975
         },
         "kalshi": {
           "home": 0.195,
@@ -2487,8 +2685,8 @@
         },
         "polymarket": null,
         "combined": {
-          "home": 0.2012,
-          "away": 0.7988
+          "home": 0.1987,
+          "away": 0.8013
         },
         "weights": {
           "sportsbook": 0.5,
@@ -2504,7 +2702,7 @@
         "summary": "Clear",
         "icon": "☀️",
         "temp_f": 74,
-        "wind_mph": 1,
+        "wind_mph": 2,
         "precip_pct": 0,
         "roof": "retractable",
         "rough": true
@@ -2515,7 +2713,7 @@
             "name": "Gardner Minshew II",
             "position": "QB",
             "status": "Injured Reserve",
-            "detail": "Minshew (elbow) will undergo UCL surgery and is out for the season, Theo Mackie of AzCentral reports."
+            "detail": "Minshew suffered a torn UCL in his right throwing elbow last Sunday at Seattle and is slated to undergo season-ending surgery, Adam Schefter"
           },
           {
             "name": "Hjalte Froholdt",
@@ -2547,7 +2745,7 @@
             "name": "Davante Adams",
             "position": "WR",
             "status": "Injured Reserve",
-            "detail": "Head coach Sean McVay said Wednesday that Adams (hamstring) returning after the Nov. 25 against the Packers \"is a realistic timeline for us,"
+            "detail": "According to Ian Rapoport of NFL Network and ESPN,  Adams (hamstring) is believed to be targeting a return to action Nov. 25 against the Pac"
           },
           {
             "name": "Jordan Whittington",
@@ -2559,7 +2757,7 @@
             "name": "Puka Nacua",
             "position": "WR",
             "status": "Injured Reserve",
-            "detail": "The Rams placed Nacua (knee) on injured reserve Thursday."
+            "detail": "Nacua (knee/toe) has an expected return date of \"mid-December,\" Ian Rapoport of NFL Network reports."
           },
           {
             "name": "Steve Avila",
@@ -2583,36 +2781,36 @@
         ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": 0.0003,
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": -0.0025,
         "notable": false,
-        "spread_change": 0.0,
-        "total_change": -1.0
+        "spread_change": 0.5,
+        "total_change": 0.0
       },
       "trend": {
-        "points": 25,
+        "points": 26,
         "opened": 0.2855,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.2012,
-        "since_open": -0.0843,
-        "since_24h": -0.0006,
+        "now": 0.1987,
+        "since_open": -0.0868,
+        "since_24h": -0.0022,
         "notable": true
       },
       "pick": {
         "team": "LAR",
         "name": "Los Angeles Rams",
-        "win_probability": 0.7988,
+        "win_probability": 0.8013,
         "confidence": "strong",
         "coin_flip": false,
         "underdog": "ARI",
-        "underdog_win_probability": 0.2012,
+        "underdog_win_probability": 0.1987,
         "live_upset_candidate": false,
         "upset_note": null,
         "public_pick_pct": 0.97,
-        "leverage": -0.1712,
+        "leverage": -0.1687,
         "high_leverage_play": false,
         "underdog_public_pct": 0.03,
-        "underdog_leverage": 0.1712,
+        "underdog_leverage": 0.1687,
         "high_leverage_underdog": false
       }
     },
@@ -2655,19 +2853,19 @@
           "bovada"
         ],
         "moneyline": {
-          "home": 179,
-          "away": -215,
-          "avg_hold_pct": 4.17
+          "home": 177,
+          "away": -210,
+          "avg_hold_pct": 3.96
         },
         "fair_moneyline": {
-          "home": 190,
-          "away": -190
+          "home": 189,
+          "away": -189
         },
         "spread": {
           "home": 4.0,
           "away": -4.0
         },
-        "total": 55.5
+        "total": 56.0
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV15SFDAL",
@@ -2699,8 +2897,8 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.3454,
-          "away": 0.6546
+          "home": 0.3462,
+          "away": 0.6538
         },
         "kalshi": {
           "home": 0.345,
@@ -2708,8 +2906,8 @@
         },
         "polymarket": null,
         "combined": {
-          "home": 0.3452,
-          "away": 0.6548
+          "home": 0.3456,
+          "away": 0.6544
         },
         "weights": {
           "sportsbook": 0.5,
@@ -2718,15 +2916,15 @@
         }
       },
       "public_pct": {
-        "home": 0.05,
-        "away": 0.95
+        "home": 0.06,
+        "away": 0.94
       },
       "weather": {
-        "summary": "Overcast",
-        "icon": "☁️",
+        "summary": "Drizzle",
+        "icon": "🌧️",
         "temp_f": 47,
-        "wind_mph": 7,
-        "precip_pct": 8,
+        "wind_mph": 6,
+        "precip_pct": 19,
         "roof": "retractable",
         "rough": true
       },
@@ -2798,7 +2996,7 @@
             "name": "Mike Evans",
             "position": "WR",
             "status": "Out",
-            "detail": "Evans (Achilles) has been ruled out for Sunday's game at Dallas, Nick Wagoner of ESPN reports."
+            "detail": "Evans (Achilles) has a chance to return to action next Sunday against the Vikings, Mike Garafolo of NFL Network reports."
           },
           {
             "name": "Nate Hobbs",
@@ -2810,36 +3008,36 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": 0.001,
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": 0.0004,
         "notable": false,
         "spread_change": 0.0,
-        "total_change": 0.0
+        "total_change": 0.5
       },
       "trend": {
-        "points": 26,
+        "points": 27,
         "opened": 0.4125,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.3452,
-        "since_open": -0.0673,
-        "since_24h": 0.0001,
+        "now": 0.3456,
+        "since_open": -0.0669,
+        "since_24h": 0.0014,
         "notable": true
       },
       "pick": {
         "team": "SF",
         "name": "San Francisco 49ers",
-        "win_probability": 0.6548,
+        "win_probability": 0.6544,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "DAL",
-        "underdog_win_probability": 0.3452,
+        "underdog_win_probability": 0.3456,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.95,
-        "leverage": -0.2952,
+        "public_pick_pct": 0.94,
+        "leverage": -0.2856,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.05,
-        "underdog_leverage": 0.2952,
+        "underdog_public_pct": 0.06,
+        "underdog_leverage": 0.2856,
         "high_leverage_underdog": false
       }
     },
@@ -2882,13 +3080,13 @@
           "bovada"
         ],
         "moneyline": {
-          "home": -188,
-          "away": 155,
-          "avg_hold_pct": 4.07
+          "home": -190,
+          "away": 161,
+          "avg_hold_pct": 3.89
         },
         "fair_moneyline": {
-          "home": -168,
-          "away": 168
+          "home": -172,
+          "away": 172
         },
         "spread": {
           "home": -3.5,
@@ -2926,8 +3124,8 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.6268,
-          "away": 0.3732
+          "home": 0.6321,
+          "away": 0.3679
         },
         "kalshi": {
           "home": 0.635,
@@ -2935,8 +3133,8 @@
         },
         "polymarket": null,
         "combined": {
-          "home": 0.6309,
-          "away": 0.3691
+          "home": 0.6335,
+          "away": 0.3665
         },
         "weights": {
           "sportsbook": 0.5,
@@ -2949,11 +3147,11 @@
         "away": 0.15
       },
       "weather": {
-        "summary": "Overcast",
-        "icon": "☁️",
-        "temp_f": 42,
+        "summary": "Mostly clear",
+        "icon": "🌤️",
+        "temp_f": 40,
         "wind_mph": 4,
-        "precip_pct": 1,
+        "precip_pct": 0,
         "roof": "open",
         "rough": false
       },
@@ -3007,37 +3205,44 @@
         "qb_watch": null
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": 0.0064,
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": 0.0026,
         "notable": false,
         "spread_change": 0.0,
         "total_change": 0.0
       },
       "trend": {
-        "points": 25,
+        "points": 26,
         "opened": 0.548,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.6309,
-        "since_open": 0.0829,
-        "since_24h": 0.0061,
+        "now": 0.6335,
+        "since_open": 0.0855,
+        "since_24h": 0.009,
         "notable": true
       },
       "pick": {
-        "team": "CIN",
-        "name": "Cincinnati Bengals",
-        "win_probability": 0.6309,
-        "confidence": "solid",
+        "team": "PIT",
+        "name": "Pittsburgh Steelers",
+        "win_probability": 0.3665,
+        "confidence": "upset",
         "coin_flip": false,
-        "underdog": "PIT",
-        "underdog_win_probability": 0.3691,
+        "underdog": "CIN",
+        "underdog_win_probability": 0.6335,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.85,
-        "leverage": -0.2191,
-        "high_leverage_play": false,
-        "underdog_public_pct": 0.15,
-        "underdog_leverage": 0.2191,
-        "high_leverage_underdog": true
+        "public_pick_pct": 0.15,
+        "leverage": 0.2165,
+        "high_leverage_play": true,
+        "underdog_public_pct": 0.85,
+        "underdog_leverage": -0.2165,
+        "high_leverage_underdog": false,
+        "optimizer_flip": true,
+        "optimizer": {
+          "rank": 1,
+          "chalk_team": "CIN",
+          "chalk_win_probability": 0.6335,
+          "expected_wins_cost": 0.267
+        }
       }
     },
     {
@@ -3079,19 +3284,19 @@
           "mybookieag"
         ],
         "moneyline": {
-          "home": -220,
-          "away": 180,
-          "avg_hold_pct": 4.22
+          "home": -225,
+          "away": 186,
+          "avg_hold_pct": 4.29
         },
         "fair_moneyline": {
-          "home": -194,
-          "away": 194
+          "home": -198,
+          "away": 198
         },
         "spread": {
           "home": -4.5,
           "away": 4.5
         },
-        "total": 38.5
+        "total": 39.0
       },
       "kalshi": {
         "event_ticker": "KXNFLGAME-26NOV16LACBAL",
@@ -3099,11 +3304,11 @@
           {
             "ticker": "KXNFLGAME-26NOV16LACBAL-BAL",
             "team": "BAL",
-            "yes_bid": 0.65,
-            "yes_ask": 0.66,
-            "no_bid": 0.34,
-            "no_ask": 0.35,
-            "yes_prob": 0.655,
+            "yes_bid": 0.66,
+            "yes_ask": 0.67,
+            "no_bid": 0.33,
+            "no_ask": 0.34,
+            "yes_prob": 0.665,
             "method": "bid_ask_midpoint",
             "volume": null
           },
@@ -3111,10 +3316,10 @@
             "ticker": "KXNFLGAME-26NOV16LACBAL-LAC",
             "team": "LAC",
             "yes_bid": 0.33,
-            "yes_ask": 0.35,
-            "no_bid": 0.65,
+            "yes_ask": 0.34,
+            "no_bid": 0.66,
             "no_ask": 0.67,
-            "yes_prob": 0.34,
+            "yes_prob": 0.335,
             "method": "bid_ask_midpoint",
             "volume": null
           }
@@ -3123,17 +3328,17 @@
       "polymarket": null,
       "probabilities": {
         "sportsbook_vig_free": {
-          "home": 0.6594,
-          "away": 0.3406
+          "home": 0.6648,
+          "away": 0.3352
         },
         "kalshi": {
-          "home": 0.6583,
-          "away": 0.3417
+          "home": 0.665,
+          "away": 0.335
         },
         "polymarket": null,
         "combined": {
-          "home": 0.6589,
-          "away": 0.3411
+          "home": 0.6649,
+          "away": 0.3351
         },
         "weights": {
           "sportsbook": 0.5,
@@ -3142,13 +3347,13 @@
         }
       },
       "public_pct": {
-        "home": 0.81,
-        "away": 0.19
+        "home": 0.82,
+        "away": 0.18
       },
       "weather": {
         "summary": "Clear",
         "icon": "☀️",
-        "temp_f": 47,
+        "temp_f": 40,
         "wind_mph": 4,
         "precip_pct": 0,
         "roof": "open",
@@ -3228,36 +3433,36 @@
         ]
       },
       "movement": {
-        "since": "2026-11-14T18:39:33+00:00",
-        "home_prob_change": -0.0034,
+        "since": "2026-11-15T07:37:42+00:00",
+        "home_prob_change": 0.006,
         "notable": false,
         "spread_change": 0.0,
-        "total_change": 0.0
+        "total_change": 0.5
       },
       "trend": {
-        "points": 25,
+        "points": 26,
         "opened": 0.495,
         "opened_at": "2026-11-03T07:40+00:00",
-        "now": 0.6589,
-        "since_open": 0.1639,
+        "now": 0.6649,
+        "since_open": 0.1699,
         "since_24h": 0.0026,
         "notable": true
       },
       "pick": {
         "team": "BAL",
         "name": "Baltimore Ravens",
-        "win_probability": 0.6589,
+        "win_probability": 0.6649,
         "confidence": "solid",
         "coin_flip": false,
         "underdog": "LAC",
-        "underdog_win_probability": 0.3411,
+        "underdog_win_probability": 0.3351,
         "live_upset_candidate": false,
         "upset_note": null,
-        "public_pick_pct": 0.81,
-        "leverage": -0.1511,
+        "public_pick_pct": 0.82,
+        "leverage": -0.1551,
         "high_leverage_play": false,
-        "underdog_public_pct": 0.19,
-        "underdog_leverage": 0.1511,
+        "underdog_public_pct": 0.18,
+        "underdog_leverage": 0.1551,
         "high_leverage_underdog": false
       }
     }
